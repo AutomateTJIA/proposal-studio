@@ -1,6 +1,9 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-14
+- **Fixed:** Extra carrier slots can now be removed. Every optional carrier (2 and up) has an × button;
+  if it already holds PDFs it asks first. The remaining carriers renumber and the Recommend choice
+  follows its carrier. Carrier 1 always stays.
 - **Fixed:** Team emails now send from noreply@thejordaninsuranceagency.com, the domain verified in
   the agency's Resend account (the mail. subdomain is not set up there, so sends would have failed).
   The health check now confirms the exact sending domain with Resend.

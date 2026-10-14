@@ -129,6 +129,9 @@ section.band{padding-block:96px}
 .slothead b small{font:500 13px var(--body);color:var(--muted);margin-left:6px}
 .favbtn{border:2px solid var(--mist);background:var(--white);color:var(--navy);border-radius:999px;padding:7px 12px;font:700 13px/1 var(--body);cursor:pointer;white-space:nowrap}
 .favbtn[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.slotacts{display:flex;align-items:center;gap:8px}
+.rmslot{display:inline-grid;place-items:center;width:34px;height:34px;border:2px solid var(--mist);background:var(--white);color:var(--navy);border-radius:50%;cursor:pointer;font:700 18px/1 var(--body);padding:0}
+.rmslot:hover{border-color:var(--royal);color:var(--royal)}
 .drop.sm{padding:14px 12px;display:flex;align-items:center;justify-content:center;gap:10px;text-align:left}
 .drop.sm svg{width:24px;height:24px;margin:0}
 .drop.sm b{font-size:16px}
@@ -479,7 +482,7 @@ function renderSlots() {
   $('#slots').innerHTML = slots.map((files, i) => `
     <div class="slot${favor === i + 1 ? ' fav' : ''}" data-slot="${i}">
       <div class="slothead"><b>Carrier ${i + 1}${i === 0 ? '' : '<small>optional</small>'}</b>
-        <button type="button" class="favbtn" data-fav="${i + 1}" aria-pressed="${favor === i + 1}">${favor === i + 1 ? '★ Recommended' : '☆ Recommend'}</button></div>
+        <span class="slotacts"><button type="button" class="favbtn" data-fav="${i + 1}" aria-pressed="${favor === i + 1}">${favor === i + 1 ? '★ Recommended' : '☆ Recommend'}</button>${i === 0 ? '' : `<button type="button" class="rmslot" data-rmslot="${i}" aria-label="Remove carrier ${i + 1}" title="Remove this carrier">×</button>`}</span></div>
       <div class="drop sm" tabindex="0" role="button" data-pick="${i}" aria-label="Choose quote PDFs for carrier ${i + 1}">${UP}<div><b>Drop quote PDFs</b><span>or tap to choose</span></div></div>
       <ul class="files">${files.map((f, j) => `<li><span>${esc(f.name)} <small>· ${(f.size / 1048576).toFixed(1)} MB</small></span><button type="button" data-rm="${i}:${j}">Remove</button></li>`).join('')}</ul>
     </div>`).join('');
@@ -493,6 +496,14 @@ function addFiles(i, list) {
 }
 $('#slots').addEventListener('click', e => {
   const fav = e.target.closest('[data-fav]'); const rm = e.target.closest('[data-rm]'); const pick = e.target.closest('[data-pick]');
+  const rmslot = e.target.closest('[data-rmslot]');
+  if (rmslot) {
+    const i = +rmslot.dataset.rmslot;
+    if (slots[i].length && !confirm(`Remove Carrier ${i + 1} and its ${slots[i].length} PDF(s)?`)) return;
+    slots.splice(i, 1);
+    if (favor === i + 1) favor = 0; else if (favor > i + 1) favor -= 1;
+    renderSlots(); return;
+  }
   if (fav) { const n = +fav.dataset.fav; favor = favor === n ? 0 : n; renderSlots(); }
   else if (rm) { const [i, j] = rm.dataset.rm.split(':').map(Number); slots[i].splice(j, 1); renderSlots(); }
   else if (pick) { target = +pick.dataset.pick; $('#pick').click(); }
