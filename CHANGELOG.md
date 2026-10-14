@@ -1,6 +1,8 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-14
+- **Changed:** Proposal Studio now has its own private file storage (`proposal-studio-files`), kept
+  separate from Census. Uploaded quotes and finished proposals are stored there.
 - **Fixed:** Sign-in now works with the keys already in Vercel. The page signs in through the
   server (new `/api/session`), which uses the Command Center key that's already set — no extra
   "anon key" to copy. The key stays on the server and never reaches the browser.
