@@ -17,8 +17,10 @@ export async function checkEmailKey() {
   const r = await fetch('https://api.resend.com/domains', { headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` } });
   const body = await r.json().catch(() => ({}));
   if (r.ok) {
-    const domain = (body.data || []).find(d => FROM().includes(d.name));
-    return { ok: true, message: domain ? `Sender domain ${domain.name} is ${domain.status}` : 'Key works' };
+    const want = (FROM().match(/@([^>\s]+)/) || [])[1] || '';
+    const all = (body.data || []).map(d => `${d.name} (${d.status})`).join(', ');
+    const exact = (body.data || []).find(d => d.name === want);
+    return { ok: exact?.status === 'verified', message: `Sending from ${want}: ${exact ? exact.status : 'not set up in this Resend account'}. Domains on this key: ${all || 'none'}` };
   }
   if (body.name === 'restricted_api_key') return { ok: true, message: 'Sending-only key works' };
   return { ok: false, message: body.message || `Resend returned ${r.status}` };
