@@ -2,117 +2,430 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
 <title>Proposal Studio · The Jordan Insurance Agency</title>
+<meta name="description" content="Home & Auto proposals from The Jordan Insurance Agency: carrier quotes in, a clear side-by-side proposal out.">
 <link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
-@font-face{font-family:Barlow;font-weight:400;src:url(/fonts/Barlow-400.woff2) format('woff2')}
-@font-face{font-family:Barlow;font-weight:500;src:url(/fonts/Barlow-500.woff2) format('woff2')}
-@font-face{font-family:Barlow;font-weight:600;src:url(/fonts/Barlow-600.woff2) format('woff2')}
-@font-face{font-family:'Barlow Condensed';font-weight:600;src:url(/fonts/BarlowCondensed-600.woff2) format('woff2')}
-@font-face{font-family:Cormorant;font-weight:600;src:url(/fonts/CormorantGaramond-600.woff2) format('woff2')}
-:root{--navy:#163A70;--royal:#1F5AA6;--gold:#E0B43B;--panel:#F4F6F9;--tint:#EEF3FA;--line:#DDE3EC;--ink:#1D2433;--muted:#6B7486;--ok:#1E7B4F;--warn:#A86A00;--bad:#B3261E}
+/* Same family as the Podcast Studio: one broadcast-navy world, giant hero, gold ticker,
+   a white working desk, then what the client receives and the carriers we quote.
+   Brand colors only: navy, royal, gold (accent), white, mist. No other hues, even for status. */
+:root{
+  --navy:#163A70;--royal:#1F5AA6;--gold:#E0B43B;--mist:#E9EDF2;--white:#FFFFFF;
+  --ink:#0E2650;--line:rgba(233,237,242,.14);--soft:rgba(233,237,242,.74);--muted:rgba(22,58,112,.78);
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;--body:"Public Sans","Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;background:var(--panel);color:var(--ink);font:400 15px/1.55 Barlow,Arial,sans-serif}
-header{background:var(--navy);border-bottom:3px solid var(--gold)}
-.bar{max-width:1120px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px}
-.bar img{height:34px}
-.bar .t{color:#fff;font:600 13px 'Barlow Condensed',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-left:auto}
-main{max-width:1120px;margin:0 auto;padding:24px 16px 64px}
-h1{font:600 34px/1.1 Cormorant,Georgia,serif;color:var(--navy);margin:0 0 4px}
-.sub{color:var(--muted);margin:0 0 22px}
-.cap{font:600 11px 'Barlow Condensed',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--royal)}
-.card{background:#fff;border:1px solid var(--line);border-top:3px solid var(--navy);padding:22px;margin-bottom:20px}
-.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:start}
-@media (max-width:860px){.grid{grid-template-columns:1fr}}
-label{display:block;font-weight:500;margin:14px 0 6px}
-input,select,textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:2px}
-textarea{min-height:76px;resize:vertical}
-.drop{margin-top:16px;border:2px dashed #b9c6da;background:var(--tint);padding:28px 16px;text-align:center;cursor:pointer;transition:.15s}
-.drop.on{border-color:var(--royal);background:#e3ecf8}
-.drop b{color:var(--navy);font-size:17px}
-.files{list-style:none;margin:12px 0 0;padding:0}
-.files li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
-.files button{border:0;background:none;color:var(--bad);cursor:pointer;font:inherit}
-.btn{display:inline-flex;align-items:center;gap:8px;border:0;background:var(--navy);color:#fff;font:600 14px Barlow,sans-serif;padding:12px 20px;cursor:pointer;border-radius:2px;text-decoration:none}
-.btn.gold{background:var(--gold);color:var(--navy)}
-.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--navy)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-.steps{list-style:none;margin:10px 0 0;padding:0}
-.steps li{padding:9px 0 9px 28px;position:relative;border-top:1px solid var(--line);color:var(--muted)}
-.steps li::before{content:'';position:absolute;left:4px;top:15px;width:10px;height:10px;border-radius:50%;background:var(--line)}
-.steps li.now{color:var(--ink);font-weight:500}.steps li.now::before{background:var(--gold);animation:p 1s infinite alternate}
-.steps li.done{color:var(--ink)}.steps li.done::before{background:var(--ok)}
-.steps li.fail{color:var(--bad)}.steps li.fail::before{background:var(--bad)}
-@keyframes p{to{opacity:.3}}
-.badge{display:inline-block;font:600 11px 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px}
-.badge.ready{background:#E5F3EC;color:var(--ok)}.badge.needs_review{background:#FFF4DC;color:var(--warn)}
-.badge.failed{background:#FBE9E7;color:var(--bad)}.badge.pending_approval{background:#FFF4DC;color:var(--warn)}.badge.reading,.badge.drafted{background:var(--tint);color:var(--royal)}
-.notes{margin:10px 0 0;padding-left:20px}.notes li{margin:6px 0}
-.warnbox{background:#FFF8E6;border-left:3px solid var(--gold);padding:14px 16px;margin-top:16px}
-pre.email{white-space:pre-wrap;background:var(--panel);border:1px solid var(--line);padding:16px;font:14px/1.6 Barlow,sans-serif;max-height:420px;overflow:auto}
-iframe{width:100%;height:640px;border:1px solid var(--line);background:#fff}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th{text-align:left;font:600 11px 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:8px 6px;border-bottom:2px solid var(--line)}
-td{padding:10px 6px;border-bottom:1px solid var(--line)}
-tr.click{cursor:pointer}tr.click:hover td{background:var(--tint)}
-.err{color:var(--bad);margin-top:10px}
-.muted{color:var(--muted)}
-.hidden{display:none!important}
-.login{max-width:420px;margin:60px auto}
+html,body{overflow-x:hidden;overflow-x:clip}
+body{margin:0;background:var(--ink);color:var(--white);font:400 17px/1.6 var(--body)}
+a{color:inherit}
+img{max-width:100%;height:auto;display:block}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:28px}
+@media (max-width:560px){.wrap{padding-inline:16px}}
+.kicker{font:600 12px/1.3 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+h2.big{font:900 clamp(38px,5.4vw,64px)/1 var(--display);letter-spacing:-.03em;margin:14px 0 16px}
+h2.big .g{color:var(--gold)}
+.lead{color:var(--soft);font-size:18px;max-width:36em;margin:0}
+
+/* Top bar */
+.top{border-bottom:1px solid var(--line);background:var(--ink)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:18px}
+.top img{height:54px;width:auto}
+.topr{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:10px;font:600 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:var(--gold);padding:9px 14px;border-radius:999px;text-decoration:none}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--ink)}
+.who{font:500 14px/1.3 var(--body);color:var(--soft)}
+.who b{color:var(--white);font-weight:600}
+.who a{color:var(--gold);text-decoration:none;margin-left:6px}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;background:radial-gradient(60% 70% at 80% 35%,rgba(31,90,166,.95) 0%,rgba(31,90,166,0) 70%),linear-gradient(180deg,var(--navy) 0%,var(--ink) 100%)}
+.hero .wrap{display:grid;grid-template-columns:1.12fr .88fr;gap:40px;align-items:center;padding-block:76px 96px}
+.hero .copy{min-width:0;position:relative;z-index:1}
+.hero .kicker{font:800 14px/1.3 var(--display);letter-spacing:.2em}
+.hero h1{font:900 clamp(54px,7.6vw,100px)/.92 var(--display);letter-spacing:-.04em;margin:22px 0 28px}
+.hero h1 .g{color:var(--gold);display:block}
+.hero .lede{font-size:clamp(18px,2vw,21px);color:var(--soft);max-width:31em;margin:0 0 32px}
+.hero .lede b{color:var(--white);font-weight:600}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 22px;border-radius:999px;font:800 16px/1 var(--display);text-decoration:none;transition:transform .15s ease,background .15s ease,box-shadow .15s ease;border:0;cursor:pointer}
+.btn:hover{transform:translateY(-2px)}
+.btn.gold{background:var(--gold);color:var(--ink)}
+.btn.line{box-shadow:inset 0 0 0 2px rgba(233,237,242,.5);color:var(--white);background:transparent}
+.btn.line:hover{background:rgba(233,237,242,.08)}
+.btn.navy{background:var(--navy);color:var(--white)}
+.btn.ghost{box-shadow:inset 0 0 0 2px var(--navy);color:var(--navy);background:var(--white)}
+.btn.ghost:hover{background:var(--mist)}
+.btn:disabled,.btn[aria-disabled="true"]{background:var(--mist);color:rgba(22,58,112,.5);box-shadow:none;cursor:not-allowed;transform:none}
+.btn svg{width:20px;height:20px;flex:none}
+
+/* Fanned proposal pages */
+.art{position:relative;min-height:560px;display:grid;place-items:center;min-width:0}
+.art .ring{position:absolute;width:118%;max-width:600px;aspect-ratio:1;border-radius:50%;border:2px solid rgba(224,180,59,.32)}
+.art .ring.two{width:140%;max-width:720px;border-color:rgba(233,237,242,.10)}
+.sheet{position:absolute;width:min(78%,360px);aspect-ratio:850/1100;border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 40px 80px -24px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.08)}
+.sheet img{width:100%;height:100%;object-fit:cover}
+.sheet.s1{transform:translate(-24%,4%) rotate(-9deg)}
+.sheet.s2{transform:translate(22%,2%) rotate(7deg)}
+.sheet.s3{transform:translate(0,-2%) rotate(-1.5deg);z-index:2}
+@media (prefers-reduced-motion:no-preference){
+  .sheet.s3{animation:float 7s ease-in-out infinite}
+  @keyframes float{50%{transform:translate(0,-4%) rotate(-1.5deg)}}
+  .pill i{animation:blink 1.4s ease-in-out infinite}@keyframes blink{50%{opacity:.25}}
+}
+@media (max-width:920px){.hero .wrap{grid-template-columns:1fr;padding-block:52px 72px}.art{min-height:440px}.sheet{width:min(62%,300px)}}
+
+/* Ticker */
+.ticker{background:var(--gold);color:var(--ink);overflow:hidden;white-space:nowrap}
+.ticker .track{display:inline-flex;padding-block:14px;font:900 22px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.ticker span{padding-inline:22px;display:inline-flex;align-items:center;gap:44px}
+.ticker span::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--ink)}
+@media (prefers-reduced-motion:no-preference){.ticker .track{animation:roll 38s linear infinite}@keyframes roll{to{transform:translateX(-50%)}}}
+
+/* Desk */
+section.band{padding-block:96px}
+.desk{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.desk>*{min-width:0}
+.flow{list-style:none;padding:0;margin:34px 0 0}
+.flow li{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:baseline;padding-block:20px;border-top:1px solid var(--line)}
+.flow li:last-child{border-bottom:1px solid var(--line)}
+.flow .n{font:900 34px/1 var(--display);color:var(--gold);font-variant-numeric:tabular-nums}
+.flow b{display:block;font:800 26px/1.1 var(--display);letter-spacing:-.01em}
+.flow p{margin:6px 0 0;color:var(--soft);font-size:15.5px}
+@media (max-width:920px){.desk{grid-template-columns:1fr;gap:40px}}
+
+.panel{background:var(--white);color:var(--ink);border-radius:22px;padding:30px;box-shadow:0 30px 70px -30px rgba(0,0,0,.7);border-top:8px solid var(--gold);min-width:0}
+.panel h3{font:900 30px/1.05 var(--display);letter-spacing:-.02em;margin:0 0 6px;color:var(--navy)}
+.panel .hint{margin:0 0 20px;color:var(--muted);font-size:15.5px}
+.panel .hint a{color:var(--royal);font-weight:600}
+.panel label{display:block;font:600 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--royal);margin:16px 0 8px}
+.panel label small{text-transform:none;letter-spacing:0;font:500 12px var(--body);color:var(--muted)}
+.panel input,.panel textarea{display:block;width:100%;max-width:100%;min-width:0;border:2px solid var(--mist);background:var(--mist);color:var(--ink);border-radius:14px;padding:13px 16px;font:500 15px/1.4 var(--body)}
+.panel textarea{min-height:92px;resize:vertical}
+.panel input:focus,.panel textarea:focus{outline:none;border-color:var(--royal);background:var(--white)}
+.full{width:100%;margin-top:22px;font-size:18px;padding:18px 22px}
+.drop{border:2px dashed rgba(31,90,166,.45);background:var(--mist);border-radius:16px;padding:26px 16px;text-align:center;cursor:pointer;transition:.15s}
+.drop:hover,.drop.on{border-color:var(--royal);background:#dfe6ef}
+.drop svg{width:34px;height:34px;color:var(--royal);margin:0 auto 6px;display:block}
+.drop b{display:block;color:var(--navy);font:800 18px/1.2 var(--display)}
+.drop span{color:var(--muted);font-size:14px}
+.files{list-style:none;margin:10px 0 0;padding:0}
+.files li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--mist);font-size:14.5px;color:var(--navy)}
+.files li span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.files small{color:var(--muted)}
+.files button{border:0;background:none;color:var(--royal);font:600 13px var(--body);cursor:pointer}
+.msg{margin:14px 0 0;padding:12px 14px;border-radius:12px;background:var(--mist);color:var(--navy);font-weight:600;font-size:14.5px;border-left:6px solid var(--gold)}
+.steps{list-style:none;margin:6px 0 0;padding:0}
+.steps li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid var(--mist);color:var(--muted);font-weight:500}
+.steps li::before{content:"";position:absolute;left:4px;top:17px;width:14px;height:14px;border-radius:50%;background:var(--mist);box-shadow:inset 0 0 0 2px rgba(22,58,112,.18)}
+.steps li.now{color:var(--navy);font-weight:700}
+.steps li.now::before{background:var(--gold);box-shadow:none}
+.steps li.done{color:var(--navy)}
+.steps li.done::before{background:var(--royal);box-shadow:none}
+.steps li.done::after{content:"";position:absolute;left:8px;top:20px;width:6px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg)}
+.steps li.fail{color:var(--navy);font-weight:700}
+.steps li.fail::before{background:var(--white);box-shadow:inset 0 0 0 3px var(--gold)}
+@media (prefers-reduced-motion:no-preference){.steps li.now::before{animation:blink 1.1s ease-in-out infinite}}
+
+/* Result + recent (light sheet) */
+.sheetband{background:var(--mist);color:var(--ink);padding-block:72px}
+.sheetband .kicker{color:var(--royal)}
+.sheetband h2.big{color:var(--navy)}
+.card{background:var(--white);border-radius:22px;padding:30px;box-shadow:0 24px 60px -36px rgba(14,38,80,.55)}
+.badge{display:inline-block;font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:7px 11px;border-radius:999px;white-space:nowrap}
+.badge.ready{background:var(--royal);color:var(--white)}
+.badge.pending_approval{background:var(--gold);color:var(--ink)}
+.badge.needs_review{background:var(--white);color:var(--navy);box-shadow:inset 0 0 0 2px var(--gold)}
+.badge.failed{background:var(--ink);color:var(--gold)}
+.badge.reading,.badge.drafted{background:var(--mist);color:var(--navy)}
+.rhead{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end}
+.rhead h3{font:900 clamp(28px,4vw,42px)/1.05 var(--display);letter-spacing:-.02em;color:var(--navy);margin:8px 0 10px}
+.meta{color:var(--muted);font-size:14.5px}
+.verify{margin-top:20px;padding:16px 18px;border-radius:14px;background:var(--mist);border-left:6px solid var(--gold);color:var(--navy)}
+.verify b{font:800 16px var(--display)}
+.verify ul{margin:8px 0 0;padding-left:20px}
+.verify li{margin:4px 0}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;align-items:center}
+.actions .note{color:var(--muted);font-size:14.5px}
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;margin-top:24px}
+.split>*{min-width:0}
+@media (max-width:920px){.split{grid-template-columns:1fr}}
+.cap{font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--royal);margin-bottom:10px;display:block}
+iframe.pdf{width:100%;height:720px;border:0;border-radius:14px;background:var(--mist);box-shadow:inset 0 0 0 1px rgba(22,58,112,.12)}
+pre.email{margin:0;white-space:pre-wrap;background:var(--mist);border-radius:14px;padding:20px;font:400 14.5px/1.65 var(--body);color:var(--ink);max-height:720px;overflow:auto}
+.crm{margin-top:12px;color:var(--muted);font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{text-align:left;font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--royal);padding:10px 8px;border-bottom:2px solid var(--mist)}
+td{padding:14px 8px;border-bottom:1px solid var(--mist);color:var(--navy)}
+td.client{font-weight:700}
+tr.click{cursor:pointer}
+tr.click:hover td{background:#f5f7fa}
+.tablewrap{overflow-x:auto}
+
+/* What the client receives */
+.samples{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:44px}
+.samples figure{margin:0}
+.samples .pg{border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 30px 60px -30px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.08);transition:transform .2s ease}
+.samples .pg:hover{transform:translateY(-6px)}
+.samples figcaption{margin-top:16px}
+.samples figcaption b{display:block;font:800 21px/1.2 var(--display)}
+.samples figcaption span{color:var(--soft);font-size:15.5px}
+@media (max-width:920px){.samples{grid-template-columns:1fr;max-width:460px}}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:64px;border-top:2px solid var(--gold)}
+.feats div{padding:26px 24px 26px 0}
+.feats b{display:block;font:800 22px/1.15 var(--display);color:var(--gold);margin-bottom:6px}
+.feats span{color:var(--soft);font-size:15.5px}
+@media (max-width:920px){.feats{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.feats{grid-template-columns:1fr}}
+
+/* Carriers */
+.carriers{background:radial-gradient(70% 60% at 15% 0%,rgba(31,90,166,.55) 0%,rgba(31,90,166,0) 70%),var(--ink)}
+.cgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px}
+@media (max-width:1060px){.cgrid{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.cgrid{grid-template-columns:1fr}}
+.carrier{position:relative;display:flex;flex-direction:column;background:linear-gradient(165deg,rgba(31,90,166,.38) 0%,rgba(22,58,112,.55) 100%);border:1px solid var(--line);border-radius:20px;padding:26px 24px 24px;overflow:hidden;transition:transform .2s ease,border-color .2s ease}
+.carrier:hover{transform:translateY(-6px);border-color:rgba(224,180,59,.6)}
+.carrier::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:var(--gold)}
+.carrier .icons{display:flex;gap:8px;margin-bottom:22px}
+.carrier .icons span{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:12px;background:rgba(233,237,242,.08);color:var(--gold)}
+.carrier .icons svg{width:22px;height:22px}
+.carrier .mark{font:900 30px/1 var(--display);letter-spacing:-.025em}
+.carrier .mark small{display:block;font:800 15px/1.2 var(--display);letter-spacing:0;color:var(--soft);margin-top:6px}
+.carrier .lines{margin-top:14px;font:600 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.carrier .fit{margin:16px 0 0;font:800 18px/1.3 var(--display)}
+.carrier ul{list-style:none;margin:16px 0 0;padding:0;flex:1}
+.carrier li{position:relative;padding:9px 0 9px 22px;border-top:1px solid var(--line);color:var(--soft);font-size:15px;line-height:1.45}
+.carrier li::before{content:"";position:absolute;left:2px;top:16px;width:8px;height:8px;border-radius:2px;background:var(--gold);transform:rotate(45deg)}
+.fine{margin-top:24px;color:rgba(233,237,242,.58);font-size:13.5px;max-width:60em}
+
+/* Team + CTA */
+.cta{background:var(--gold);color:var(--ink)}
+.cta .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;padding-block:64px}
+.cta h2{font:900 clamp(32px,4.4vw,52px)/1.02 var(--display);letter-spacing:-.025em;margin:0 0 12px}
+.cta p{margin:0;font-size:18px;color:rgba(14,38,80,.82)}
+.cta .btns{justify-content:flex-end}
+.cta .btn.navy:hover{background:var(--ink)}
+.cta .btn.inkline{box-shadow:inset 0 0 0 2px var(--ink);color:var(--ink);background:transparent}
+@media (max-width:820px){.cta .wrap{grid-template-columns:1fr}.cta .btns{justify-content:flex-start}}
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.team div{border-top:2px solid var(--gold);padding-top:16px}
+.team b{display:block;font:800 22px/1.2 var(--display)}
+.team span{color:var(--soft);font-size:15px}
+@media (max-width:700px){.team{grid-template-columns:1fr}}
+
+footer{background:var(--navy);color:var(--soft);font-size:14.5px}
+footer .wrap{padding-block:30px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer .sig{color:var(--white);font-weight:600}
+footer .legal{width:100%;font-size:13px;color:rgba(233,237,242,.55);margin:0}
 </style>
 </head>
 <body>
-<header><div class="bar"><img src="/assets/logo-white.png" alt="The Jordan Insurance Agency"><span class="t">Proposal Studio</span>
-  <span id="who" class="hidden" style="color:#fff;font-size:13px">· <span id="whoName"></span> · <a href="#" id="signout" style="color:var(--gold)">Sign out</a></span></div></header>
-<main>
-  <section id="login" class="card login hidden">
-    <span class="cap">Sign in with your Command Center account</span>
-    <h1>Proposal Studio</h1>
-    <p class="sub">Drop in carrier quotes, get the client-ready proposal and email.</p>
-    <form id="loginForm"><label for="em">Email</label><input id="em" type="email" autocomplete="username" required>
-      <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required>
-      <div class="row"><button class="btn" type="submit">Sign in</button></div><div id="loginErr" class="err"></div></form>
-  </section>
+<header class="top">
+  <div class="wrap">
+    <a href="https://thejordaninsuranceagency.com" aria-label="The Jordan Insurance Agency home"><img src="/assets/logo-header.png" alt="The Jordan Insurance Agency: We've got you covered" width="199" height="54"></a>
+    <div class="topr">
+      <span id="who" class="who" hidden>Signed in as <b id="whoName"></b><a href="#" id="signout">Sign out</a></span>
+      <a class="pill" href="#desk"><i></i>Proposal Studio</a>
+    </div>
+  </div>
+</header>
 
-  <section id="app" class="hidden">
-    <h1>New proposal</h1>
-    <p class="sub">Upload every quote PDF for one client. The studio reads them, builds the proposal in the agency design, checks it, writes the client email and logs it in the Command Center.</p>
-    <div class="grid">
-      <div class="card">
-        <span class="cap">1 · Quotes</span>
-        <div id="drop" class="drop" tabindex="0"><b>Drop quote PDFs here</b><div class="muted">or click to choose files · one client per proposal</div>
-          <input id="pick" type="file" accept="application/pdf" multiple class="hidden"></div>
-        <ul id="files" class="files"></ul>
-        <span class="cap" style="display:block;margin-top:20px">2 · Details</span>
-        <label for="email">Client email <span class="muted">(optional, fills in the email “To”)</span></label>
-        <input id="email" type="email" placeholder="client@example.com">
-        <label for="notes">Notes for the proposal <span class="muted">(optional)</span></label>
-        <textarea id="notes" placeholder="e.g. Client wants an umbrella quote mentioned. Effective date 11/1."></textarea>
-        <div class="row"><button id="go" class="btn gold" disabled>Build proposal</button></div>
-        <div id="goErr" class="err"></div>
+<section class="hero">
+  <div class="wrap">
+    <div class="copy">
+      <div class="kicker">Home &amp; Auto proposals from The Jordan Insurance Agency</div>
+      <h1>Quotes in.<span class="g">Proposals out.</span></h1>
+      <p class="lede">Drop in quote PDFs from <b>Liberty Mutual, Travelers, Chubb or AIG</b>. Proposal Studio reads every page, builds a side-by-side <b>Home &amp; Auto</b> proposal in our design, checks every number and writes the client email, ready for a licensed agent to approve.</p>
+      <div class="btns">
+        <a class="btn gold" href="#desk">Build a proposal</a>
+        <a class="btn line" href="#sample">See a sample</a>
       </div>
-      <div class="card">
-        <span class="cap">Progress</span>
+    </div>
+    <div class="art" aria-hidden="true">
+      <div class="ring two"></div><div class="ring"></div>
+      <div class="sheet s1"><img src="/assets/showcase/comparison.jpg" alt=""></div>
+      <div class="sheet s2"><img src="/assets/showcase/exclusions.jpg" alt=""></div>
+      <div class="sheet s3"><img src="/assets/showcase/cover.jpg" alt=""></div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true"><div class="track">
+  <span>Home</span><span>Auto</span><span>Bundles</span><span>Liberty Mutual</span><span>Travelers</span><span>Chubb</span><span>AIG Private Client</span><span>Charlotte, NC</span><span>Nashville, TN</span>
+  <span>Home</span><span>Auto</span><span>Bundles</span><span>Liberty Mutual</span><span>Travelers</span><span>Chubb</span><span>AIG Private Client</span><span>Charlotte, NC</span><span>Nashville, TN</span>
+</div></div>
+
+<section class="band" id="desk">
+  <div class="wrap desk">
+    <div>
+      <div class="kicker">The proposal desk</div>
+      <h2 class="big">From quote PDFs to a <span class="g">client-ready</span> proposal</h2>
+      <p class="lead">Upload every quote for one client. Nothing reaches a client until a licensed agent approves it.</p>
+      <ol class="flow">
+        <li><span class="n">1.</span><div><b>Drop the quotes</b><p>Home, auto or bundle quotes from any carrier, scanned or digital.</p></div></li>
+        <li><span class="n">2.</span><div><b>Read and built</b><p>Every page is read, numbers are copied exactly, and the proposal is built in our locked design.</p></div></li>
+        <li><span class="n">3.</span><div><b>Checked and approved</b><p>Math, page fit and required notices are checked automatically, then a licensed agent approves.</p></div></li>
+        <li><span class="n">4.</span><div><b>Sent and tracked</b><p>Open the email in Gmail, attach the PDF, and the Command Center schedules the follow-up.</p></div></li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <form id="signin" hidden>
+        <h3>Team sign in</h3>
+        <p class="hint">Use your Command Center email and password.</p>
+        <label for="em">Email</label><input id="em" type="email" autocomplete="username" required>
+        <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required>
+        <button class="btn gold full" type="submit">Sign in</button>
+        <p id="signinErr" class="msg" hidden></p>
+      </form>
+
+      <div id="compose" hidden>
+        <h3>New proposal</h3>
+        <p class="hint">One client per proposal. Add every quote you have for them.</p>
+        <label>Quote PDFs</label>
+        <div id="drop" class="drop" tabindex="0" role="button" aria-label="Choose quote PDFs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+          <b>Drop quote PDFs here</b><span>or tap to choose files</span>
+          <input id="pick" type="file" accept="application/pdf" multiple hidden>
+        </div>
+        <ul id="files" class="files"></ul>
+        <label for="email">Client email <small>(optional, fills in the email "To")</small></label>
+        <input id="email" type="email" placeholder="client@example.com">
+        <label for="notes">Notes <small>(optional)</small></label>
+        <textarea id="notes" placeholder="Example: Mention an umbrella quote. Effective date 11/1."></textarea>
+        <button id="go" class="btn gold full" type="button" disabled>Build the proposal</button>
+        <p id="goErr" class="msg" hidden></p>
+      </div>
+
+      <div id="run" hidden>
+        <h3>Building the proposal</h3>
+        <p class="hint" id="runMsg">Reading and writing usually takes 2 to 4 minutes. Keep this tab open.</p>
         <ul id="steps" class="steps">
-          <li data-s="upload">Upload quotes</li><li data-s="reading">Read the quotes</li><li data-s="writing">Write the proposal</li>
+          <li data-s="upload">Upload the quotes</li><li data-s="reading">Read every page</li><li data-s="writing">Write the proposal</li>
           <li data-s="building">Build the PDF and run the checks</li><li data-s="fixing">Fix anything the checks catch</li>
           <li data-s="logging">Log it in the Command Center</li><li data-s="done">Ready for review</li>
         </ul>
-        <p id="stepMsg" class="muted">Reading and writing usually takes 2–4 minutes. Keep this tab open.</p>
+        <button id="again" class="btn ghost full" type="button" hidden>Start another proposal</button>
       </div>
     </div>
+  </div>
+</section>
 
-    <section id="result" class="card hidden"></section>
+<section class="sheetband" id="result" hidden>
+  <div class="wrap"><div class="card" id="resultCard"></div></div>
+</section>
 
+<section class="sheetband" id="recentBand" hidden style="padding-top:0">
+  <div class="wrap">
     <div class="card">
       <span class="cap">Recent proposals</span>
-      <table><thead><tr><th>Created</th><th>Client</th><th>Prepared by</th><th>Status</th><th>Sent</th></tr></thead><tbody id="recent"></tbody></table>
+      <div class="tablewrap"><table><thead><tr><th>Created</th><th>Client</th><th>Prepared by</th><th>Status</th><th>Sent</th></tr></thead><tbody id="recent"></tbody></table></div>
     </div>
-  </section>
-</main>
+  </div>
+</section>
+
+<section class="band" id="sample">
+  <div class="wrap">
+    <div class="kicker">What the client receives</div>
+    <h2 class="big">A proposal clients <span class="g">actually read</span></h2>
+    <p class="lead">Every proposal follows the same approved design: the carriers side by side, our recommendation and why, what each policy won't cover, and the next steps with Billy and his team. Shown with a sample client.</p>
+    <div class="samples">
+      <figure><div class="pg"><img src="/assets/showcase/comparison.jpg" alt="Sample proposal page comparing three home and auto bundles side by side" loading="lazy" width="1000" height="1294"></div>
+        <figcaption><b>Side by side</b><span>Price, limits and deductibles for every carrier, with the recommended bundle highlighted.</span></figcaption></figure>
+      <figure><div class="pg"><img src="/assets/showcase/exclusions.jpg" alt="Sample proposal page listing exclusions and limitations for each carrier" loading="lazy" width="1000" height="1294"></div>
+        <figcaption><b>No surprises</b><span>Exclusions and limits for every carrier on their own page, with the key differences flagged.</span></figcaption></figure>
+      <figure><div class="pg"><img src="/assets/showcase/next-steps.jpg" alt="Sample proposal page with payment options and next steps" loading="lazy" width="1000" height="1294"></div>
+        <figcaption><b>Clear next steps</b><span>Payment options, how the final rate is set, and how to reach Billy and his team.</span></figcaption></figure>
+    </div>
+    <div class="feats">
+      <div><b>Every number checked</b><span>Totals, differences and discounts are recomputed before anything is shown.</span></div>
+      <div><b>Plain language</b><span>Each coverage explained in a sentence or two, no jargon.</span></div>
+      <div><b>Licensed approval</b><span>A licensed agent signs off before any proposal reaches a client.</span></div>
+      <div><b>Client email included</b><span>A ready-to-send email in our voice comes with every proposal.</span></div>
+      <div><b>Followed up</b><span>Every proposal is logged in the Command Center with a follow-up date.</span></div>
+      <div><b>Our whole team</b><span>Billy, Chelssy and Gloria on every proposal, so clients always reach someone.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="band carriers" id="carriers">
+  <div class="wrap">
+    <div class="kicker">Carriers we quote</div>
+    <h2 class="big">Home &amp; Auto carriers, <span class="g">side by side</span></h2>
+    <p class="lead">As an independent agency we shop several carriers for every client, so the proposal shows real choices. A few of the carriers we quote often:</p>
+    <div class="cgrid">
+      <article class="carrier">
+        <div class="icons"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16v-3l2-5h14l2 5v3"/><path d="M3 16h18v2H3z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span></div>
+        <div class="mark">Liberty Mutual<small>Safeco · American States</small></div>
+        <div class="lines">Home · Auto · Bundles</div>
+        <p class="fit">Strong bundle value for families</p>
+        <ul><li>Accident forgiveness on auto, under the carrier's rules</li><li>Water back-up, service line and loss assessment coverage</li><li>Pay-in-full and account discounts</li></ul>
+      </article>
+      <article class="carrier">
+        <div class="icons"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16v-3l2-5h14l2 5v3"/><path d="M3 16h18v2H3z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span></div>
+        <div class="mark">Travelers<small>Home and auto</small></div>
+        <div class="lines">Home · Auto · Bundles</div>
+        <p class="fit">Flexible home coverage options</p>
+        <ul><li>Buried utility lines coverage</li><li>Extra dwelling coverage, up to 25% more</li><li>Roadside assistance and multi-policy discounts</li></ul>
+      </article>
+      <article class="carrier">
+        <div class="icons"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16v-3l2-5h14l2 5v3"/><path d="M3 16h18v2H3z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span></div>
+        <div class="mark">Chubb<small>Masterpiece home and auto</small></div>
+        <div class="lines">High-value Home · Auto</div>
+        <p class="fit">Built for higher-value homes</p>
+        <ul><li>Rebuilds the home in full, even past the policy limit</li><li>Water back-up coverage up to $50,000 built in</li><li>Deductible waived on losses over $50,000 (wind and hail excepted)</li></ul>
+      </article>
+      <article class="carrier">
+        <div class="icons"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16v-3l2-5h14l2 5v3"/><path d="M3 16h18v2H3z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span></div>
+        <div class="mark">AIG<small>Private Client Select</small></div>
+        <div class="lines">High-value Home · Auto</div>
+        <p class="fit">Private-client coverage for homes and vehicles</p>
+        <ul><li>Agreed value on autos: a total loss pays the amount set up front</li><li>New-vehicle replacement in the first three years</li><li>Up to $15,000 for transportation after a covered loss</li></ul>
+      </article>
+    </div>
+    <p class="fine">Highlights are examples from recent quotes and carrier materials. Coverage, availability and discounts vary by state, property and underwriting. Carrier names are trademarks of their owners. The Jordan Insurance Agency is an independent agency.</p>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <div>
+      <h2>Want a proposal like this for your home and cars?</h2>
+      <p>Book a free 30-minute chat with Billy and his team. We'll shop the carriers and walk you through the options.</p>
+    </div>
+    <div class="btns">
+      <a class="btn navy" href="https://cal.com/team/agency-producer/t-agency" target="_blank" rel="noopener">Book a free chat</a>
+      <a class="btn inkline" href="tel:+17049267565">(704) 926-7565</a>
+    </div>
+  </div>
+</section>
+
+<section class="band" style="padding-block:72px">
+  <div class="wrap">
+    <div class="kicker">On every proposal</div>
+    <h2 class="big" style="font-size:clamp(32px,4.4vw,48px)">Billy and his team</h2>
+    <div class="team">
+      <div><b>Billy Jordan Jr.</b><span>Licensed agent</span></div>
+      <div><b>Chelssy Valles</b><span>Agency Support Specialist</span></div>
+      <div><b>Gloria Lechuga</b><span>Agency Support Specialist</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Proposal Studio · The Jordan Insurance Agency · Charlotte, NC and Nashville, TN</span>
+    <span class="sig">Built with ❤️ by Breakpoint Systems LLC.</span>
+    <p class="legal">Proposals are quotes, not binders of coverage. Final premiums are set by each carrier's underwriting.</p>
+  </div>
+</footer>
+
 <script type="module">
 import { upload } from '/js/blob-client.js';
 const $ = s => document.querySelector(s);
@@ -121,9 +434,11 @@ let session = JSON.parse(sessionStorage.getItem('ps_session') || 'null');
 let cfg = null;
 let picked = [];
 
+// ---- sign-in (Command Center accounts)
 async function config() { if (!cfg) cfg = await (await fetch('/api/config')).json(); return cfg; }
 async function authCall(grant, body) {
   const c = await config();
+  if (!c.ready) throw new Error('Sign-in is not set up yet. Ask Billy to add the Command Center key.');
   const r = await fetch(`${c.supabaseUrl}/auth/v1/token?grant_type=${grant}`, { method: 'POST', headers: { apikey: c.anonKey, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const d = await r.json();
   if (!r.ok) throw new Error(d.error_description || d.msg || 'Sign-in failed');
@@ -135,25 +450,28 @@ async function token() {
   return session ? session.token : '';
 }
 const api = async (path, opts = {}) => fetch(path, { ...opts, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + await token(), ...(opts.headers || {}) } });
-function show(id) {
-  for (const s of ['#login', '#app']) $(s).classList.toggle('hidden', s !== id);
-  $('#who').classList.toggle('hidden', id !== '#app'); if (session) $('#whoName').textContent = session.name || '';
+function panel(which) { for (const id of ['signin', 'compose', 'run']) $('#' + id).hidden = id !== which; }
+function signedIn(on) {
+  $('#who').hidden = !on; $('#recentBand').hidden = !on;
+  if (on) $('#whoName').textContent = session?.name || ''; else $('#result').hidden = true;
+  panel(on ? 'compose' : 'signin');
 }
+function flash(el, text) { el.textContent = text; el.hidden = !text; }
 async function enter() {
   const r = await api('/api/jobs');
   if (r.status === 401) { const b = await r.json().catch(() => ({})); throw new Error(b.error || 'This account cannot use Proposal Studio.'); }
-  show('#app'); renderRecent(await r.json());
+  signedIn(true); renderRecent(await r.json());
 }
-$('#loginForm').addEventListener('submit', async e => {
-  e.preventDefault(); $('#loginErr').textContent = '';
+$('#signin').addEventListener('submit', async e => {
+  e.preventDefault(); flash($('#signinErr'), '');
   try { await authCall('password', { email: $('#em').value.trim(), password: $('#pw').value }); await enter(); }
-  catch (err) { session = null; sessionStorage.removeItem('ps_session'); $('#loginErr').textContent = err.message; }
+  catch (err) { session = null; sessionStorage.removeItem('ps_session'); flash($('#signinErr'), err.message); }
 });
-$('#signout').addEventListener('click', e => { e.preventDefault(); session = null; sessionStorage.removeItem('ps_session'); show('#login'); });
+$('#signout').addEventListener('click', e => { e.preventDefault(); session = null; sessionStorage.removeItem('ps_session'); signedIn(false); });
 
 // ---- picking files
 function renderFiles() {
-  $('#files').innerHTML = picked.map((f, i) => `<li><span>${esc(f.name)} <span class="muted">· ${(f.size / 1048576).toFixed(1)} MB</span></span><button data-i="${i}" aria-label="Remove">Remove</button></li>`).join('');
+  $('#files').innerHTML = picked.map((f, i) => `<li><span>${esc(f.name)} <small>· ${(f.size / 1048576).toFixed(1)} MB</small></span><button type="button" data-i="${i}">Remove</button></li>`).join('');
   $('#go').disabled = !picked.length;
 }
 function addFiles(list) {
@@ -163,7 +481,7 @@ function addFiles(list) {
 $('#files').addEventListener('click', e => { if (e.target.dataset.i) { picked.splice(+e.target.dataset.i, 1); renderFiles(); } });
 const drop = $('#drop');
 drop.addEventListener('click', () => $('#pick').click());
-drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') $('#pick').click(); });
+drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('#pick').click(); } });
 $('#pick').addEventListener('change', e => { addFiles(e.target.files); e.target.value = ''; });
 for (const ev of ['dragenter', 'dragover']) drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('on'); });
 for (const ev of ['dragleave', 'drop']) drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('on'); });
@@ -177,10 +495,9 @@ function step(s, msg, failed) {
     const i = ORDER.indexOf(li.dataset.s);
     li.className = failed && i === idx ? 'fail' : i < idx ? 'done' : i === idx ? (s === 'done' ? 'done' : 'now') : '';
   });
-  if (msg) $('#stepMsg').textContent = msg;
+  if (msg) $('#runMsg').textContent = msg;
 }
 async function readStream(r, onLine) {
-  if (!r.ok && !r.body) throw new Error(`Server returned ${r.status}`);
   const ctype = r.headers.get('content-type') || '';
   if (!ctype.includes('ndjson')) { const b = await r.json().catch(() => ({})); throw new Error(b.error || `Server returned ${r.status}`); }
   const reader = r.body.getReader(); const dec = new TextDecoder(); let buf = ''; let last = null;
@@ -191,9 +508,11 @@ async function readStream(r, onLine) {
   }
   return last;
 }
+$('#again').addEventListener('click', () => { $('#again').hidden = true; panel('compose'); });
 
 $('#go').addEventListener('click', async () => {
-  $('#go').disabled = true; $('#goErr').textContent = ''; $('#result').classList.add('hidden');
+  flash($('#goErr'), ''); $('#result').hidden = true; panel('run'); $('#again').hidden = true;
+  $('#run h3').textContent = 'Building the proposal';
   try {
     step('upload', `Uploading ${picked.length} file(s)…`);
     const files = [];
@@ -202,92 +521,87 @@ $('#go').addEventListener('click', async () => {
       const blob = await upload(`quotes/${Date.now()}-${safe}`, f, { access: 'private', handleUploadUrl: '/api/upload', clientPayload: await token(), multipart: f.size > 4.5 * 1048576, contentType: 'application/pdf' });
       files.push({ pathname: blob.pathname, name: f.name, size: f.size });
     }
-    step('reading', 'Claude is reading every page of the quotes…');
+    step('reading', 'Reading every page of the quotes…');
     const r1 = await api('/api/extract', { method: 'POST', body: JSON.stringify({ files, clientEmail: $('#email').value, notes: $('#notes').value }) });
-    const end1 = await readStream(r1, m => {
-      if (m.step === 'writing') step('writing', `Writing the proposal… (${Math.round(m.chars / 1000)}k characters so far)`);
-    });
+    const end1 = await readStream(r1, m => { if (m.step === 'writing') step('writing', `Writing the proposal… (${Math.round(m.chars / 1000)}k characters so far)`); });
     if (!end1 || end1.step !== 'drafted') throw new Error(end1?.message || 'Reading the quotes failed.');
-    step('building', 'Building the PDF in the agency design and running the checks…');
+    step('building', 'Building the PDF in our design and running the checks…');
     const r2 = await api('/api/finish', { method: 'POST', body: JSON.stringify({ id: end1.id }) });
-    const end2 = await readStream(r2, m => {
-      if (m.step === 'fixing') step('fixing', m.message);
-      else if (m.step === 'building') step('building', m.message);
-      else if (m.step === 'logging') step('logging', m.message);
-    });
+    const end2 = await readStream(r2, m => { if (['fixing', 'building', 'logging'].includes(m.step)) step(m.step, m.message); });
     if (!end2 || end2.step !== 'done') throw new Error(end2?.message || 'Building the proposal failed.');
-    step('done', 'Done. Review the proposal below before sending.');
+    step('done', 'Done. Review the proposal below before it goes out.');
+    $('#run h3').textContent = 'Proposal ready';
     picked = []; renderFiles(); $('#notes').value = ''; $('#email').value = '';
-    await openJob(end2.id);
-    refreshRecent();
+    $('#again').hidden = false;
+    await openJob(end2.id); refreshRecent();
   } catch (e) {
     const now = document.querySelector('#steps li.now'); step(now ? now.dataset.s : 'upload', e.message, true);
-    $('#goErr').textContent = e.message; $('#go').disabled = !picked.length;
+    $('#run h3').textContent = 'Something needs attention';
+    $('#again').textContent = 'Back to the form'; $('#again').hidden = false;
   }
 });
 
 // ---- result
 function gmailUrl(job) {
   const lines = (job.email?.text || '').split('\n');
-  const subject = (lines[0] || '').replace(/^Subject:\s*/, '');
-  const body = lines.slice(2).join('\n');
-  const q = new URLSearchParams({ view: 'cm', fs: '1', to: job.client_email || '', su: subject, body });
+  const q = new URLSearchParams({ view: 'cm', fs: '1', to: job.client_email || '', su: (lines[0] || '').replace(/^Subject:\s*/, ''), body: lines.slice(2).join('\n') });
   return 'https://mail.google.com/mail/?' + q.toString();
 }
+const LABEL = { ready: 'Approved · ready to send', needs_review: 'Needs review', pending_approval: 'Waiting for agent approval', failed: 'Failed', reading: 'In progress', drafted: 'In progress' };
 async function openJob(id) {
   const r = await api('/api/job?id=' + encodeURIComponent(id)); const { job } = await r.json();
-  const el = $('#result');
   const crm = job.crm || {};
-  const crmLine = crm.status === 'logged' ? `Logged in the Command Center · assigned to ${esc(crm.assigned_to)} · follow-up scheduled.`
-    : crm.status === 'skipped' ? `Not logged in the Command Center: ${esc(crm.message)}` : crm.status === 'error' ? `Command Center logging failed: ${esc(crm.message)}` : '';
+  const crmLine = crm.status === 'logged' ? `Logged in the Command Center · follow-up assigned to ${esc(crm.assigned_to)}.`
+    : crm.status === 'error' ? `Command Center logging did not go through: ${esc(crm.message)}` : '';
   const notes = (job.agent_notes || []).map(n => `<li>${esc(n)}</li>`).join('');
   const failed = (job.checks?.failed || []).map(n => `<li>${esc(n)}</li>`).join('');
-  el.innerHTML = job.status === 'failed' ? `<span class="badge failed">Failed</span><p>${esc(job.error)}</p>` : `
-    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
-      <div><span class="cap">Proposal</span><h1 style="margin-top:4px">${esc(job.client_name || job.file_name)}</h1>
-      <span class="badge ${esc(job.status)}">${{ ready: 'Approved · ready to send', needs_review: 'Needs review', pending_approval: 'Waiting for agent approval' }[job.status] || esc(job.status)}</span>
-      <span class="muted"> ${job.checks ? `${job.checks.passed}/${job.checks.total} checks passed · ${job.pages} pages` : ''}${job.approved_by ? ' · approved by ' + esc(job.approved_by) : ''}${job.sent_at ? ' · sent ' + new Date(job.sent_at).toLocaleString() : ''}</span></div>
-    </div>
-    ${failed ? `<div class="warnbox"><b>Checks that still fail</b> — do not send until Billy reviews:<ul class="notes">${failed}</ul></div>` : ''}
-    ${notes ? `<div class="warnbox"><b>Verify before sending</b><ul class="notes">${notes}</ul></div>` : ''}
-    ${job.status === 'ready' ? `<div class="row">
-      <a class="btn" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Open PDF</a>
+  const ready = job.status === 'ready';
+  $('#resultCard').innerHTML = job.status === 'failed' ? `<span class="badge failed">Failed</span><p class="meta" style="margin-top:12px">${esc(job.error)}</p>` : `
+    <div class="rhead"><div>
+      <span class="cap">Proposal</span><h3>${esc(job.client_name || job.file_name)}</h3>
+      <span class="badge ${esc(job.status)}">${esc(LABEL[job.status] || job.status)}</span>
+      <span class="meta">&nbsp; ${job.checks ? `${job.checks.passed} of ${job.checks.total} checks passed · ${job.pages} pages` : ''}${job.prepared_by ? ' · prepared by ' + esc(job.prepared_by) : ''}${job.approved_by ? ' · approved by ' + esc(job.approved_by) : ''}${job.sent_at ? ' · sent ' + new Date(job.sent_at).toLocaleDateString() : ''}</span>
+    </div></div>
+    ${failed ? `<div class="verify"><b>Checks that still fail</b><ul>${failed}</ul></div>` : ''}
+    ${notes ? `<div class="verify"><b>Verify before sending</b><ul>${notes}</ul></div>` : ''}
+    <div class="actions">${ready ? `
+      <a class="btn navy" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Open PDF</a>
       <a class="btn ghost" href="${esc(job.pdf_url)}&download=1">Download PDF</a>
-      <button class="btn ghost" id="copy">Copy email</button>
+      <button class="btn ghost" id="copy" type="button">Copy email</button>
       <a class="btn ghost" href="${esc(gmailUrl(job))}" target="_blank" rel="noopener">Open in Gmail</a>
-      <button class="btn gold" id="sent" ${job.sent_at ? 'disabled' : ''}>${job.sent_at ? 'Marked as sent' : 'Mark as sent'}</button>
-    </div>` : `<div class="row">
-      ${job.can_approve ? '<button class="btn gold" id="approve">Approve for sending</button>' : '<span class="muted">A licensed agent must approve this before it goes to the client. Ask Billy to open it here and approve.</span>'}
-      <a class="btn ghost" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Preview PDF</a>
-    </div>`}
-    <p class="muted" style="margin-top:10px">${job.status === 'ready' ? 'In Gmail, attach the downloaded PDF before sending. ' : ''}${crmLine}</p>
-    <div class="grid" style="margin-top:8px">
-      <div><span class="cap">The proposal</span><iframe src="${esc(job.pdf_url)}" title="Proposal PDF"></iframe></div>
+      <button class="btn gold" id="sent" type="button" ${job.sent_at ? 'disabled' : ''}>${job.sent_at ? 'Marked as sent' : 'Mark as sent'}</button>` : `
+      ${job.can_approve ? '<button class="btn gold" id="approve" type="button">Approve for sending</button>' : '<span class="note">A licensed agent must approve this before it goes to the client. Ask Billy to open it here and approve.</span>'}
+      <a class="btn ghost" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Preview PDF</a>`}
+    </div>
+    <p class="crm">${ready ? 'In Gmail, attach the downloaded PDF before sending. ' : ''}${crmLine}</p>
+    <div class="split">
+      <div><span class="cap">The proposal</span><iframe class="pdf" src="${esc(job.pdf_url)}" title="Proposal PDF"></iframe></div>
       <div><span class="cap">Client email</span><pre class="email">${esc(job.email?.text || '')}</pre></div>
     </div>`;
-  el.classList.remove('hidden');
-  el.scrollIntoView({ behavior: 'smooth' });
+  $('#result').hidden = false;
+  $('#result').scrollIntoView({ behavior: 'smooth' });
   const copy = $('#copy');
   if (copy) copy.onclick = async () => { await navigator.clipboard.writeText((job.email?.text || '').split('\n').slice(2).join('\n')); copy.textContent = 'Copied'; };
-  const sent = $('#sent');
   const approve = $('#approve');
-  if (approve) approve.onclick = async () => { approve.disabled = true; const r = await api('/api/approve', { method: 'POST', body: JSON.stringify({ id }) }); if (!r.ok) alert((await r.json()).error); openJob(id); refreshRecent(); };
+  if (approve) approve.onclick = async () => { approve.disabled = true; const a = await api('/api/approve', { method: 'POST', body: JSON.stringify({ id }) }); if (!a.ok) alert((await a.json()).error); openJob(id); refreshRecent(); };
+  const sent = $('#sent');
   if (sent && !job.sent_at) sent.onclick = async () => { sent.disabled = true; await api('/api/sent', { method: 'POST', body: JSON.stringify({ id }) }); openJob(id); refreshRecent(); };
 }
 
+const SHORT = { ready: 'Approved', needs_review: 'Needs review', pending_approval: 'Needs approval', failed: 'Failed', reading: 'In progress', drafted: 'In progress' };
 function renderRecent({ items = [] } = {}) {
-  const label = { ready: 'Approved', needs_review: 'Needs review', pending_approval: 'Needs approval', failed: 'Failed', reading: 'In progress', drafted: 'In progress' };
-  $('#recent').innerHTML = items.map(j => `<tr class="click" data-id="${esc(j.id)}"><td>${j.created_at ? new Date(j.created_at).toLocaleString() : ''}</td><td>${esc(j.client_name || '—')}</td><td>${esc(j.prepared_by)}</td>
-    <td><span class="badge ${esc(j.status)}">${esc(label[j.status] || j.status)}</span></td><td>${j.sent_at ? new Date(j.sent_at).toLocaleDateString() : '—'}</td></tr>`).join('')
-    || '<tr><td colspan="5" class="muted">No proposals yet.</td></tr>';
+  $('#recent').innerHTML = items.map(j => `<tr class="click" data-id="${esc(j.id)}" tabindex="0"><td>${j.created_at ? new Date(j.created_at).toLocaleDateString() : ''}</td><td class="client">${esc(j.client_name || '—')}</td><td>${esc(j.prepared_by)}</td>
+    <td><span class="badge ${esc(j.status)}">${esc(SHORT[j.status] || j.status)}</span></td><td>${j.sent_at ? new Date(j.sent_at).toLocaleDateString() : '—'}</td></tr>`).join('')
+    || '<tr><td colspan="5">No proposals yet. Your first one will show up here.</td></tr>';
 }
 async function refreshRecent() {
-  const r = await api('/api/jobs'); if (r.status === 401) { show('#login'); return; }
+  const r = await api('/api/jobs'); if (r.status === 401) { signedIn(false); return; }
   renderRecent(await r.json());
 }
 $('#recent').addEventListener('click', e => { const tr = e.target.closest('tr[data-id]'); if (tr) openJob(tr.dataset.id); });
+$('#recent').addEventListener('keydown', e => { const tr = e.target.closest('tr[data-id]'); if (tr && e.key === 'Enter') openJob(tr.dataset.id); });
 
-(async () => { if (session) { try { await enter(); return; } catch { session = null; sessionStorage.removeItem('ps_session'); } } show('#login'); })();
+(async () => { if (session) { try { await enter(); return; } catch { session = null; sessionStorage.removeItem('ps_session'); } } signedIn(false); })();
 </script>
 </body>
 </html>

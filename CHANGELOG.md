@@ -1,6 +1,12 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-14
+- **Changed:** New look in the same style as the Podcast Studio (navy, royal and gold only; Archivo and
+  Public Sans). The page now doubles as a showcase: hero with real sample proposal pages, a gold
+  carrier ticker, the proposal desk (sign-in, upload and live progress in one white card), "What the
+  client receives" with sample pages, a Home & Auto carriers section (Liberty Mutual, Travelers, Chubb,
+  AIG Private Client), a "Book a free chat" band for Billy and his team, and the Breakpoint Systems
+  signature. Status badges use brand colors only.
 - **Changed:** No separate team password. Everyone signs in with their Command Center account, and
   proposals are logged in the Command Center as the person who built them.
 - **Added:** Licensed-agent approval. A CSR's proposal shows "Waiting for agent approval" until Billy
