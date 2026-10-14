@@ -1,6 +1,10 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-14
+- **Removed:** The gold "Want a proposal like this? Book a free chat" sales band. This is a working
+  tool for the team, not a sales page.
+- **Fixed:** On large screens the sign-in / proposal card now stays beside the four steps as you
+  scroll, instead of leaving an empty navy area next to them.
 - **Fixed:** File storage now uses Vercel's newer keyless connection (the one Vercel sets up by
   default), so no storage password has to be added. Quote uploads use short-lived, one-file upload
   links. The health check now really saves and reads back a tiny test file, so "storage ready"
