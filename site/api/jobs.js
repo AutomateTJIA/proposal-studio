@@ -1,9 +1,9 @@
 // Recent proposals for the dashboard (newest first).
 import { list } from '@vercel/blob';
-import { send, isStaff, readJob, JOBS } from './_lib.js';
+import { send, currentUser, readJob, JOBS } from './_lib.js';
 
 export default async function handler(req, res) {
-  if (!isStaff(req)) return send(res, 401, { ok: false, error: 'Unauthorized' });
+  if (!(await currentUser(req))) return send(res, 401, { ok: false, error: 'Please sign in again.' });
   const page = await list({ prefix: JOBS, limit: 1000 });
   const recent = page.blobs.sort((a, b) => b.pathname.localeCompare(a.pathname)).slice(0, 50);
   const items = await Promise.all(recent.map(async b => {

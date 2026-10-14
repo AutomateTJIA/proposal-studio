@@ -3,7 +3,7 @@
 #   POST {"mode": "build", "proposal": {...}}  -> {html, file_name, pages, email: {subject, text, html}}
 #   POST {"mode": "check", "proposal": {...}, "html": "...", "heights": [...], "pdf_count": n}
 #        -> {results: [{name, passed, detail}], failed: n}
-import hmac, importlib.util, json, os, pathlib
+import hashlib, hmac, importlib.util, json, os, pathlib
 from http.server import BaseHTTPRequestHandler
 
 SKILL = pathlib.Path(__file__).resolve().parent.parent / "skill"
@@ -21,10 +21,14 @@ em = _load("build_email")
 BRAND = json.loads((SKILL / "branding.json").read_text())
 
 
-def _authorized(header):
-    expected = os.environ.get("STAFF_PASSWORD", "")
-    given = header[7:] if header.startswith("Bearer ") else ""
-    return bool(expected) and bool(given) and hmac.compare_digest(expected.encode(), given.encode())
+def _authorized(given):
+    # Only this deployment's own functions call the builder (see internalKey() in _lib.js).
+    seed = os.environ.get("BLOB_READ_WRITE_TOKEN") or os.environ.get("ANTHROPIC_API_KEY") or ""
+    if not seed or not given:
+        return False
+    secret = hmac.new(b"proposal-studio", seed.encode(), hashlib.sha256).hexdigest()
+    want = hmac.new(secret.encode(), b"builder", hashlib.sha256).hexdigest()
+    return hmac.compare_digest(want, given)
 
 
 def build(data):
@@ -55,7 +59,7 @@ class handler(BaseHTTPRequestHandler):
         self.wfile.write(raw)
 
     def do_POST(self):
-        if not _authorized(self.headers.get("Authorization", "")):
+        if not _authorized(self.headers.get("X-Internal-Key", "")):
             return self._send(401, {"ok": False, "error": "Unauthorized"})
         try:
             req = json.loads(self.rfile.read(int(self.headers.get("Content-Length") or 0)) or b"{}")

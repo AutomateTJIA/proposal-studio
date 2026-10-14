@@ -1,7 +1,7 @@
 // Issues one-time tokens so the browser can upload quote PDFs straight to private Blob storage
 // (quote PDFs are often larger than a function request allows).
 import { handleUpload } from '@vercel/blob/client';
-import { send, tokenOk, QUOTES, readBody } from './_lib.js';
+import { send, userFromToken, QUOTES, readBody } from './_lib.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'Method not allowed' });
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
       body,
       request: req,
       onBeforeGenerateToken: async (pathname, clientPayload) => {
-        if (!tokenOk(clientPayload || '')) throw new Error('Unauthorized');
+        if (!(await userFromToken(clientPayload || ''))) throw new Error('Please sign in again.');
         if (!pathname.startsWith(QUOTES) || pathname.includes('..') || !/\.pdf$/i.test(pathname)) {
           throw new Error('Only PDF quotes can be uploaded');
         }

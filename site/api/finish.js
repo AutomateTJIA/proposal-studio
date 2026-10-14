@@ -1,6 +1,6 @@
 // Step 2: build the PDF with the locked template, run every check, let Claude fix any failure once,
 // save the PDF and client email, and log the proposal in the Command Center.
-import { send, isStaff, readBody, safeId, readJob, saveJob, readBytes, putFile, callBuilder, signPath, OUTPUT } from './_lib.js';
+import { send, currentUser, canApprove, approvalRequired, readBody, safeId, readJob, saveJob, readBytes, putFile, callBuilder, signPath, OUTPUT } from './_lib.js';
 import { renderPdf } from './_render.js';
 import { askClaude, fixInstruction } from './_claude.js';
 import { logProposal } from './_crm.js';
@@ -19,7 +19,8 @@ async function buildAndCheck(req, proposal) {
 }
 
 export default async function handler(req, res) {
-  if (!isStaff(req)) return send(res, 401, { ok: false, error: 'Unauthorized' });
+  const user = await currentUser(req);
+  if (!user) return send(res, 401, { ok: false, error: 'Please sign in again.' });
   const { id } = await readBody(req);
   if (!safeId(id)) return send(res, 400, { ok: false, error: 'Bad job id' });
   const job = await readJob(id);
@@ -50,15 +51,16 @@ export default async function handler(req, res) {
     await putFile(base + `${last}_Proposal_Email.html`, built.email.html, 'text/html; charset=utf-8');
     await putFile(base + 'proposal.json', JSON.stringify(job.proposal, null, 1), 'application/json');
     Object.assign(job, {
-      status: problems.length ? 'needs_review' : 'ready',
+      status: problems.length ? 'needs_review' : (approvalRequired() && !canApprove(user) ? 'pending_approval' : 'ready'),
       file_name: built.file_name, pdf_path: base + built.file_name, pages: built.pages,
       email: { subject: built.email.subject, text: built.email.text },
       checks: { passed: checks.filter(c => c.passed).length, total: checks.length, failed: problems },
     });
+    if (job.status === 'ready') Object.assign(job, { approved_by: user.full_name, approved_at: new Date().toISOString() });
     if (!job.crm) {
       out.say({ step: 'logging', message: 'Logging it in the Command Center…' });
       const pno = (built.html.match(/P-\d{4}-\d{4}-[A-Z]/) || [''])[0];
-      job.crm = await logProposal({ proposal: job.proposal, clientEmail: job.client_email, proposalNumber: pno, fileName: built.file_name })
+      job.crm = await logProposal({ user, proposal: job.proposal, clientEmail: job.client_email, proposalNumber: pno, fileName: built.file_name })
         .catch(e => ({ status: 'error', message: e.message }));
     }
     await saveJob(job);

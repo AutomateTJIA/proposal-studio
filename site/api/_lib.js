@@ -13,29 +13,50 @@ export function send(res, status, body) {
 
 const sha = s => crypto.createHash('sha256').update(String(s)).digest();
 
-/** Staff requests carry `Authorization: Bearer <STAFF_PASSWORD>`. */
-export function tokenOk(given) {
-  const expected = process.env.STAFF_PASSWORD || '';
-  if (!expected || !given) return false;
-  return crypto.timingSafeEqual(sha(expected), sha(given));
-}
-export function isStaff(req) {
-  const h = req.headers.authorization || '';
-  return tokenOk(h.startsWith('Bearer ') ? h.slice(7) : '');
-}
-export function bearer(req) {
-  return req.headers.authorization || '';
-}
+// ---- Command Center sign-in (same accounts the team already uses)
+export const ccUrl = () => (process.env.CC_SUPABASE_URL || 'https://rcqhyiiywdpkndiwizxb.supabase.co').replace(/\/$/, '');
+export const ccAnonKey = () => process.env.CC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
+export const STAFF_ROLES = ['csr', 'agent', 'admin', 'super_admin'];
+export const APPROVER_ROLES = ['agent', 'admin', 'super_admin'];
 
-/** Short-lived signed links so the PDF can open in a new tab or iframe without the password. */
+const seen = new Map(); // token -> { user, until }
+/** Returns {id, email, full_name, role, token} for an active Command Center team member, else null. */
+export async function userFromToken(token) {
+  if (!token || !ccAnonKey()) return null;
+  const hit = seen.get(token);
+  if (hit && hit.until > Date.now()) return hit.user;
+  const headers = { apikey: ccAnonKey(), Authorization: `Bearer ${token}` };
+  const u = await fetch(`${ccUrl()}/auth/v1/user`, { headers });
+  if (!u.ok) return null;
+  const { id } = await u.json();
+  const p = await fetch(`${ccUrl()}/rest/v1/profiles?select=id,email,full_name,role,status&id=eq.${id}`, { headers });
+  const [profile] = p.ok ? await p.json() : [];
+  if (!profile || profile.status !== 'active' || !STAFF_ROLES.includes(profile.role)) return null;
+  const user = { ...profile, token };
+  seen.set(token, { user, until: Date.now() + 5 * 60_000 });
+  if (seen.size > 500) seen.clear();
+  return user;
+}
+export async function currentUser(req) {
+  const h = req.headers.authorization || '';
+  return userFromToken(h.startsWith('Bearer ') ? h.slice(7) : '');
+}
+export const canApprove = user => !!user && APPROVER_ROLES.includes(user.role);
+export const approvalRequired = () => (process.env.REQUIRE_AGENT_APPROVAL || 'true') !== 'false';
+
+// Server-side secret for signed links and the internal builder call (derived; nothing extra to set up).
+const secret = () => crypto.createHmac('sha256', 'proposal-studio').update(process.env.BLOB_READ_WRITE_TOKEN || process.env.ANTHROPIC_API_KEY || '').digest('hex');
+export const internalKey = () => crypto.createHmac('sha256', secret()).update('builder').digest('hex');
+
+/** Short-lived signed links so the PDF can open in a new tab or iframe. */
 export function signPath(pathname, minutes = 60) {
   const exp = Date.now() + minutes * 60_000;
-  const sig = crypto.createHmac('sha256', process.env.STAFF_PASSWORD || '').update(`${pathname}|${exp}`).digest('hex');
+  const sig = crypto.createHmac('sha256', secret()).update(`${pathname}|${exp}`).digest('hex');
   return `/api/file?p=${encodeURIComponent(pathname)}&e=${exp}&s=${sig}`;
 }
 export function verifySigned(pathname, exp, sig) {
   if (!pathname || !exp || !sig || Number(exp) < Date.now()) return false;
-  const want = crypto.createHmac('sha256', process.env.STAFF_PASSWORD || '').update(`${pathname}|${exp}`).digest('hex');
+  const want = crypto.createHmac('sha256', secret()).update(`${pathname}|${exp}`).digest('hex');
   return want.length === sig.length && crypto.timingSafeEqual(Buffer.from(want), Buffer.from(sig));
 }
 
@@ -73,7 +94,7 @@ export async function putFile(pathname, body, contentType) {
 export async function callBuilder(req, payload) {
   const host = req.headers['x-forwarded-host'] || req.headers.host;
   const proto = host && host.startsWith('localhost') ? 'http' : 'https';
-  const headers = { 'Content-Type': 'application/json', Authorization: bearer(req) };
+  const headers = { 'Content-Type': 'application/json', 'X-Internal-Key': internalKey() };
   if (process.env.VERCEL_AUTOMATION_BYPASS_SECRET) headers['x-vercel-protection-bypass'] = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
   const r = await fetch(`${proto}://${host}/api/build`, { method: 'POST', headers, body: JSON.stringify(payload) });
   const body = await r.json().catch(() => ({ ok: false, error: `Builder returned ${r.status}` }));

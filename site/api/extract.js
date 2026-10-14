@@ -1,12 +1,13 @@
 // Step 1: Claude reads the uploaded quotes and writes proposal.json (saved on the job).
-import { send, isStaff, readBody, newId, saveJob, readBytes, QUOTES } from './_lib.js';
+import { send, currentUser, readBody, newId, saveJob, readBytes, QUOTES } from './_lib.js';
 import { askClaude, firstInstruction } from './_claude.js';
 import { progress } from './_stream.js';
 
 export const config = { maxDuration: 300 };
 
 export default async function handler(req, res) {
-  if (!isStaff(req)) return send(res, 401, { ok: false, error: 'Unauthorized' });
+  const user = await currentUser(req);
+  if (!user) return send(res, 401, { ok: false, error: 'Please sign in again.' });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'Method not allowed' });
   const body = await readBody(req);
   const files = (body.files || []).filter(f => f && typeof f.pathname === 'string' && f.pathname.startsWith(QUOTES) && !f.pathname.includes('..'));
@@ -15,7 +16,7 @@ export default async function handler(req, res) {
 
   const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
   const job = {
-    id: newId(), status: 'reading', created_at: new Date().toISOString(), prepared_by: String(body.preparedBy || '').slice(0, 80),
+    id: newId(), status: 'reading', created_at: new Date().toISOString(), prepared_by: user.full_name, prepared_by_id: user.id, prepared_by_role: user.role,
     client_email: String(body.clientEmail || '').trim().slice(0, 200), notes: String(body.notes || '').slice(0, 2000),
     files: files.map(f => ({ pathname: f.pathname, name: String(f.name || f.pathname.split('/').pop()).slice(0, 200), size: f.size || null })),
   };

@@ -49,7 +49,7 @@ textarea{min-height:76px;resize:vertical}
 @keyframes p{to{opacity:.3}}
 .badge{display:inline-block;font:600 11px 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px}
 .badge.ready{background:#E5F3EC;color:var(--ok)}.badge.needs_review{background:#FFF4DC;color:var(--warn)}
-.badge.failed{background:#FBE9E7;color:var(--bad)}.badge.reading,.badge.drafted{background:var(--tint);color:var(--royal)}
+.badge.failed{background:#FBE9E7;color:var(--bad)}.badge.pending_approval{background:#FFF4DC;color:var(--warn)}.badge.reading,.badge.drafted{background:var(--tint);color:var(--royal)}
 .notes{margin:10px 0 0;padding-left:20px}.notes li{margin:6px 0}
 .warnbox{background:#FFF8E6;border-left:3px solid var(--gold);padding:14px 16px;margin-top:16px}
 pre.email{white-space:pre-wrap;background:var(--panel);border:1px solid var(--line);padding:16px;font:14px/1.6 Barlow,sans-serif;max-height:420px;overflow:auto}
@@ -65,13 +65,15 @@ tr.click{cursor:pointer}tr.click:hover td{background:var(--tint)}
 </style>
 </head>
 <body>
-<header><div class="bar"><img src="/assets/logo-white.png" alt="The Jordan Insurance Agency"><span class="t">Proposal Studio</span></div></header>
+<header><div class="bar"><img src="/assets/logo-white.png" alt="The Jordan Insurance Agency"><span class="t">Proposal Studio</span>
+  <span id="who" class="hidden" style="color:#fff;font-size:13px">· <span id="whoName"></span> · <a href="#" id="signout" style="color:var(--gold)">Sign out</a></span></div></header>
 <main>
   <section id="login" class="card login hidden">
-    <span class="cap">Team sign-in</span>
+    <span class="cap">Sign in with your Command Center account</span>
     <h1>Proposal Studio</h1>
     <p class="sub">Drop in carrier quotes, get the client-ready proposal and email.</p>
-    <form id="loginForm"><label for="pw">Team password</label><input id="pw" type="password" autocomplete="current-password" required>
+    <form id="loginForm"><label for="em">Email</label><input id="em" type="email" autocomplete="username" required>
+      <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required>
       <div class="row"><button class="btn" type="submit">Sign in</button></div><div id="loginErr" class="err"></div></form>
   </section>
 
@@ -85,8 +87,6 @@ tr.click{cursor:pointer}tr.click:hover td{background:var(--tint)}
           <input id="pick" type="file" accept="application/pdf" multiple class="hidden"></div>
         <ul id="files" class="files"></ul>
         <span class="cap" style="display:block;margin-top:20px">2 · Details</span>
-        <label for="by">Prepared by</label>
-        <select id="by"><option>Chelssy Valles</option><option>Gloria Lechuga</option><option>Billy Jordan Jr.</option></select>
         <label for="email">Client email <span class="muted">(optional, fills in the email “To”)</span></label>
         <input id="email" type="email" placeholder="client@example.com">
         <label for="notes">Notes for the proposal <span class="muted">(optional)</span></label>
@@ -117,24 +117,39 @@ tr.click{cursor:pointer}tr.click:hover td{background:var(--tint)}
 import { upload } from '/js/blob-client.js';
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-let token = sessionStorage.getItem('ps_token') || '';
+let session = JSON.parse(sessionStorage.getItem('ps_session') || 'null');
+let cfg = null;
 let picked = [];
 
-const api = (path, opts = {}) => fetch(path, { ...opts, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token, ...(opts.headers || {}) } });
-
-async function signIn(pw) {
-  token = pw;
-  const r = await api('/api/jobs');
-  if (r.status === 401) { token = ''; return false; }
-  sessionStorage.setItem('ps_token', pw);
-  return true;
+async function config() { if (!cfg) cfg = await (await fetch('/api/config')).json(); return cfg; }
+async function authCall(grant, body) {
+  const c = await config();
+  const r = await fetch(`${c.supabaseUrl}/auth/v1/token?grant_type=${grant}`, { method: 'POST', headers: { apikey: c.anonKey, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error_description || d.msg || 'Sign-in failed');
+  session = { token: d.access_token, refresh: d.refresh_token, until: Date.now() + (d.expires_in - 60) * 1000, name: d.user?.user_metadata?.full_name || d.user?.email };
+  sessionStorage.setItem('ps_session', JSON.stringify(session));
 }
-function show(id) { for (const s of ['#login', '#app']) $(s).classList.toggle('hidden', s !== id); }
-
+async function token() {
+  if (session && session.until < Date.now()) { try { await authCall('refresh_token', { refresh_token: session.refresh }); } catch { session = null; } }
+  return session ? session.token : '';
+}
+const api = async (path, opts = {}) => fetch(path, { ...opts, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + await token(), ...(opts.headers || {}) } });
+function show(id) {
+  for (const s of ['#login', '#app']) $(s).classList.toggle('hidden', s !== id);
+  $('#who').classList.toggle('hidden', id !== '#app'); if (session) $('#whoName').textContent = session.name || '';
+}
+async function enter() {
+  const r = await api('/api/jobs');
+  if (r.status === 401) { const b = await r.json().catch(() => ({})); throw new Error(b.error || 'This account cannot use Proposal Studio.'); }
+  show('#app'); renderRecent(await r.json());
+}
 $('#loginForm').addEventListener('submit', async e => {
   e.preventDefault(); $('#loginErr').textContent = '';
-  if (await signIn($('#pw').value)) { show('#app'); loadRecent(); } else $('#loginErr').textContent = 'That password did not work.';
+  try { await authCall('password', { email: $('#em').value.trim(), password: $('#pw').value }); await enter(); }
+  catch (err) { session = null; sessionStorage.removeItem('ps_session'); $('#loginErr').textContent = err.message; }
 });
+$('#signout').addEventListener('click', e => { e.preventDefault(); session = null; sessionStorage.removeItem('ps_session'); show('#login'); });
 
 // ---- picking files
 function renderFiles() {
@@ -184,11 +199,11 @@ $('#go').addEventListener('click', async () => {
     const files = [];
     for (const f of picked) {
       const safe = f.name.replace(/[^A-Za-z0-9._-]+/g, '_');
-      const blob = await upload(`quotes/${Date.now()}-${safe}`, f, { access: 'private', handleUploadUrl: '/api/upload', clientPayload: token, multipart: f.size > 4.5 * 1048576, contentType: 'application/pdf' });
+      const blob = await upload(`quotes/${Date.now()}-${safe}`, f, { access: 'private', handleUploadUrl: '/api/upload', clientPayload: await token(), multipart: f.size > 4.5 * 1048576, contentType: 'application/pdf' });
       files.push({ pathname: blob.pathname, name: f.name, size: f.size });
     }
     step('reading', 'Claude is reading every page of the quotes…');
-    const r1 = await api('/api/extract', { method: 'POST', body: JSON.stringify({ files, clientEmail: $('#email').value, notes: $('#notes').value, preparedBy: $('#by').value }) });
+    const r1 = await api('/api/extract', { method: 'POST', body: JSON.stringify({ files, clientEmail: $('#email').value, notes: $('#notes').value }) });
     const end1 = await readStream(r1, m => {
       if (m.step === 'writing') step('writing', `Writing the proposal… (${Math.round(m.chars / 1000)}k characters so far)`);
     });
@@ -204,7 +219,7 @@ $('#go').addEventListener('click', async () => {
     step('done', 'Done. Review the proposal below before sending.');
     picked = []; renderFiles(); $('#notes').value = ''; $('#email').value = '';
     await openJob(end2.id);
-    loadRecent();
+    refreshRecent();
   } catch (e) {
     const now = document.querySelector('#steps li.now'); step(now ? now.dataset.s : 'upload', e.message, true);
     $('#goErr').textContent = e.message; $('#go').disabled = !picked.length;
@@ -230,19 +245,22 @@ async function openJob(id) {
   el.innerHTML = job.status === 'failed' ? `<span class="badge failed">Failed</span><p>${esc(job.error)}</p>` : `
     <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
       <div><span class="cap">Proposal</span><h1 style="margin-top:4px">${esc(job.client_name || job.file_name)}</h1>
-      <span class="badge ${esc(job.status)}">${job.status === 'ready' ? 'Ready · all checks passed' : job.status === 'needs_review' ? 'Needs review' : esc(job.status)}</span>
-      <span class="muted"> ${job.checks ? `${job.checks.passed}/${job.checks.total} checks passed · ${job.pages} pages` : ''}${job.sent_at ? ' · sent ' + new Date(job.sent_at).toLocaleString() : ''}</span></div>
+      <span class="badge ${esc(job.status)}">${{ ready: 'Approved · ready to send', needs_review: 'Needs review', pending_approval: 'Waiting for agent approval' }[job.status] || esc(job.status)}</span>
+      <span class="muted"> ${job.checks ? `${job.checks.passed}/${job.checks.total} checks passed · ${job.pages} pages` : ''}${job.approved_by ? ' · approved by ' + esc(job.approved_by) : ''}${job.sent_at ? ' · sent ' + new Date(job.sent_at).toLocaleString() : ''}</span></div>
     </div>
     ${failed ? `<div class="warnbox"><b>Checks that still fail</b> — do not send until Billy reviews:<ul class="notes">${failed}</ul></div>` : ''}
     ${notes ? `<div class="warnbox"><b>Verify before sending</b><ul class="notes">${notes}</ul></div>` : ''}
-    <div class="row">
+    ${job.status === 'ready' ? `<div class="row">
       <a class="btn" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Open PDF</a>
       <a class="btn ghost" href="${esc(job.pdf_url)}&download=1">Download PDF</a>
       <button class="btn ghost" id="copy">Copy email</button>
       <a class="btn ghost" href="${esc(gmailUrl(job))}" target="_blank" rel="noopener">Open in Gmail</a>
       <button class="btn gold" id="sent" ${job.sent_at ? 'disabled' : ''}>${job.sent_at ? 'Marked as sent' : 'Mark as sent'}</button>
-    </div>
-    <p class="muted" style="margin-top:10px">In Gmail, attach the downloaded PDF before sending. ${crmLine}</p>
+    </div>` : `<div class="row">
+      ${job.can_approve ? '<button class="btn gold" id="approve">Approve for sending</button>' : '<span class="muted">A licensed agent must approve this before it goes to the client. Ask Billy to open it here and approve.</span>'}
+      <a class="btn ghost" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Preview PDF</a>
+    </div>`}
+    <p class="muted" style="margin-top:10px">${job.status === 'ready' ? 'In Gmail, attach the downloaded PDF before sending. ' : ''}${crmLine}</p>
     <div class="grid" style="margin-top:8px">
       <div><span class="cap">The proposal</span><iframe src="${esc(job.pdf_url)}" title="Proposal PDF"></iframe></div>
       <div><span class="cap">Client email</span><pre class="email">${esc(job.email?.text || '')}</pre></div>
@@ -252,20 +270,24 @@ async function openJob(id) {
   const copy = $('#copy');
   if (copy) copy.onclick = async () => { await navigator.clipboard.writeText((job.email?.text || '').split('\n').slice(2).join('\n')); copy.textContent = 'Copied'; };
   const sent = $('#sent');
-  if (sent && !job.sent_at) sent.onclick = async () => { sent.disabled = true; await api('/api/sent', { method: 'POST', body: JSON.stringify({ id }) }); openJob(id); loadRecent(); };
+  const approve = $('#approve');
+  if (approve) approve.onclick = async () => { approve.disabled = true; const r = await api('/api/approve', { method: 'POST', body: JSON.stringify({ id }) }); if (!r.ok) alert((await r.json()).error); openJob(id); refreshRecent(); };
+  if (sent && !job.sent_at) sent.onclick = async () => { sent.disabled = true; await api('/api/sent', { method: 'POST', body: JSON.stringify({ id }) }); openJob(id); refreshRecent(); };
 }
 
-async function loadRecent() {
-  const r = await api('/api/jobs'); if (r.status === 401) { show('#login'); return; }
-  const { items = [] } = await r.json();
-  const label = { ready: 'Ready', needs_review: 'Needs review', failed: 'Failed', reading: 'In progress', drafted: 'In progress' };
+function renderRecent({ items = [] } = {}) {
+  const label = { ready: 'Approved', needs_review: 'Needs review', pending_approval: 'Needs approval', failed: 'Failed', reading: 'In progress', drafted: 'In progress' };
   $('#recent').innerHTML = items.map(j => `<tr class="click" data-id="${esc(j.id)}"><td>${j.created_at ? new Date(j.created_at).toLocaleString() : ''}</td><td>${esc(j.client_name || '—')}</td><td>${esc(j.prepared_by)}</td>
     <td><span class="badge ${esc(j.status)}">${esc(label[j.status] || j.status)}</span></td><td>${j.sent_at ? new Date(j.sent_at).toLocaleDateString() : '—'}</td></tr>`).join('')
     || '<tr><td colspan="5" class="muted">No proposals yet.</td></tr>';
 }
+async function refreshRecent() {
+  const r = await api('/api/jobs'); if (r.status === 401) { show('#login'); return; }
+  renderRecent(await r.json());
+}
 $('#recent').addEventListener('click', e => { const tr = e.target.closest('tr[data-id]'); if (tr) openJob(tr.dataset.id); });
 
-(async () => { if (token && await signIn(token)) { show('#app'); loadRecent(); } else show('#login'); })();
+(async () => { if (session) { try { await enter(); return; } catch { session = null; sessionStorage.removeItem('ps_session'); } } show('#login'); })();
 </script>
 </body>
 </html>

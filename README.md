@@ -20,21 +20,29 @@ Center's Personal Lines Quote Tracker as **Quoted**, assigned to Chelssy with a 
    and re-checked. Anything still failing is shown as **Needs review**.
 5. **Log** (`api/_crm.js`) — creates a `revenue_opportunities` row (stage `quoted`, product type from the
    lines quoted, carriers, recommended premium) assigned to Chelssy and confirms its follow-up.
-6. **Send** — the CSR reviews, downloads the PDF, opens the email in Gmail, attaches, sends, and clicks
+6. **Approve & send** — a licensed agent approves; the CSR reviews, downloads the PDF, opens the email in Gmail, attaches, sends, and clicks
    **Mark as sent** (moves the Command Center record to **Presented**).
+
+## Sign-in
+The team signs in with their **Command Center** email and password (same accounts, same Supabase
+project `rcqhyiiywdpkndiwizxb`). Only active CSRs, agents, admins and owners get in. A proposal built
+by a CSR waits for a licensed agent (agent/admin/owner) to click **Approve for sending** before the
+download, Gmail and "Mark as sent" buttons appear — the same licensed-agent rule the Command Center's
+own proposal studio enforces. Proposals built by Billy are approved as they are built.
 
 ## Settings (Vercel → Project → Settings → Environment Variables)
 | Name | What it is |
 |---|---|
-| `STAFF_PASSWORD` | Team password for the page |
 | `ANTHROPIC_API_KEY` | Claude API key (console.anthropic.com → API keys) |
+| `CC_SUPABASE_ANON_KEY` | The Command Center's public sign-in key — copy the value of `VITE_SUPABASE_ANON_KEY` from the agency-command-center project's environment variables |
 | `BLOB_READ_WRITE_TOKEN` | Added automatically when the private Blob store is connected |
-| `CC_SUPABASE_URL` | Command Center Supabase project URL |
-| `CC_SUPABASE_SERVICE_KEY` | Command Center Supabase service-role key (server only, never in the page) |
-| `CC_ASSIGNEE_EMAIL` | Optional. Who gets the follow-up. Default `chelssy@agencyhlpc.com` |
+| `CC_SUPABASE_URL` | Optional. Defaults to the Command Center project URL |
+| `CC_ASSIGNEE_EMAIL` | Optional. When Billy builds a proposal, who gets the follow-up. Default `chelssy@agencyhlpc.com` (a CSR who builds one owns it herself) |
+| `REQUIRE_AGENT_APPROVAL` | Optional. `true` (default) or `false` |
 | `CLAUDE_EFFORT` | Optional. `high` (default) or `medium` if reading ever runs too long |
 
-Without the Command Center keys the studio still works; it just skips logging and says so.
+Command Center records are written as the signed-in person, so the Command Center's own permissions
+apply. No database master key is stored in this project.
 
 ## Updating the proposal rules or design
 Change the skill, then copy the whole `tjia-proposal-builder` folder over `site/skill/` (keep its
