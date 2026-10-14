@@ -2,7 +2,9 @@
   "name": "tjia-proposal-studio",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": "24.x"
+  },
   "dependencies": {
     "@anthropic-ai/sdk": "0.129.0",
     "@sparticuz/chromium": "153.0.0",
