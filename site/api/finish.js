@@ -4,6 +4,7 @@ import { send, currentUser, canApprove, approvalRequired, readBody, safeId, read
 import { renderPdf } from './_render.js';
 import { askClaude, fixInstruction } from './_claude.js';
 import { logProposal } from './_crm.js';
+import { emailTeam } from './_email.js';
 import { progress } from './_stream.js';
 
 export const config = { maxDuration: 300 };
@@ -60,10 +61,15 @@ export default async function handler(req, res) {
     if (!job.crm) {
       out.say({ step: 'logging', message: 'Logging it in the Command Center…' });
       const pno = (built.html.match(/P-\d{4}-\d{4}-[A-Z]/) || [''])[0];
-      job.crm = await logProposal({ user, proposal: job.proposal, clientEmail: job.client_email, proposalNumber: pno, fileName: built.file_name })
+      job.crm = await logProposal({ user, proposal: job.proposal, clientEmail: null, proposalNumber: pno, fileName: built.file_name })
         .catch(e => ({ status: 'error', message: e.message }));
     }
     await saveJob(job);
+    if (job.internal_email?.status !== 'sent') {
+      out.say({ step: 'emailing', message: 'Emailing the proposal to the team…' });
+      job.internal_email = await emailTeam({ job, user, pdf }).catch(e => ({ status: 'error', message: e.message }));
+      await saveJob(job);
+    }
     out.end({ step: 'done', id: job.id, status: job.status, pdf_url: signPath(job.pdf_path) });
   } catch (e) {
     job.status = 'failed';

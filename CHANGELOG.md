@@ -1,6 +1,17 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-14
+- **Changed:** The proposal form now has a slot for each carrier (Carrier 1, 2, 3, and "+ Add another
+  carrier" up to six). A slot can hold more than one PDF, for when a carrier sends home and auto
+  separately. Each slot has a "Recommend" button to tell the writer which carrier to favor.
+- **Changed:** "Notes" is now "Instructions for this proposal": a real instruction box, with quick-add
+  buttons (umbrella quote, effective date, price vs. coverage, current carrier). The writer follows
+  these in the PDF and email, but numbers always come from the quotes; conflicts are flagged.
+- **Added:** Every finished proposal is emailed to Billy and Chelssy (plus whoever built it) with the
+  PDF attached, the status, anything to verify, and the client email ready to copy. One email per
+  proposal, guarded so it can never repeat. Nothing is ever sent to the client. Needs `RESEND_API_KEY`.
+- **Removed:** The "Client email" field and the "Open in Gmail" button. The team sends to clients
+  from their own Gmail.
 - **Removed:** The gold "Want a proposal like this? Book a free chat" sales band. This is a working
   tool for the team, not a sales page.
 - **Fixed:** On large screens the sign-in / proposal card now stays beside the four steps as you

@@ -37,6 +37,9 @@ own proposal studio enforces. Proposals built by Billy are approved as they are 
 | `CC_SUPABASE_SERVICE_KEY` | The Command Center's Supabase key. Used only on the server to talk to the Command Center; it is never sent to the browser. Sign-in and every Command Center change still run as the signed-in person, so their own permissions apply. (`CC_SUPABASE_ANON_KEY` works too if you ever prefer the public key.) |
 | `BLOB_STORE_ID`, `BLOB_WEBHOOK_PUBLIC_KEY` | Added automatically when the private Blob store `proposal-studio-files` is connected to this project (Vercel's keyless OIDC connection; no read-write token needed). Don't reuse the Census store |
 | `CC_SUPABASE_URL` | Optional. Defaults to the Command Center project URL |
+| `RESEND_API_KEY` | Resend key (same Resend account the Command Center uses). Lets Proposal Studio email each finished proposal to the team. Without it, proposals still build; the team email is skipped |
+| `PROPOSAL_EMAIL_TO` | Optional. Who gets the team email. Default `billy@agencyhlpc.com,chelssy@agencyhlpc.com`; the person who built it is always added |
+| `RESEND_FROM_ADDRESS` | Optional. Default `The Jordan Insurance Agency <noreply@mail.thejordaninsuranceagency.com>` |
 | `CC_ASSIGNEE_EMAIL` | Optional. When Billy builds a proposal, who gets the follow-up. Default `chelssy@agencyhlpc.com` (a CSR who builds one owns it herself) |
 | `REQUIRE_AGENT_APPROVAL` | Optional. `true` (default) or `false` |
 | `CLAUDE_EFFORT` | Optional. `high` (default) or `medium` if reading ever runs too long |

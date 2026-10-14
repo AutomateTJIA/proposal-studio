@@ -38,7 +38,15 @@ tjia-proposal-builder skill below exactly, with these differences for the web ap
   {"proposal": { ...proposal.json... },
    "agent_notes": ["plain sentences for the agent: data conflicts, stale or passed effective dates,
                     re-quotes needed, consent-to-rate forms, placeholder VINs, anything to verify"]}
-- If the files are not insurance quotes or cannot be read, reply {"error": "<plain explanation>"}.`;
+- If the files are not insurance quotes or cannot be read, reply {"error": "<plain explanation>"}.
+- The request groups the PDFs by carrier slot (Carrier 1, Carrier 2, ...). PDFs in the same slot are
+  one carrier's quotes (for example a separate home quote and auto quote); combine them into that
+  carrier's option. Still name each carrier exactly as its quote does.
+- "Instructions from the agency team" are the agent's directions for this proposal: what to mention,
+  which carrier to favor or recommend, effective dates, the client's priorities, tone. Follow them in the
+  recommendation, the wording and the email. They never override the facts: never change, invent or drop
+  a number, coverage or exclusion to satisfy an instruction. If an instruction conflicts with the quotes
+  or the skill rules, follow the quotes and explain the conflict in agent_notes.`;
 
 let systemText;
 function systemPrompt() {
@@ -98,11 +106,14 @@ export async function askClaude({ quotes, instruction, onProgress }) {
   return { reply: parseReply(text), usage: msg.usage, model: msg.model };
 }
 
-export function firstInstruction({ today, notes, clientEmail, fileNames }) {
+export function firstInstruction({ today, notes, favor, files }) {
+  const slots = [...new Set(files.map(f => f.slot))].sort((a, b) => a - b);
+  const groups = slots.map(n => `- Carrier ${n}: ${files.filter(f => f.slot === n).map(f => f.name).join(', ')}`);
   return [
-    `Today is ${today}. Build the proposal from these ${fileNames.length} quote PDF(s): ${fileNames.join(', ')}.`,
-    clientEmail ? `Client email address (for your reference only): ${clientEmail}.` : '',
-    notes ? `Notes from the agency team: ${notes}` : '',
+    `Today is ${today}. Build the proposal from these ${files.length} quote PDF(s), grouped by carrier:`,
+    ...groups,
+    favor ? `The agency team wants to recommend Carrier ${favor}. Make it the recommended option and explain why, using only facts from the quotes. If the quotes make that recommendation hard to justify, still follow it but say why in agent_notes.` : '',
+    notes ? `\nInstructions from the agency team (follow these):\n${notes}` : '',
   ].filter(Boolean).join('\n');
 }
 

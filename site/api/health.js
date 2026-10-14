@@ -5,12 +5,13 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { send, callBuilder, ccApiKey, putFile, readBytes } from './_lib.js';
 import { renderPdf } from './_render.js';
+import { emailConfigured } from './_email.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
 export default async function handler(req, res) {
   const t0 = Date.now();
-  const out = { ok: false, signin_ready: Boolean(ccApiKey()), claude_ready: Boolean(process.env.ANTHROPIC_API_KEY),
+  const out = { ok: false, signin_ready: Boolean(ccApiKey()), claude_ready: Boolean(process.env.ANTHROPIC_API_KEY), email_ready: emailConfigured(),
     storage_ready: false };
   try {
     // Round-trip a tiny file so "storage_ready" means storage really works, not just that a setting exists.

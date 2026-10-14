@@ -120,6 +120,26 @@ section.band{padding-block:96px}
 .files li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--mist);font-size:14.5px;color:var(--navy)}
 .files li span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .files small{color:var(--muted)}
+.slots{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.slot{min-width:0}
+.slot{border:2px solid var(--mist);border-radius:16px;padding:14px 14px 10px;transition:border-color .15s}
+.slot.fav{border-color:var(--gold);box-shadow:0 0 0 3px rgba(224,180,59,.25)}
+.slothead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.slothead b{font:800 18px/1.1 var(--display);color:var(--navy)}
+.slothead b small{font:500 13px var(--body);color:var(--muted);margin-left:6px}
+.favbtn{border:2px solid var(--mist);background:var(--white);color:var(--navy);border-radius:999px;padding:7px 12px;font:700 13px/1 var(--body);cursor:pointer;white-space:nowrap}
+.favbtn[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.drop.sm{padding:14px 12px;display:flex;align-items:center;justify-content:center;gap:10px;text-align:left}
+.drop.sm svg{width:24px;height:24px;margin:0}
+.drop.sm b{font-size:16px}
+.slot .files{margin-top:4px}
+.slot .files li{padding:8px 2px}
+.addslot{margin-top:12px;border:0;background:none;color:var(--royal);font:700 15px var(--body);cursor:pointer;padding:6px 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+.chips button{border:2px solid var(--mist);background:var(--white);color:var(--navy);border-radius:999px;padding:7px 12px;font:600 13px/1 var(--body);cursor:pointer}
+.chips button:hover{border-color:var(--royal)}
+.panel .hint.sm{font-size:14px;margin:0 0 10px}
+.sendto{margin:16px 0 0;padding:12px 14px;border-radius:12px;background:var(--mist);color:var(--navy);font-size:14.5px}
 .files button{border:0;background:none;color:var(--royal);font:600 13px var(--body);cursor:pointer}
 .msg{margin:14px 0 0;padding:12px 14px;border-radius:12px;background:var(--mist);color:var(--navy);font-weight:600;font-size:14.5px;border-left:6px solid var(--gold)}
 .steps{list-style:none;margin:6px 0 0;padding:0}
@@ -261,10 +281,10 @@ footer .legal{width:100%;font-size:13px;color:rgba(233,237,242,.55);margin:0}
       <h2 class="big">From quote PDFs to a <span class="g">client-ready</span> proposal</h2>
       <p class="lead">Upload every quote for one client. Nothing reaches a client until a licensed agent approves it.</p>
       <ol class="flow">
-        <li><span class="n">1.</span><div><b>Drop the quotes</b><p>Home, auto or bundle quotes from any carrier, scanned or digital.</p></div></li>
-        <li><span class="n">2.</span><div><b>Read and built</b><p>Every page is read, numbers are copied exactly, and the proposal is built in our locked design.</p></div></li>
+        <li><span class="n">1.</span><div><b>Drop the quotes</b><p>One slot per carrier, up to six carriers. Home, auto or bundle quotes, scanned or digital.</p></div></li>
+        <li><span class="n">2.</span><div><b>Read and built</b><p>Every page is read, your instructions are followed, numbers are copied exactly, and the proposal is built in our locked design.</p></div></li>
         <li><span class="n">3.</span><div><b>Checked and approved</b><p>Math, page fit and required notices are checked automatically, then a licensed agent approves.</p></div></li>
-        <li><span class="n">4.</span><div><b>Sent and tracked</b><p>Open the email in Gmail, attach the PDF, and the Command Center schedules the follow-up.</p></div></li>
+        <li><span class="n">4.</span><div><b>Sent and tracked</b><p>The PDF and a ready-to-copy client email go to Billy and Chelssy. Send it from Gmail, mark it sent, and the Command Center schedules the follow-up.</p></div></li>
       </ol>
     </div>
 
@@ -280,18 +300,23 @@ footer .legal{width:100%;font-size:13px;color:rgba(233,237,242,.55);margin:0}
 
       <div id="compose" hidden>
         <h3>New proposal</h3>
-        <p class="hint">One client per proposal. Add every quote you have for them.</p>
-        <label>Quote PDFs</label>
-        <div id="drop" class="drop" tabindex="0" role="button" aria-label="Choose quote PDFs">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
-          <b>Drop quote PDFs here</b><span>or tap to choose files</span>
-          <input id="pick" type="file" accept="application/pdf" multiple hidden>
+        <p class="hint">One client per proposal. Put each carrier's quotes in its own slot. If a carrier sent separate home and auto quotes, drop both into the same slot.</p>
+        <div id="slots" class="slots"></div>
+        <button id="addSlot" class="addslot" type="button">+ Add another carrier</button>
+        <input id="pick" type="file" accept="application/pdf" multiple hidden>
+
+        <label for="notes">Instructions for this proposal</label>
+        <p class="hint sm">Tell the proposal writer what matters: what to mention, which carrier to favor and why, dates, what the client cares about. It follows these in the PDF and the email. Prices and coverages always come straight from the quotes.</p>
+        <div class="chips" id="chips">
+          <button type="button" data-t="Mention the umbrella quote.">+ Umbrella quote</button>
+          <button type="button" data-t="Effective date: ">+ Effective date</button>
+          <button type="button" data-t="The client cares most about the lowest price.">+ Price matters most</button>
+          <button type="button" data-t="The client cares most about the strongest coverage.">+ Coverage matters most</button>
+          <button type="button" data-t="Current carrier and premium: ">+ Current carrier</button>
         </div>
-        <ul id="files" class="files"></ul>
-        <label for="email">Client email <small>(optional, fills in the email "To")</small></label>
-        <input id="email" type="email" placeholder="client@example.com">
-        <label for="notes">Notes <small>(optional)</small></label>
-        <textarea id="notes" placeholder="Example: Mention an umbrella quote. Effective date 11/1."></textarea>
+        <textarea id="notes" rows="5" placeholder="Example: Recommend Chubb because of the higher dwelling coverage and the $50,000 water back-up. Mention the umbrella quote. Effective date 11/1."></textarea>
+
+        <p class="sendto" id="sendto">When it's done, the PDF and a ready-to-copy client email are emailed to Billy and Chelssy. Nothing is sent to the client.</p>
         <button id="go" class="btn gold full" type="button" disabled>Build the proposal</button>
         <p id="goErr" class="msg" hidden></p>
       </div>
@@ -302,7 +327,7 @@ footer .legal{width:100%;font-size:13px;color:rgba(233,237,242,.55);margin:0}
         <ul id="steps" class="steps">
           <li data-s="upload">Upload the quotes</li><li data-s="reading">Read every page</li><li data-s="writing">Write the proposal</li>
           <li data-s="building">Build the PDF and run the checks</li><li data-s="fixing">Fix anything the checks catch</li>
-          <li data-s="logging">Log it in the Command Center</li><li data-s="done">Ready for review</li>
+          <li data-s="logging">Log it in the Command Center</li><li data-s="emailing">Email it to Billy and Chelssy</li><li data-s="done">Ready for review</li>
         </ul>
         <button id="again" class="btn ghost full" type="button" hidden>Start another proposal</button>
       </div>
@@ -411,7 +436,6 @@ import { uploadPresigned } from '/js/blob-client.js';
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let session = JSON.parse(sessionStorage.getItem('ps_session') || 'null');
-let picked = [];
 
 // ---- sign-in (Command Center accounts)
 async function authCall(grant, body) {
@@ -440,31 +464,54 @@ async function enter() {
 }
 $('#signin').addEventListener('submit', async e => {
   e.preventDefault(); flash($('#signinErr'), '');
-  try { await authCall('password', { email: $('#em').value.trim(), password: $('#pw').value }); await enter(); }
+  try { await authCall('password', { email: $('#em').value.trim(), password: $('#pw').value }); await enter(); await openLinked(); }
   catch (err) { session = null; sessionStorage.removeItem('ps_session'); flash($('#signinErr'), err.message); }
 });
 $('#signout').addEventListener('click', e => { e.preventDefault(); session = null; sessionStorage.removeItem('ps_session'); signedIn(false); });
 
-// ---- picking files
-function renderFiles() {
-  $('#files').innerHTML = picked.map((f, i) => `<li><span>${esc(f.name)} <small>· ${(f.size / 1048576).toFixed(1)} MB</small></span><button type="button" data-i="${i}">Remove</button></li>`).join('');
-  $('#go').disabled = !picked.length;
+// ---- carrier slots (each slot = one carrier; a slot can hold several PDFs)
+const MAX_SLOTS = 6;
+let slots = [[], [], []];
+let favor = 0;
+let target = 0;
+const UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>';
+function renderSlots() {
+  $('#slots').innerHTML = slots.map((files, i) => `
+    <div class="slot${favor === i + 1 ? ' fav' : ''}" data-slot="${i}">
+      <div class="slothead"><b>Carrier ${i + 1}${i === 0 ? '' : '<small>optional</small>'}</b>
+        <button type="button" class="favbtn" data-fav="${i + 1}" aria-pressed="${favor === i + 1}">${favor === i + 1 ? '★ Recommended' : '☆ Recommend'}</button></div>
+      <div class="drop sm" tabindex="0" role="button" data-pick="${i}" aria-label="Choose quote PDFs for carrier ${i + 1}">${UP}<div><b>Drop quote PDFs</b><span>or tap to choose</span></div></div>
+      <ul class="files">${files.map((f, j) => `<li><span>${esc(f.name)} <small>· ${(f.size / 1048576).toFixed(1)} MB</small></span><button type="button" data-rm="${i}:${j}">Remove</button></li>`).join('')}</ul>
+    </div>`).join('');
+  $('#addSlot').hidden = slots.length >= MAX_SLOTS;
+  $('#go').disabled = !slots.some(f => f.length);
 }
-function addFiles(list) {
-  for (const f of list) if (/\.pdf$/i.test(f.name) && !picked.some(p => p.name === f.name && p.size === f.size)) picked.push(f);
-  renderFiles();
+function addFiles(i, list) {
+  const all = slots.flat();
+  for (const f of list) if (/\.pdf$/i.test(f.name) && !all.some(p => p.name === f.name && p.size === f.size)) { slots[i].push(f); all.push(f); }
+  renderSlots();
 }
-$('#files').addEventListener('click', e => { if (e.target.dataset.i) { picked.splice(+e.target.dataset.i, 1); renderFiles(); } });
-const drop = $('#drop');
-drop.addEventListener('click', () => $('#pick').click());
-drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('#pick').click(); } });
-$('#pick').addEventListener('change', e => { addFiles(e.target.files); e.target.value = ''; });
-for (const ev of ['dragenter', 'dragover']) drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('on'); });
-for (const ev of ['dragleave', 'drop']) drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('on'); });
-drop.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+$('#slots').addEventListener('click', e => {
+  const fav = e.target.closest('[data-fav]'); const rm = e.target.closest('[data-rm]'); const pick = e.target.closest('[data-pick]');
+  if (fav) { const n = +fav.dataset.fav; favor = favor === n ? 0 : n; renderSlots(); }
+  else if (rm) { const [i, j] = rm.dataset.rm.split(':').map(Number); slots[i].splice(j, 1); renderSlots(); }
+  else if (pick) { target = +pick.dataset.pick; $('#pick').click(); }
+});
+$('#slots').addEventListener('keydown', e => { const pick = e.target.closest('[data-pick]'); if (pick && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); target = +pick.dataset.pick; $('#pick').click(); } });
+$('#pick').addEventListener('change', e => { addFiles(target, e.target.files); e.target.value = ''; });
+for (const ev of ['dragenter', 'dragover']) $('#slots').addEventListener(ev, e => { const d = e.target.closest('.drop'); if (d) { e.preventDefault(); d.classList.add('on'); } });
+$('#slots').addEventListener('dragleave', e => { const d = e.target.closest('.drop'); if (d) d.classList.remove('on'); });
+$('#slots').addEventListener('drop', e => { const d = e.target.closest('.drop'); if (d) { e.preventDefault(); d.classList.remove('on'); addFiles(+d.dataset.pick, e.dataTransfer.files); } });
+$('#addSlot').addEventListener('click', () => { if (slots.length < MAX_SLOTS) { slots.push([]); renderSlots(); } });
+$('#chips').addEventListener('click', e => {
+  const t = e.target.closest('[data-t]'); if (!t) return;
+  const box = $('#notes'); box.value = (box.value.trim() ? box.value.trim() + '\n' : '') + t.dataset.t; box.focus();
+  box.setSelectionRange(box.value.length, box.value.length);
+});
+renderSlots();
 
 // ---- progress
-const ORDER = ['upload', 'reading', 'writing', 'building', 'fixing', 'logging', 'done'];
+const ORDER = ['upload', 'reading', 'writing', 'building', 'fixing', 'logging', 'emailing', 'done'];
 function step(s, msg, failed) {
   const idx = ORDER.indexOf(s);
   document.querySelectorAll('#steps li').forEach(li => {
@@ -490,24 +537,25 @@ $('#go').addEventListener('click', async () => {
   flash($('#goErr'), ''); $('#result').hidden = true; panel('run'); $('#again').hidden = true;
   $('#run h3').textContent = 'Building the proposal';
   try {
-    step('upload', `Uploading ${picked.length} file(s)…`);
+    const queue = slots.flatMap((list, i) => list.map(f => ({ f, slot: i + 1 })));
+    step('upload', `Uploading ${queue.length} file(s)…`);
     const files = [];
-    for (const f of picked) {
+    for (const { f, slot } of queue) {
       const safe = f.name.replace(/[^A-Za-z0-9._-]+/g, '_');
       const blob = await uploadPresigned(`quotes/${Date.now()}-${safe}`, f, { access: 'private', handleUploadUrl: '/api/upload', clientPayload: await token(), contentType: 'application/pdf' });
-      files.push({ pathname: blob.pathname, name: f.name, size: f.size });
+      files.push({ pathname: blob.pathname, name: f.name, size: f.size, slot });
     }
     step('reading', 'Reading every page of the quotes…');
-    const r1 = await api('/api/extract', { method: 'POST', body: JSON.stringify({ files, clientEmail: $('#email').value, notes: $('#notes').value }) });
+    const r1 = await api('/api/extract', { method: 'POST', body: JSON.stringify({ files, favor, notes: $('#notes').value }) });
     const end1 = await readStream(r1, m => { if (m.step === 'writing') step('writing', `Writing the proposal… (${Math.round(m.chars / 1000)}k characters so far)`); });
     if (!end1 || end1.step !== 'drafted') throw new Error(end1?.message || 'Reading the quotes failed.');
     step('building', 'Building the PDF in our design and running the checks…');
     const r2 = await api('/api/finish', { method: 'POST', body: JSON.stringify({ id: end1.id }) });
-    const end2 = await readStream(r2, m => { if (['fixing', 'building', 'logging'].includes(m.step)) step(m.step, m.message); });
+    const end2 = await readStream(r2, m => { if (['fixing', 'building', 'logging', 'emailing'].includes(m.step)) step(m.step, m.message); });
     if (!end2 || end2.step !== 'done') throw new Error(end2?.message || 'Building the proposal failed.');
     step('done', 'Done. Review the proposal below before it goes out.');
     $('#run h3').textContent = 'Proposal ready';
-    picked = []; renderFiles(); $('#notes').value = ''; $('#email').value = '';
+    slots = [[], [], []]; favor = 0; renderSlots(); $('#notes').value = '';
     $('#again').hidden = false;
     await openJob(end2.id); refreshRecent();
   } catch (e) {
@@ -518,15 +566,12 @@ $('#go').addEventListener('click', async () => {
 });
 
 // ---- result
-function gmailUrl(job) {
-  const lines = (job.email?.text || '').split('\n');
-  const q = new URLSearchParams({ view: 'cm', fs: '1', to: job.client_email || '', su: (lines[0] || '').replace(/^Subject:\s*/, ''), body: lines.slice(2).join('\n') });
-  return 'https://mail.google.com/mail/?' + q.toString();
-}
 const LABEL = { ready: 'Approved · ready to send', needs_review: 'Needs review', pending_approval: 'Waiting for agent approval', failed: 'Failed', reading: 'In progress', drafted: 'In progress' };
 async function openJob(id) {
   const r = await api('/api/job?id=' + encodeURIComponent(id)); const { job } = await r.json();
   const crm = job.crm || {};
+  const mail = job.internal_email || {};
+  const mailLine = mail.status === 'sent' ? `Emailed to ${esc((mail.to || []).join(', '))} with the PDF attached. ` : mail.status === 'error' ? `Team email did not go out: ${esc(mail.message)}. ` : mail.status === 'skipped' ? `${esc(mail.message)} ` : '';
   const crmLine = crm.status === 'logged' ? `Logged in the Command Center · follow-up assigned to ${esc(crm.assigned_to)}.`
     : crm.status === 'error' ? `Command Center logging did not go through: ${esc(crm.message)}` : '';
   const notes = (job.agent_notes || []).map(n => `<li>${esc(n)}</li>`).join('');
@@ -544,12 +589,11 @@ async function openJob(id) {
       <a class="btn navy" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Open PDF</a>
       <a class="btn ghost" href="${esc(job.pdf_url)}&download=1">Download PDF</a>
       <button class="btn ghost" id="copy" type="button">Copy email</button>
-      <a class="btn ghost" href="${esc(gmailUrl(job))}" target="_blank" rel="noopener">Open in Gmail</a>
       <button class="btn gold" id="sent" type="button" ${job.sent_at ? 'disabled' : ''}>${job.sent_at ? 'Marked as sent' : 'Mark as sent'}</button>` : `
       ${job.can_approve ? '<button class="btn gold" id="approve" type="button">Approve for sending</button>' : '<span class="note">A licensed agent must approve this before it goes to the client. Ask Billy to open it here and approve.</span>'}
       <a class="btn ghost" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Preview PDF</a>`}
     </div>
-    <p class="crm">${ready ? 'In Gmail, attach the downloaded PDF before sending. ' : ''}${crmLine}</p>
+    <p class="crm">${mailLine}${ready ? 'Send it to the client from your own Gmail, then click Mark as sent. ' : ''}${crmLine}</p>
     <div class="split">
       <div><span class="cap">The proposal</span><iframe class="pdf" src="${esc(job.pdf_url)}" title="Proposal PDF"></iframe></div>
       <div><span class="cap">Client email</span><pre class="email">${esc(job.email?.text || '')}</pre></div>
@@ -577,7 +621,9 @@ async function refreshRecent() {
 $('#recent').addEventListener('click', e => { const tr = e.target.closest('tr[data-id]'); if (tr) openJob(tr.dataset.id); });
 $('#recent').addEventListener('keydown', e => { const tr = e.target.closest('tr[data-id]'); if (tr && e.key === 'Enter') openJob(tr.dataset.id); });
 
-(async () => { if (session) { try { await enter(); return; } catch { session = null; sessionStorage.removeItem('ps_session'); } } signedIn(false); })();
+const linked = (location.hash.match(/^#job=([0-9]{14}-[0-9a-f]{6})$/) || [])[1];
+async function openLinked() { if (linked && session) { history.replaceState(null, '', location.pathname); await openJob(linked).catch(() => {}); } }
+(async () => { if (session) { try { await enter(); await openLinked(); return; } catch { session = null; sessionStorage.removeItem('ps_session'); } } signedIn(false); })();
 </script>
 </body>
 </html>

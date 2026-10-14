@@ -11,14 +11,16 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'Method not allowed' });
   const body = await readBody(req);
   const files = (body.files || []).filter(f => f && typeof f.pathname === 'string' && f.pathname.startsWith(QUOTES) && !f.pathname.includes('..'));
-  if (!files.length || files.length > 8) return send(res, 400, { ok: false, error: 'Add 1 to 8 quote PDFs.' });
+  if (!files.length || files.length > 12) return send(res, 400, { ok: false, error: 'Add 1 to 12 quote PDFs.' });
   if (!process.env.ANTHROPIC_API_KEY) return send(res, 500, { ok: false, error: 'The Claude API key is not set up yet (ANTHROPIC_API_KEY).' });
 
   const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
   const job = {
     id: newId(), status: 'reading', created_at: new Date().toISOString(), prepared_by: user.full_name, prepared_by_id: user.id, prepared_by_role: user.role,
-    client_email: String(body.clientEmail || '').trim().slice(0, 200), notes: String(body.notes || '').slice(0, 2000),
-    files: files.map(f => ({ pathname: f.pathname, name: String(f.name || f.pathname.split('/').pop()).slice(0, 200), size: f.size || null })),
+    notes: String(body.notes || '').slice(0, 3000),
+    favor: Number.isInteger(body.favor) && body.favor > 0 && body.favor <= 6 ? body.favor : 0,
+    files: files.map(f => ({ pathname: f.pathname, name: String(f.name || f.pathname.split('/').pop()).slice(0, 200), size: f.size || null,
+      slot: Number.isInteger(f.slot) && f.slot > 0 && f.slot <= 6 ? f.slot : 1 })),
   };
   const out = progress(res);
   try {
@@ -33,7 +35,7 @@ export default async function handler(req, res) {
     let last = 0;
     const { reply, usage, model } = await askClaude({
       quotes,
-      instruction: firstInstruction({ today, notes: job.notes, clientEmail: job.client_email, fileNames: job.files.map(f => f.name) }),
+      instruction: firstInstruction({ today, notes: job.notes, favor: job.favor, files: job.files }),
       onProgress: chars => {
         if (chars - last > 1500) { last = chars; out.say({ step: 'writing', chars }); }
       },
