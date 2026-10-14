@@ -1,0 +1,122 @@
+// Claude reads the quote PDFs and writes proposal.json, following the locked skill in site/skill.
+import Anthropic from '@anthropic-ai/sdk';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const here = path.dirname(fileURLToPath(import.meta.url));
+const SKILL = path.join(here, '..', 'skill');
+const MODEL = process.env.CLAUDE_MODEL || 'claude-opus-5-5';
+const EFFORT = process.env.CLAUDE_EFFORT || 'high';
+
+const SKILL_FILES = [
+  'SKILL.md',
+  'references/data-format.md',
+  'references/writing-rules.md',
+  'references/quote-extraction.md',
+  'references/coverage-explanations.md',
+  'branding.json',
+  'examples/example-bundle-3-carriers.json',
+  'examples/example-auto-3-options.json',
+  'examples/example-home-single-carrier.json',
+  'examples/example-disability-3-carriers.json',
+];
+
+const APP_RULES = `You are the proposal writer for The Jordan Insurance Agency, working inside the agency's
+Proposal Studio web app. A member of the agency team has uploaded carrier quote PDFs. Follow the
+tjia-proposal-builder skill below exactly, with these differences for the web app:
+
+- You do not run scripts. You write proposal.json; the app renders the PDF with the locked template,
+  runs every automatic check, and writes the client email from your "email" block.
+- Read every page of every quote. Copy numbers exactly as the carrier printed them. Never invent a
+  number, coverage, exclusion or date. When something is unclear or conflicts between quotes, say so
+  in agent_notes instead of guessing.
+- "prepared" is the date given in the request.
+- Include a "checks" entry for every total, difference and computed figure, an "exclusions" page,
+  and the "email" block (all required by the build).
+- Reply with ONE JSON object and nothing else (no code fences, no commentary):
+  {"proposal": { ...proposal.json... },
+   "agent_notes": ["plain sentences for the agent: data conflicts, stale or passed effective dates,
+                    re-quotes needed, consent-to-rate forms, placeholder VINs, anything to verify"]}
+- If the files are not insurance quotes or cannot be read, reply {"error": "<plain explanation>"}.`;
+
+let systemText;
+function systemPrompt() {
+  if (!systemText) {
+    const parts = [APP_RULES, '', 'The skill files follow.'];
+    for (const f of SKILL_FILES) {
+      parts.push(`<file path="${f}">\n${fs.readFileSync(path.join(SKILL, f), 'utf8')}\n</file>`);
+    }
+    systemText = parts.join('\n');
+  }
+  return systemText;
+}
+
+function documents(quotes) {
+  const blocks = quotes.map(q => ({
+    type: 'document',
+    title: q.name,
+    source: { type: 'base64', media_type: 'application/pdf', data: q.bytes.toString('base64') },
+  }));
+  // Cache through the PDFs so a fix round re-reads them at cache prices.
+  blocks[blocks.length - 1].cache_control = { type: 'ephemeral' };
+  return blocks;
+}
+
+function parseReply(text) {
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}');
+  if (start < 0 || end <= start) throw new Error('Claude did not return JSON');
+  return JSON.parse(text.slice(start, end + 1));
+}
+
+/**
+ * One Claude call. `onProgress(chars)` fires as the reply streams so the page can show progress.
+ * Returns the parsed {proposal, agent_notes} (or {error}).
+ */
+export async function askClaude({ quotes, instruction, onProgress }) {
+  const client = new Anthropic({ timeout: 280_000, maxRetries: 1 });
+  const stream = client.beta.messages.stream({
+    model: MODEL,
+    max_tokens: 64000,
+    thinking: { type: 'adaptive' },
+    output_config: { effort: EFFORT },
+    betas: ['server-side-fallback-2026-07-01'],
+    fallbacks: 'default',
+    system: [{ type: 'text', text: systemPrompt(), cache_control: { type: 'ephemeral' } }],
+    messages: [{ role: 'user', content: [...documents(quotes), { type: 'text', text: instruction }] }],
+  });
+  let chars = 0;
+  stream.on('text', delta => {
+    chars += delta.length;
+    if (onProgress) onProgress(chars);
+  });
+  const msg = await stream.finalMessage();
+  if (msg.stop_reason === 'refusal') throw new Error('Claude declined this request. Build this one in a Claude chat instead.');
+  if (msg.stop_reason === 'max_tokens') throw new Error('The reply was cut off. Try again with fewer PDFs.');
+  const text = msg.content.filter(b => b.type === 'text').map(b => b.text).join('');
+  return { reply: parseReply(text), usage: msg.usage, model: msg.model };
+}
+
+export function firstInstruction({ today, notes, clientEmail, fileNames }) {
+  return [
+    `Today is ${today}. Build the proposal from these ${fileNames.length} quote PDF(s): ${fileNames.join(', ')}.`,
+    clientEmail ? `Client email address (for your reference only): ${clientEmail}.` : '',
+    notes ? `Notes from the agency team: ${notes}` : '',
+  ].filter(Boolean).join('\n');
+}
+
+export function fixInstruction({ today, proposal, problems }) {
+  return [
+    `Today is ${today}. You already wrote the proposal below from these quotes, but the build reported problems.`,
+    'Fix every problem and reply with the complete corrected JSON object in the same format',
+    '({"proposal": ..., "agent_notes": [...]}). Overflowing page: shorten that page\'s text or drop a',
+    'low-value row; never remove required content. Math failure: recheck the numbers against the quotes.',
+    '',
+    'Problems:',
+    ...problems.map(p => `- ${p}`),
+    '',
+    'Current proposal.json:',
+    JSON.stringify(proposal),
+  ].join('\n');
+}

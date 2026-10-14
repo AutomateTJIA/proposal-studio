@@ -1,0 +1,235 @@
+{
+ "proposal_type": "Home",
+ "lines": [
+  "home"
+ ],
+ "prepared": "2026-10-09",
+ "client": {
+  "last_name": "Sampleton",
+  "full_names": "Taylor Sampleton",
+  "address_line": "300 Placeholder Court · Matthews, NC 28105",
+  "address_short": "300 Placeholder Ct, Matthews, NC 28105"
+ },
+ "options": [
+  {
+   "name": "Travelers",
+   "sub": "Travelers Personal Insurance Company",
+   "tag": "Your quote",
+   "price": "$1,984.00",
+   "price_label": "Home · 12 months",
+   "col_title": "Travelers",
+   "col_sub": "Your quote",
+   "recommended": true
+  }
+ ],
+ "cover": {
+  "eyebrow": "Homeowners Proposal",
+  "headline": "A tailored home policy for Taylor",
+  "subtext": "We quoted your home with Travelers. Here's what it covers, what it costs, and how to get started.",
+  "insured_label": "Insured property",
+  "insured_lines": [
+   "2004 two-story home · 2,310 sq ft",
+   "Brick veneer · asphalt shingle roof, about 6 years old"
+  ],
+  "premium_label": "12-month premium",
+  "premium_value": "$1,984.00",
+  "premium_note": "Travelers homeowners"
+ },
+ "pages": [
+  {
+   "type": "note",
+   "headline": "Taylor, thank you.",
+   "pull_quote": "Strong coverage for the house and everything in it, at a price that holds.",
+   "paragraphs": [
+    "Thank you for letting us quote your home at 300 Placeholder Court. Travelers came back with a solid policy at <b>$1,984.00</b> for the year.",
+    "It insures the house for $420,000, plus 25% more if rebuilding costs run over, with $300,000 of personal liability and water back-up coverage included.",
+    "Call or email me when you're ready, and we can bind the same day."
+   ],
+   "summary": {
+    "label": "Your quote",
+    "name": "Travelers",
+    "sub": "Homeowners · 12 months",
+    "big": "$1,984.00",
+    "big_label": "12-month premium",
+    "rows": [
+     [
+      "Dwelling",
+      "$420,000"
+     ],
+     [
+      "Personal liability",
+      "$300,000"
+     ],
+     [
+      "All-peril deductible",
+      "$1,000"
+     ],
+     [
+      "Monthly (EFT)",
+      "$167.33"
+     ]
+    ]
+   }
+  },
+  {
+   "type": "home",
+   "headline": "What your policy covers.",
+   "address": "300 Placeholder Court, Matthews, NC 28105",
+   "rows": [
+    [
+     "Coverage A · Dwelling",
+     "$420,000"
+    ],
+    [
+     "Extra dwelling coverage",
+     "+25% ($105,000) · included"
+    ],
+    [
+     "Coverage B · Other Structures",
+     "$42,000"
+    ],
+    [
+     "Coverage C · Personal Property",
+     "$210,000"
+    ],
+    [
+     "Coverage D · Loss of Use",
+     "$84,000"
+    ],
+    [
+     "Coverage E · Personal Liability",
+     "$300,000"
+    ],
+    [
+     "Coverage F · Medical Payments",
+     "$2,000"
+    ],
+    [
+     "All-peril deductible",
+     "$1,000"
+    ],
+    [
+     "Water back-up &amp; sump overflow",
+     "$10,000 · included"
+    ],
+    {
+     "label": "12-month home premium",
+     "values": [
+      "$1,984.00"
+     ],
+     "total": true
+    }
+   ],
+   "discounts": [
+    {
+     "title": "Travelers",
+     "text": "Loss free · Good payer · Protective device · Early quote"
+    }
+   ]
+  },
+  {
+   "type": "exclusions",
+   "headline": "What this policy won't cover.",
+   "lede": "Every homeowners policy has exclusions and limits. Here are the ones worth knowing before you bind.",
+   "common_label": "Exclusions &amp; limits in this quote",
+   "common": [
+    {
+     "title": "Flood",
+     "text": "Homeowners policies never cover flood. Flood insurance is a separate policy we can quote."
+    },
+    {
+     "title": "Earthquake",
+     "text": "Not included in this quote."
+    },
+    {
+     "title": "Water back-up",
+     "text": "Sewer or sump back-up is capped at $10,000."
+    },
+    {
+     "title": "Wear and upkeep",
+     "text": "Damage from age, wear, or lack of maintenance is not covered."
+    }
+   ],
+   "callout": {
+    "title": "Closing the gaps",
+    "text": "Flood insurance and a higher water back-up limit can usually be added. Ask us for a price before you bind."
+   },
+   "fine": "This is a summary of what the quote lists, not the full policy. The policy contract controls."
+  },
+  {
+   "type": "explained",
+   "headline": "Plain language. Real protection.",
+   "sections": [
+    {
+     "title": "Your home",
+     "rows": [
+      [
+       "Dwelling (A)",
+       "Pays to rebuild the house itself: walls, roof, floors, built-ins. The limit is based on rebuilding cost, not what the home would sell for."
+      ],
+      [
+       "Personal property (C)",
+       "Covers your belongings, paid at what it costs to buy the item new."
+      ],
+      [
+       "Liability (E) · Med pay (F)",
+       "Liability pays your legal defense and any judgment if someone is hurt on your property. Med pay covers a guest's small medical bills quickly."
+      ],
+      [
+       "Water back-up",
+       "Standard policies exclude water from a backed-up drain or failed sump pump. This fills that gap."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "type": "payment",
+   "headline": "Choosing a plan and getting started.",
+   "cards": [
+    {
+     "title": "Travelers · Pay in full",
+     "best": true,
+     "rows": [
+      {
+       "label": "12-month premium",
+       "value": "$1,984.00",
+       "total": true
+      }
+     ]
+    },
+    {
+     "title": "Travelers · Monthly",
+     "rows": [
+      [
+       "Estimated down payment",
+       "$167.33"
+      ],
+      [
+       "Monthly (EFT)",
+       "$167.33"
+      ],
+      [
+       "Service charge per payment",
+       "$2.00"
+      ]
+     ]
+    }
+   ],
+   "steps": {
+    "review": "Choose pay-in-full or monthly, and let us know your preferred start date."
+   }
+  }
+ ],
+ "checks": [],
+ "email": {
+  "greeting": "Taylor",
+  "intro": "It covers your home with Travelers.",
+  "other": [
+   "Your home is insured for $420,000, plus 25% more if rebuilding costs run over, with $300,000 of personal liability and water back-up coverage included."
+  ],
+  "heads_up": [
+   "You can pay in full or monthly. Let me know which you prefer and your ideal start date."
+  ]
+ }
+}

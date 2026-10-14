@@ -1,0 +1,976 @@
+{
+ "proposal_type": "Bundle",
+ "lines": [
+  "home",
+  "auto"
+ ],
+ "prepared": "2026-10-09",
+ "term": "12 months",
+ "client": {
+  "last_name": "Sample",
+  "full_names": "Sam &amp; Pat Sample",
+  "address_line": "100 Example Lane · Charlotte, NC 28277",
+  "address_short": "100 Example Ln, Charlotte, NC 28277"
+ },
+ "options": [
+  {
+   "name": "Liberty Mutual",
+   "sub": "Safeco home · American States auto",
+   "tag": "Best value",
+   "price": "$3,667.06",
+   "price_label": "Home + auto · 12 months",
+   "col_title": "Liberty Mutual",
+   "col_sub": "Best value",
+   "recommended": true
+  },
+  {
+   "name": "Travelers",
+   "sub": "Travelers home · Travelers auto",
+   "tag": "Option",
+   "price": "$3,898.24",
+   "price_label": "Home + auto · 12 months",
+   "col_title": "Travelers",
+   "col_sub": "Travelers"
+  },
+  {
+   "name": "National General",
+   "sub": "Encompass home · Integon auto",
+   "tag": "Option",
+   "price": "$4,458.24",
+   "price_label": "Home + auto · 12 months",
+   "col_title": "National General",
+   "col_sub": "Encompass · Integon"
+  }
+ ],
+ "cover": {
+  "eyebrow": "Home &amp; Auto Bundle Proposal",
+  "headline": "Three bundles, side by side, for Sam &amp; Pat",
+  "subtext": "We quoted your home, your Honda and your Toyota with three carriers. Here's how each bundle compares, and the one we recommend.",
+  "strip": {
+   "tag": "Recommended",
+   "text": "<b>Raise auto property damage to $100,000 with Liberty Mutual</b> · to match the Travelers and National General quotes",
+   "right": "Re-quoted before you sign"
+  },
+  "insured_lines": [
+   "1996 two-story home · 1,874 sq ft",
+   "2018 Honda CR-V LX · 2016 Toyota Tacoma Double Cab"
+  ],
+  "premium_label": "Best-value annual premium",
+  "premium_value": "$3,667.06",
+  "premium_note": "Liberty Mutual bundle"
+ },
+ "pages": [
+  {
+   "type": "note",
+   "headline": "Sam &amp; Pat, thank you.",
+   "pull_quote": "The lowest price and the most home protection, from the same carrier.",
+   "paragraphs": [
+    "Thank you for letting us shop your insurance. We quoted your home at 100 Example Lane, Charlotte, NC 28277, and both vehicles as a bundle with three carriers: Liberty Mutual, Travelers and National General.",
+    "Liberty Mutual comes out on top. It's <b>$231.18 a year less</b> than Travelers and <b>$791.18 less</b> than National General. It also gives you the highest personal property limit ($350,000), $300,000 of personal liability, water back-up and service line coverage, and accident forgiveness on the auto policy. Pay the auto policy in full and you save another $92.00.",
+    "One change we recommend: Liberty Mutual's quote carries $50,000 of auto property damage liability, while Travelers and National General carry $100,000. We'll raise it to $100,000 and confirm the small price difference with you before anything is signed. Call or email me when you're ready, and we can bind the same day."
+   ],
+   "summary": {
+    "label": "Our recommendation",
+    "name": "Liberty Mutual",
+    "sub": "Safeco home · American States auto",
+    "big": "$3,667.06",
+    "big_label": "12-month bundle premium",
+    "rows": [
+     [
+      "Home · Safeco",
+      "$2,246.00"
+     ],
+     [
+      "Auto · American States",
+      "$1,421.06"
+     ],
+     [
+      "vs. Travelers",
+      "– $231.18"
+     ],
+     [
+      "vs. National General",
+      "– $791.18"
+     ],
+     [
+      "Auto paid in full",
+      "– $92.00"
+     ]
+    ],
+    "fine": "Premiums are quotes, not a binder of coverage, and are subject to carrier underwriting. The property damage increase will change the auto premium slightly."
+   }
+  },
+  {
+   "type": "comparison",
+   "headline": "Your three bundles at a glance.",
+   "lede": "All three quotes are for a 12-month term. We'll set the start date to match your current renewal. The highlighted column is the bundle we recommend.",
+   "rows": [
+    [
+     "Home premium",
+     "$2,246.00",
+     "$2,072.00",
+     "$2,596.00"
+    ],
+    [
+     "Auto premium · 2 vehicles",
+     "$1,421.06",
+     "$1,826.24",
+     "$1,862.24"
+    ],
+    {
+     "label": "Bundle total",
+     "values": [
+      "$3,667.06",
+      "$3,898.24",
+      "$4,458.24"
+     ],
+     "total": true
+    },
+    [
+     "Difference vs. best value",
+     "—",
+     "+ $231.18",
+     "+ $791.18"
+    ],
+    [
+     "Bundle paid in full",
+     "$3,575.06",
+     "$3,898.24",
+     "$4,458.24"
+    ],
+    [
+     "Personal liability (Coverage E)",
+     "$300,000",
+     "$300,000",
+     "$100,000"
+    ],
+    [
+     "Personal property (Coverage C)",
+     "$350,000",
+     "$250,000",
+     "$250,000"
+    ],
+    [
+     "Water back-up · service/buried lines",
+     "$15,000 · yes",
+     "$15,000 · yes",
+     "$15,000 · no"
+    ],
+    [
+     "Wind/hail deductible",
+     "$1,000",
+     "$1,000",
+     "$2,000"
+    ],
+    [
+     "Wind/hail roof claims",
+     "Standard settlement",
+     "Standard settlement",
+     "Actual cash value (depreciated)"
+    ],
+    [
+     "Auto liability (BI · PD)",
+     "$100k/$300k · $50k*",
+     "$100k/$300k · $100k",
+     "$100k/$300k · $100k"
+    ],
+    [
+     "Accident forgiveness",
+     "Included (after 3 years)",
+     "—",
+     "—"
+    ]
+   ],
+   "fine": "*We recommend raising Liberty Mutual's property damage limit to $100,000 to match the other two quotes. We'll confirm the price change before you sign.",
+   "why": [
+    {
+     "title": "Why Liberty Mutual",
+     "recommended": true,
+     "text": "Lowest bundle price, the most belongings coverage, $300,000 of liability, accident forgiveness and a pay-in-full auto discount."
+    },
+    {
+     "title": "Why Travelers",
+     "text": "A solid option with $100,000 property damage, buried utility lines and roadside assistance. It costs $231.18 more a year than Liberty Mutual."
+    },
+    {
+     "title": "Why National General",
+     "text": "The highest bundle price, only $100,000 of home liability, a $2,000 wind/hail deductible, and wind/hail roof claims paid at depreciated value."
+    }
+   ]
+  },
+  {
+   "type": "home",
+   "headline": "Your home, insured three ways.",
+   "address": "100 Example Lane, Charlotte, NC 28277",
+   "lede": "All three carriers insure the house for the same $500,000 dwelling limit, plus 25% more if rebuilding costs run over. The differences are in belongings coverage, liability, extras and price.",
+   "columns": [
+    {
+     "title": "Safeco",
+     "sub": "Liberty Mutual"
+    },
+    {
+     "title": "Travelers",
+     "sub": "Travelers"
+    },
+    {
+     "title": "Encompass",
+     "sub": "National General"
+    }
+   ],
+   "rows": [
+    [
+     "Coverage A · Dwelling",
+     "$500,000",
+     "$500,000",
+     "$500,000"
+    ],
+    [
+     "Extra dwelling coverage",
+     "+25% · included",
+     "+25% ($125,000) · included",
+     "+25% · included"
+    ],
+    [
+     "Coverage B · Other Structures",
+     "$50,000",
+     "$50,000",
+     "$50,000"
+    ],
+    [
+     "Coverage C · Personal Property",
+     "$350,000",
+     "$250,000",
+     "$250,000"
+    ],
+    [
+     "Personal property replacement cost",
+     "Included",
+     "Included",
+     "Included"
+    ],
+    [
+     "Coverage D · Loss of Use",
+     "$100,000",
+     "$100,000",
+     "$100,000"
+    ],
+    [
+     "Coverage E · Personal Liability",
+     "$300,000",
+     "$300,000",
+     "$100,000"
+    ],
+    [
+     "Coverage F · Medical Payments",
+     "$3,000",
+     "$2,000",
+     "$1,000"
+    ],
+    [
+     "All-peril deductible",
+     "$1,000",
+     "$1,000",
+     "$1,000"
+    ],
+    [
+     "Wind / hail deductible",
+     "$1,000 (all perils)",
+     "$1,000 (all perils)",
+     "$2,000"
+    ],
+    [
+     "Wind/hail roof surfacing settlement",
+     "Standard",
+     "Standard",
+     "Actual cash value"
+    ],
+    [
+     "Water back-up &amp; sump overflow",
+     "$15,000 · $35.00",
+     "$15,000 · included",
+     "$15,000 · $35.00"
+    ],
+    [
+     "Service line / buried utility lines",
+     "Service line · $25.00",
+     "$10,000 · $48.00",
+     "Not included"
+    ],
+    [
+     "Loss assessment",
+     "$26,000 · $9.00",
+     "—",
+     "—"
+    ],
+    [
+     "Other included coverages",
+     "Business pursuits; credit card $1,000",
+     "—",
+     "Business property $2,500; home-sharing host; property of others $1,000"
+    ],
+    {
+     "label": "12-month home premium",
+     "values": [
+      "$2,246.00",
+      "$2,072.00",
+      "$2,596.00"
+     ],
+     "total": true
+    }
+   ],
+   "discounts": [
+    {
+     "title": "Safeco",
+     "text": "Account · Alarm · Advance quote"
+    },
+    {
+     "title": "Travelers",
+     "text": "Multi-policy · Loss free · Good payer · Protective device"
+    },
+    {
+     "title": "Encompass",
+     "text": "Claim free · Companion policy · Paperless · Protective device · Welcome"
+    }
+   ]
+  },
+  {
+   "type": "auto",
+   "headline": "Your Honda and your Toyota.",
+   "cards": [
+    {
+     "cap": "Vehicle 1",
+     "name": "2018 Honda CR-V LX",
+     "sub": "VIN EXAMPLEVIN0000001 · Pleasure use"
+    },
+    {
+     "cap": "Vehicle 2",
+     "name": "2016 Toyota Tacoma Double Cab",
+     "sub": "VIN EXAMPLEVIN0000002 · Pleasure use"
+    },
+    {
+     "cap": "Drivers",
+     "name": "Sam &amp; Pat",
+     "sub": "Both rated drivers · garaged in Charlotte 28277"
+    }
+   ],
+   "first_col": "Coverage (same on both vehicles)",
+   "columns": [
+    {
+     "title": "American States",
+     "sub": "Liberty Mutual"
+    },
+    {
+     "title": "Travelers",
+     "sub": "Travelers"
+    },
+    {
+     "title": "Integon",
+     "sub": "National General"
+    }
+   ],
+   "rows": [
+    [
+     "Bodily Injury Liability",
+     "$100,000 / $300,000",
+     "$100,000 / $300,000",
+     "$100,000 / $300,000"
+    ],
+    [
+     "Property Damage Liability",
+     "$50,000*",
+     "$100,000",
+     "$100,000"
+    ],
+    [
+     "Uninsured / Underinsured Motorist BI",
+     "$100,000 / $300,000",
+     "$100,000 / $300,000",
+     "$100,000 / $300,000"
+    ],
+    [
+     "Uninsured Motorist Property Damage",
+     "$50,000",
+     "$100,000",
+     "$100,000"
+    ],
+    [
+     "Medical Payments",
+     "$2,000",
+     "$2,000",
+     "$2,000"
+    ],
+    [
+     "Comprehensive deductible",
+     "$500",
+     "$500",
+     "$500"
+    ],
+    [
+     "Collision deductible",
+     "$500",
+     "$500",
+     "$500"
+    ],
+    [
+     "Rental reimbursement",
+     "$50/day",
+     "$50/day · $1,500 max",
+     "$50/day · $1,500 max"
+    ],
+    [
+     "Towing / roadside",
+     "Towing &amp; labor $100",
+     "Roadside assistance",
+     "Towing &amp; labor $100"
+    ],
+    [
+     "Accident forgiveness",
+     "Included (after 3 years)",
+     "—",
+     "—"
+    ],
+    [
+     "2018 Honda CR-V premium",
+     "$594.28",
+     "$868.62",
+     "$1,049.35**"
+    ],
+    [
+     "2016 Toyota Tacoma premium",
+     "$567.78",
+     "$852.62",
+     "$772.89"
+    ],
+    [
+     "Policy-level charges",
+     "$259.00 UM/UIM + UMPD",
+     "$105.00 UM/UIM + UMPD",
+     "$40.00 pay-plan setup"
+    ],
+    {
+     "label": "12-month auto premium",
+     "values": [
+      "$1,421.06",
+      "$1,826.24",
+      "$1,862.24"
+     ],
+     "total": true
+    },
+    [
+     "Paid in full",
+     "<b>$1,329.06</b> (save $92.00)",
+     "—",
+     "—"
+    ]
+   ],
+   "fine": "*We recommend raising this to $100,000 to match the other two quotes; we'll confirm the price change before you sign. **National General charges uninsured/underinsured motorist coverage once, on the CR-V, and it applies to both vehicles.",
+   "discounts": [
+    {
+     "title": "American States",
+     "text": "Account · Advance quoting · Anti-theft · Coverage · Multi-car · Passive restraint · Violation free"
+    },
+    {
+     "title": "Travelers",
+     "text": "Passive restraint · Continuous insurance · Good payer · Multi-car · Multi-policy · Safe driver"
+    },
+    {
+     "title": "Integon",
+     "text": "Credit ZIP match · Homeowner · Multi-car · Multi-policy · Paperless · Airbag"
+    }
+   ]
+  },
+  {
+   "type": "exclusions",
+   "headline": "What these policies won't cover.",
+   "lede": "Every home and auto policy has exclusions and limits. Here is what applies to all three bundles, and where each carrier differs.",
+   "common": [
+    {
+     "title": "Flood",
+     "text": "Homeowners policies never cover flood. Flood insurance is a separate policy we can quote."
+    },
+    {
+     "title": "Earthquake",
+     "text": "Not included in any of the three home quotes."
+    },
+    {
+     "title": "Water back-up",
+     "text": "Sewer or sump back-up is capped at $15,000 on all three."
+    },
+    {
+     "title": "Rideshare &amp; delivery driving",
+     "text": "Personal auto policies limit coverage while driving for an app. Tell us before you start."
+    }
+   ],
+   "carriers": [
+    {
+     "name": "Liberty Mutual",
+     "items": [
+      {
+       "title": "Auto property damage",
+       "key": true,
+       "text": "Quoted at $50,000, lower than the others. We are re-quoting at $100,000."
+      },
+      {
+       "title": "Loss assessment",
+       "text": "HOA assessments covered up to $26,000."
+      }
+     ]
+    },
+    {
+     "name": "Travelers",
+     "items": [
+      {
+       "title": "Buried utility lines",
+       "text": "Underground lines covered up to $10,000."
+      },
+      {
+       "title": "Loss assessment",
+       "text": "Not shown on the quote."
+      }
+     ]
+    },
+    {
+     "name": "National General",
+     "items": [
+      {
+       "title": "Roof wind &amp; hail",
+       "key": true,
+       "text": "Roof surfacing damaged by wind or hail is paid at actual cash value (depreciated), not replacement cost."
+      },
+      {
+       "title": "Wind &amp; hail deductible",
+       "text": "$2,000, double the other carriers."
+      },
+      {
+       "title": "Personal liability",
+       "text": "$100,000, versus $300,000 with the others."
+      },
+      {
+       "title": "Service line",
+       "text": "Not included."
+      }
+     ]
+    }
+   ],
+   "fine": "This is a summary of what each quote lists, not the full policy. The policy contract controls.",
+   "callout": {
+    "title": "Closing the gaps",
+    "text": "Flood insurance, earthquake coverage and a higher water back-up limit can usually be added. Ask us for a price on any of them before you bind."
+   }
+  },
+  {
+   "type": "explained",
+   "headline": "Plain language. Real protection.",
+   "sections": [
+    {
+     "title": "Your home",
+     "rows": [
+      [
+       "Dwelling (A)",
+       "Pays to rebuild the house itself: walls, roof, floors, built-ins. The limit is based on rebuilding cost, not what the home would sell for."
+      ],
+      [
+       "Extra dwelling coverage",
+       "If a rebuild costs more than $500,000, all three quotes add up to 25% more. Construction costs spike after big storms, so this matters."
+      ],
+      [
+       "Other structures (B)",
+       "Covers structures not attached to the house, such as fences, the driveway or a shed."
+      ],
+      [
+       "Personal property (C)",
+       "Covers your belongings. With replacement cost, you're paid what it costs to buy the item new, with no deduction for age."
+      ],
+      [
+       "Loss of use (D)",
+       "If a covered loss forces you out of the house, this pays for a hotel, meals above your normal budget and other extra living costs."
+      ],
+      [
+       "Liability (E) · Med pay (F)",
+       "Liability pays your legal defense and any judgment if someone is hurt on your property. Med pay covers a guest's small medical bills quickly, whoever was at fault."
+      ],
+      [
+       "Water back-up",
+       "Standard policies exclude water from a backed-up drain or failed sump pump. This fills that gap, and it's one of the most common claims we see."
+      ],
+      [
+       "Service line / buried lines",
+       "Covers repairs to the underground water, sewer, power and gas lines running to your house, including digging up the yard."
+      ]
+     ]
+    },
+    {
+     "title": "Your autos",
+     "rows": [
+      [
+       "Bodily injury liability",
+       "If you cause an accident that injures someone, this pays their medical bills and lost wages and covers your legal defense."
+      ],
+      [
+       "Property damage liability",
+       "Pays for damage you cause to someone else's car or property. Many new trucks and SUVs cost more than $50,000, which is why we recommend $100,000."
+      ],
+      [
+       "Uninsured / underinsured motorist",
+       "If a driver with no insurance, or too little, hits you, this covers your injuries and your car's damage."
+      ],
+      [
+       "Comprehensive · collision",
+       "Comprehensive covers theft, hail, vandalism and deer strikes. Collision repairs your car after a crash, whoever caused it. You pay the deductible first."
+      ],
+      [
+       "Rental · towing / roadside",
+       "Rental pays for a car while yours is in the shop after a covered loss. Towing or roadside covers breakdowns, flats and jump-starts."
+      ],
+      [
+       "Accident forgiveness",
+       "With Liberty Mutual, after three years with the carrier your first at-fault accident won't raise your premium, under the carrier's rules."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "type": "property",
+   "headline": "Your home at a glance.",
+   "address": "100 Example Lane, Charlotte, NC 28277",
+   "stats": [
+    {
+     "cap": "Reconstruction cost estimate (Safeco)",
+     "value": "$430,400",
+     "sub": "All three quotes insure the dwelling at $500,000, above this estimate."
+    },
+    {
+     "cap": "Year built",
+     "value": "1996"
+    },
+    {
+     "cap": "Living area",
+     "value": "1,874 sq ft"
+    },
+    {
+     "cap": "Stories",
+     "value": "2"
+    }
+   ],
+   "specs": [
+    [
+     "Style",
+     "Single family · 2 story"
+    ],
+    [
+     "Year built",
+     "1996"
+    ],
+    [
+     "Living area",
+     "1,874 sq ft"
+    ],
+    [
+     "Foundation",
+     "Slab"
+    ],
+    [
+     "Exterior",
+     "Brick veneer"
+    ],
+    [
+     "Garage",
+     "Attached (2-car per Safeco; 1-car per Travelers)"
+    ],
+    [
+     "Kitchens",
+     "1"
+    ],
+    [
+     "Baths",
+     "3 full"
+    ],
+    [
+     "Heating",
+     "Gas, forced air"
+    ],
+    [
+     "Air conditioning",
+     "Central air"
+    ],
+    [
+     "Floors",
+     "Carpet 71% · hardwood 14% · vinyl 10% · tile 5%"
+    ],
+    [
+     "Pool",
+     "None"
+    ],
+    [
+     "Protective devices",
+     "Central burglar alarm"
+    ]
+   ],
+   "roof": {
+    "rows": [
+     [
+      "Material",
+      "Asphalt shingle"
+     ],
+     [
+      "Style",
+      "Gable, moderate pitch"
+     ],
+     [
+      "Age",
+      "About 10 years (Travelers)"
+     ],
+     [
+      "Roof area",
+      "2,287 sq ft"
+     ]
+    ],
+    "note": "National General would pay wind/hail roof surfacing claims at actual cash value. On a 10-year-old roof, that means a depreciated payout. Safeco and Travelers don't list that limitation."
+   }
+  },
+  {
+   "type": "payment",
+   "headline": "Choosing a plan and getting started.",
+   "cards": [
+    {
+     "title": "Best value · Liberty Mutual",
+     "best": true,
+     "rows": [
+      [
+       "Home · pay in full",
+       "$2,246.00"
+      ],
+      [
+       "Auto · pay in full",
+       "$1,329.06"
+      ],
+      {
+       "label": "Bundle, paid in full",
+       "value": "$3,575.06",
+       "total": true
+      },
+      {
+       "sub": "Monthly EFT"
+      },
+      [
+       "First payment",
+       "$307.58"
+      ],
+      [
+       "Then 11 ×",
+       "$307.59"
+      ],
+      [
+       "Monthly-plan total",
+       "$3,691.06"
+      ]
+     ]
+    },
+    {
+     "title": "Travelers",
+     "rows": [
+      [
+       "Home · 12 months",
+       "$2,072.00"
+      ],
+      [
+       "Auto · 12 months",
+       "$1,826.24"
+      ],
+      {
+       "label": "Bundle total",
+       "value": "$3,898.24",
+       "total": true
+      },
+      {
+       "sub": "Monthly option"
+      },
+      [
+       "Home down payment",
+       "$167.52"
+      ],
+      [
+       "Auto down payment",
+       "$152.13"
+      ],
+      [
+       "Home monthly (EFT)",
+       "$174.68"
+      ]
+     ]
+    },
+    {
+     "title": "National General",
+     "rows": [
+      [
+       "Home · pay in full",
+       "$2,596.00"
+      ],
+      [
+       "Auto · 12-month quoted",
+       "$1,862.24"
+      ],
+      {
+       "label": "Bundle total",
+       "value": "$4,458.24",
+       "total": true
+      },
+      {
+       "sub": "Monthly option"
+      },
+      [
+       "Home down (12-pay)",
+       "$216.26"
+      ],
+      [
+       "Auto down, then 11 × $160.44",
+       "$133.40"
+      ],
+      [
+       "First payment",
+       "$349.66"
+      ]
+     ]
+    }
+   ],
+   "fine": "Monthly amounts come from each carrier's quote and include any installment fees they list. Liberty Mutual's EFT auto plan adds a $2.00 fee per installment; its home plan has no fee. Liberty Mutual figures will change slightly once property damage is raised to $100,000.",
+   "info": [
+    {
+     "title": "About the property damage limit",
+     "text": "Liberty Mutual's quote carries $50,000 of property damage liability. We'll re-quote it at $100,000, the same as the other two carriers, and confirm the new premium with you before you sign."
+    },
+    {
+     "title": "Worth a conversation: an umbrella",
+     "text": "With a home and two vehicles, a personal umbrella adds a layer of liability protection, often $1 million, above your home and auto limits. Ask us to quote it alongside this bundle."
+    }
+   ],
+   "steps": {
+    "review": "Pick a bundle and payment plan. We recommend Liberty Mutual, with property damage raised to $100,000."
+   }
+  }
+ ],
+ "checks": [
+  {
+   "label": "Liberty Mutual bundle (12 mo)",
+   "parts": [
+    "$2,246.00",
+    "$1,421.06"
+   ],
+   "total": "$3,667.06"
+  },
+  {
+   "label": "Travelers bundle",
+   "parts": [
+    "$2,072.00",
+    "$1,826.24"
+   ],
+   "total": "$3,898.24"
+  },
+  {
+   "label": "National General bundle",
+   "parts": [
+    "$2,596.00",
+    "$1,862.24"
+   ],
+   "total": "$4,458.24"
+  },
+  {
+   "label": "Liberty Mutual paid in full",
+   "parts": [
+    "$2,246.00",
+    "$1,329.06"
+   ],
+   "total": "$3,575.06"
+  },
+  {
+   "label": "Liberty Mutual auto PIF discount",
+   "parts": [
+    "$1,421.06",
+    "-$1,329.06"
+   ],
+   "total": "$92.00"
+  },
+  {
+   "label": "Travelers vs. best value",
+   "parts": [
+    "$3,898.24",
+    "-$3,667.06"
+   ],
+   "total": "$231.18"
+  },
+  {
+   "label": "National General vs. best value",
+   "parts": [
+    "$4,458.24",
+    "-$3,667.06"
+   ],
+   "total": "$791.18"
+  },
+  {
+   "label": "Liberty Mutual auto vehicles + policy",
+   "parts": [
+    "$594.28",
+    "$567.78",
+    "$259.00"
+   ],
+   "total": "$1,421.06"
+  },
+  {
+   "label": "Travelers auto vehicles + policy",
+   "parts": [
+    "$868.62",
+    "$852.62",
+    "$105.00"
+   ],
+   "total": "$1,826.24"
+  },
+  {
+   "label": "National General auto vehicles + setup",
+   "parts": [
+    "$1,049.35",
+    "$772.89",
+    "$40.00"
+   ],
+   "total": "$1,862.24"
+  },
+  {
+   "label": "Liberty Mutual first monthly payment",
+   "parts": [
+    "$187.16",
+    "$120.42"
+   ],
+   "total": "$307.58"
+  },
+  {
+   "label": "Liberty Mutual monthly-plan total (carrier totals)",
+   "parts": [
+    "$2,246.00",
+    "$1,445.06"
+   ],
+   "total": "$3,691.06"
+  },
+  {
+   "label": "National General first payment",
+   "parts": [
+    "$216.26",
+    "$133.40"
+   ],
+   "total": "$349.66"
+  }
+ ],
+ "email": {
+  "greeting": "Sam and Pat",
+  "intro": "It compares your home and both vehicles with three carriers: Liberty Mutual, Travelers and National General.",
+  "recommendation": "We recommend Liberty Mutual. It's the lowest price and the most home protection:",
+  "reasons": [
+   "$231.18 a year less than Travelers and $791.18 less than National General.",
+   "The highest personal property limit ($350,000) and $300,000 of personal liability.",
+   "Water back-up and service line coverage, plus accident forgiveness on the auto policy."
+  ],
+  "heads_up": [
+   "Liberty Mutual's quote carries $50,000 of auto property damage. We'll raise it to $100,000 to match the others and confirm the small price change before you sign.",
+   "With a home and two vehicles, a personal umbrella is worth a conversation. I'd be glad to quote it."
+  ]
+ }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "tjia-proposal-studio",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.129.0",
+    "@sparticuz/chromium": "153.0.0",
+    "@vercel/blob": "2.8.0",
+    "puppeteer-core": "25.11.0"
+  }
+}

@@ -1,0 +1,763 @@
+{
+ "proposal_type": "Disability",
+ "lines": [
+  "disability"
+ ],
+ "prepared": "2026-10-09",
+ "term": "To age 65",
+ "client": {
+  "last_name": "Example",
+  "full_names": "Jordan Example",
+  "address_line": "Individual disability income insurance · North Carolina",
+  "address_short": "Male · age 45 · non-smoker · NC"
+ },
+ "options": [
+  {
+   "name": "The Standard",
+   "sub": "Platinum Advantage · $4,060/month",
+   "tag": "Our pick · most built-in benefits",
+   "price": "$1,827.79",
+   "price_label": "Per year · 90-day wait · to age 65",
+   "col_title": "The Standard",
+   "col_sub": "Platinum Advantage",
+   "recommended": true
+  },
+  {
+   "name": "Principal",
+   "sub": "Income Protector · $4,000/month",
+   "tag": "Lowest premium",
+   "price": "$1,819.82",
+   "price_label": "Per year · 90-day wait · to age 65",
+   "col_title": "Principal",
+   "col_sub": "Income Protector"
+  },
+  {
+   "name": "MassMutual",
+   "sub": "Radius Choice · $4,100/month",
+   "tag": "Highest benefit",
+   "price": "$2,384.95",
+   "price_label": "Per year · 90-day wait · to age 65",
+   "col_title": "MassMutual",
+   "col_sub": "Radius Choice"
+  }
+ ],
+ "cover": {
+  "eyebrow": "Disability Income Proposal",
+  "headline": "Three ways to protect your paycheck, Jordan",
+  "subtext": "We quoted income protection with The Standard, Principal and MassMutual. Here's how each one compares, every waiting-period and benefit-length option, and the plan we recommend.",
+  "strip": {
+   "tag": "Your choice",
+   "text": "<b>Lower the premium or lengthen the protection.</b> Every 90- and 180-day waiting period, to age 65 or 67, is priced on page 4.",
+   "right": "See page 4"
+  },
+  "insured_label": "Coverage for",
+  "insured_lines": [
+   "Occupation class 4A · non-smoker",
+   "Annual income $75,000"
+  ],
+  "premium_label": "Recommended annual premium",
+  "premium_value": "$1,827.79",
+  "premium_note": "The Standard · $4,060 a month to age 65"
+ },
+ "pages": [
+  {
+   "type": "note",
+   "headline": "Jordan, thank you.",
+   "pull_quote": "Your ability to earn is your biggest asset. This protects it.",
+   "paragraphs": [
+    "Thank you for letting us shop your income protection. We quoted three of the strongest names in individual disability insurance: The Standard, Principal and MassMutual. Each one would replace about two-thirds of your $75,000 income if an illness or injury kept you from working.",
+    "We recommend <b>The Standard</b>. For <b>$1,827.79 a year</b> it pays <b>$4,060 a month</b> if you can't do your own occupation, and it covers mental health and substance-related disabilities with no time limit. It also adds a Family Care Benefit, a survivor benefit and the option to grow your benefit 4% a year for six years without new health questions.",
+    "Principal is a close second at $7.97 less a year for a $4,000 benefit. All three start paying after a 90-day waiting period and continue to age 65. Page 4 shows how to lower the cost or extend coverage to age 67. Call or email me when you're ready and we'll start your application."
+   ],
+   "summary": {
+    "label": "Our recommendation",
+    "name": "The Standard",
+    "sub": "Platinum Advantage · 90-day wait · to age 65",
+    "big": "$1,827.79",
+    "big_label": "Annual premium",
+    "rows": [
+     [
+      "Monthly benefit",
+      "$4,060"
+     ],
+     [
+      "Share of income replaced",
+      "65%"
+     ],
+     [
+      "vs. Principal",
+      "+ $7.97/yr"
+     ],
+     [
+      "vs. MassMutual",
+      "– $557.16/yr"
+     ],
+     [
+      "Paid monthly",
+      "$159.93/mo"
+     ]
+    ],
+    "fine": "Premiums are quotes, not a contract, and are subject to each carrier's medical and financial underwriting."
+   }
+  },
+  {
+   "type": "comparison",
+   "section": "Carrier Comparison",
+   "headline": "Your three plans at a glance.",
+   "lede": "All three plans start paying after a 90-day waiting period and continue to age 65. The highlighted column is the plan we recommend.",
+   "rows": [
+    {
+     "label": "Annual premium",
+     "values": [
+      "$1,827.79",
+      "$1,819.82",
+      "$2,384.95"
+     ],
+     "total": true
+    },
+    [
+     "Monthly payment",
+     "$159.93",
+     "$151.65",
+     "$206.14"
+    ],
+    [
+     "Cost per year if paid monthly",
+     "$1,919.16",
+     "$1,819.80",
+     "$2,473.68"
+    ],
+    [
+     "Monthly benefit",
+     "$4,060",
+     "$4,000",
+     "$4,100"
+    ],
+    [
+     "Definition of disability",
+     "Own occupation",
+     "True own occupation",
+     "Own occupation"
+    ],
+    [
+     "Partial (residual) disability",
+     "Pays with 20% loss of income",
+     "Pays with 15% loss of income",
+     "Pays with 15% loss of income"
+    ],
+    [
+     "Premium guarantee",
+     "Noncancelable to 65",
+     "Noncancelable to 65",
+     "Noncancelable to 65"
+    ],
+    [
+     "Built-in extras",
+     "Family Care Benefit; survivor benefit (3 × monthly benefit)",
+     "$12,000 death benefit",
+     "Dividends possible (not guaranteed)"
+    ],
+    [
+     "Future increases, no health questions",
+     "4% a year for 6 years + Benefit Increase Rider",
+     "3% a year + Maximize Your Benefit",
+     "3% a year + Benefit Increase Rider"
+    ]
+   ],
+   "why": [
+    {
+     "title": "Why The Standard",
+     "recommended": true,
+     "text": "Nearly the same price as Principal with a $60 higher monthly benefit, unlimited coverage for mental health and substance-related disabilities, and a Family Care Benefit."
+    },
+    {
+     "title": "Why Principal",
+     "text": "The lowest premium, no extra charge to pay monthly, true own-occupation coverage, and partial benefits starting at a 15% income loss."
+    },
+    {
+     "title": "Why MassMutual",
+     "text": "The highest benefit and a mutual company that may pay dividends. It costs $557.16 more a year, and mental health claims are limited to 24 months."
+    }
+   ]
+  },
+  {
+   "type": "table",
+   "section": "Your Options",
+   "headline": "Waiting period and benefit length.",
+   "lede": "A longer waiting period lowers the premium; paying benefits to age 67 adds two more years of protection. Annual premiums for the same coverage:",
+   "tables": [
+    {
+     "first_col": "Waiting period · benefits to",
+     "rows": [
+      {
+       "label": "90 days · to age 65 (quoted)",
+       "values": [
+        "$1,827.79",
+        "$1,819.82",
+        "$2,384.95"
+       ],
+       "total": true
+      },
+      [
+       "90 days · to age 67",
+       "$2,054.12",
+       "$2,040.62",
+       "$2,549*"
+      ],
+      [
+       "180 days · to age 65",
+       "$1,553.50",
+       "$1,746.54",
+       "$2,253*"
+      ],
+      [
+       "180 days · to age 67",
+       "$1,745.83",
+       "$1,925.12",
+       "$2,407*"
+      ]
+     ]
+    },
+    {
+     "label": "Paid monthly",
+     "first_col": "Waiting period · benefits to",
+     "rows": [
+      [
+       "90 days · to age 65",
+       "$159.93/mo",
+       "$151.65/mo",
+       "$206.14/mo"
+      ],
+      [
+       "90 days · to age 67",
+       "$179.74/mo",
+       "$170.05/mo",
+       "On request"
+      ],
+      [
+       "180 days · to age 65",
+       "$135.94/mo",
+       "$145.55/mo",
+       "On request"
+      ],
+      [
+       "180 days · to age 67",
+       "$152.75/mo",
+       "$160.43/mo",
+       "On request"
+      ]
+     ]
+    }
+   ],
+   "fine": "*MassMutual priced these alternatives in its quote, rounded to the nearest dollar; we'll confirm the exact premium before you apply.",
+   "why": [
+    {
+     "title": "90 or 180 days?",
+     "text": "With a 180-day wait you'd cover about six months from savings or sick pay before benefits start. It saves $274.29 a year with The Standard."
+    },
+    {
+     "title": "Age 65 or 67?",
+     "text": "Paying to age 67 lines up with full Social Security retirement age. It adds $226.33 a year with The Standard."
+    },
+    {
+     "title": "Worth a look",
+     "recommended": true,
+     "text": "If you have six months of savings, The Standard with a 180-day wait to age 67 costs $1,745.83, less than the 90-day plan to 65, with two more years of protection."
+    }
+   ]
+  },
+  {
+   "type": "table",
+   "section": "Coverage Details",
+   "headline": "What's in each plan.",
+   "lede": "Each premium is built from the base policy plus the riders shown. All three are quoted with a 90-day waiting period, paid to age 65.",
+   "first_col": "Benefit or rider",
+   "rows": [
+    [
+     "Base policy",
+     "$1,433.99",
+     "$1,425.00",
+     "$1,714.19"
+    ],
+    [
+     "Own-occupation coverage",
+     "$139.21",
+     "$133.90",
+     "$304.63"
+    ],
+    [
+     "Partial / residual disability",
+     "$191.23",
+     "$248.81",
+     "$366.13"
+    ],
+    [
+     "Noncancelable (locked premium)",
+     "$159.56",
+     "Included",
+     "Included"
+    ],
+    [
+     "Presumptive disability (loss of sight, speech, hearing, limbs)",
+     "Included",
+     "Included",
+     "Included"
+    ],
+    [
+     "Waiver of premium while disabled",
+     "Included",
+     "Included",
+     "Included"
+    ],
+    [
+     "Death or survivor benefit",
+     "3 × monthly benefit · included",
+     "$12,000 · $12.11",
+     "—"
+    ],
+    [
+     "Family Care Benefit",
+     "Included",
+     "—",
+     "—"
+    ],
+    [
+     "Mental health &amp; substance-related disabilities",
+     "No time limit",
+     "See policy",
+     "24 months (longer if hospitalized)"
+    ],
+    [
+     "Automatic yearly increases",
+     "4% · 6 years · $0.00",
+     "3% · $0.00",
+     "3% · $0.00"
+    ],
+    [
+     "Buy more later, no health questions",
+     "Benefit Increase Rider · $0.00",
+     "Maximize Your Benefit · $0.00",
+     "Benefit Increase Rider · $0.00"
+    ],
+    [
+     "eApply discount",
+     "– $96.20",
+     "—",
+     "—"
+    ],
+    {
+     "label": "Annual premium",
+     "values": [
+      "$1,827.79",
+      "$1,819.82",
+      "$2,384.95"
+     ],
+     "total": true
+    }
+   ],
+   "fine": "Automatic increases raise your benefit each year, and your premium rises with each increase you accept; you can decline any increase. MassMutual's policy is participating and may pay dividends, which are not guaranteed."
+  },
+  {
+   "type": "exclusions",
+   "headline": "What these plans won't pay for.",
+   "lede": "Every disability policy has exclusions and limits. Here is what each carrier's quote lists, so there are no surprises at claim time.",
+   "common": [
+    {
+     "title": "Self-inflicted injury",
+     "text": "A disability caused by an intentionally self-inflicted injury."
+    },
+    {
+     "title": "War",
+     "text": "A disability from declared or undeclared war or an act of war."
+    },
+    {
+     "title": "Crime &amp; riot",
+     "text": "A disability from committing a felony, an illegal occupation, or taking part in a riot."
+    },
+    {
+     "title": "Incarceration",
+     "text": "No benefits while jailed or detained for more than about a week."
+    },
+    {
+     "title": "Undisclosed health history",
+     "text": "A pre-existing condition left off the application may not be paid. Answer every health question fully."
+    },
+    {
+     "title": "Conditions excluded by name",
+     "text": "Underwriting can exclude a specific condition. Any exclusion will be listed on the offer before you accept."
+    }
+   ],
+   "carriers": [
+    {
+     "name": "The Standard",
+     "items": [
+      {
+       "title": "Pregnancy",
+       "text": "Normal pregnancy or childbirth is not paid for the first 90 days. Complications are covered."
+      },
+      {
+       "title": "Pre-existing conditions",
+       "text": "Looks back 365 days before the policy starts. Covered if disclosed and not excluded."
+      },
+      {
+       "title": "Mental health",
+       "text": "No time limit on mental-disorder or substance-related claims."
+      },
+      {
+       "title": "Working past 65",
+       "text": "The renewal option pays total disability only, for up to 24 months."
+      }
+     ]
+    },
+    {
+     "name": "Principal",
+     "items": [
+      {
+       "title": "Military service",
+       "key": true,
+       "text": "No benefits for active military duty, including the Reserves or National Guard."
+      },
+      {
+       "title": "Living abroad",
+       "text": "Live outside the U.S. or Canada more than 6 months a year and benefits stop after 12 months."
+      },
+      {
+       "title": "Loss of license",
+       "text": "Losing a professional license is not, by itself, a disability."
+      },
+      {
+       "title": "Pre-existing conditions",
+       "text": "Undisclosed conditions are not paid in the first 2 years."
+      },
+      {
+       "title": "Mental health",
+       "text": "The quote does not state a limit. We will confirm the policy wording before you apply."
+      }
+     ]
+    },
+    {
+     "name": "MassMutual",
+     "items": [
+      {
+       "title": "Mental health",
+       "key": true,
+       "text": "Mental-disorder and substance-related claims are paid up to 24 months each, unless you are hospitalized."
+      },
+      {
+       "title": "Pre-existing conditions",
+       "text": "Undisclosed conditions are not paid in the first 2 years."
+      },
+      {
+       "title": "Disability after 60",
+       "text": "If disability starts at 61 or later, the benefit period gets shorter (48 months down to 24)."
+      },
+      {
+       "title": "Military service",
+       "text": "The policy can be suspended during more than 90 days of active duty."
+      }
+     ]
+    }
+   ],
+   "fine": "This is a summary of what each quote lists, not the full policy. The policy contract controls; any exclusion added in underwriting will appear on the offer before you accept it."
+  },
+  {
+   "type": "explained",
+   "headline": "Plain language. Real protection.",
+   "sections": [
+    {
+     "title": "How disability insurance works",
+     "rows": [
+      [
+       "Monthly benefit",
+       "The check you receive each month (generally income-tax free) while you're disabled, about two-thirds of your income."
+      ],
+      [
+       "Waiting period",
+       "How long you must be disabled before benefits start. A longer wait lowers the premium; your savings or sick pay cover the gap."
+      ],
+      [
+       "Benefit period",
+       "How long benefits can last for one disability. To age 65 or 67 protects you through your working years."
+      ],
+      [
+       "Own occupation",
+       "You're considered disabled if you can't do the main duties of your own occupation, even if you could work in a different one."
+      ],
+      [
+       "Partial (residual) disability",
+       "If you can work but earn less because of an illness or injury, the policy pays a share of the benefit based on the income you lost."
+      ],
+      [
+       "Noncancelable",
+       "The carrier can't cancel the policy, change it or raise your premium before age 65 as long as you pay on time."
+      ],
+      [
+       "Presumptive disability",
+       "Losing your sight, speech, hearing or the use of two limbs pays the full benefit even if you keep working."
+      ],
+      [
+       "Waiver of premium",
+       "While you're receiving benefits, you don't pay premiums."
+      ],
+      [
+       "Future increases",
+       "As your income grows, you can add coverage without new health questions, so your protection keeps up with your pay."
+      ]
+     ]
+    }
+   ],
+   "callout": {
+    "title": "Why this matters",
+    "text": "Most long-term disabilities are caused by illness, not accidents: back and joint problems, cancer, heart conditions and mental health conditions lead the list. Because you pay the premium yourself, benefits are generally received income-tax free; check with your tax advisor."
+   }
+  },
+  {
+   "type": "payment",
+   "headline": "Choosing a plan and getting started.",
+   "cards": [
+    {
+     "title": "Our pick · The Standard",
+     "best": true,
+     "rows": [
+      {
+       "label": "Annual",
+       "value": "$1,827.79",
+       "total": true
+      },
+      {
+       "sub": "Other ways to pay"
+      },
+      [
+       "Semi-annual (2×)",
+       "$943.14"
+      ],
+      [
+       "Quarterly (4×)",
+       "$484.37"
+      ],
+      [
+       "Monthly (12×)",
+       "$159.93"
+      ],
+      [
+       "Monthly · cost per year",
+       "$1,919.16"
+      ]
+     ]
+    },
+    {
+     "title": "Principal",
+     "rows": [
+      {
+       "label": "Annual",
+       "value": "$1,819.82",
+       "total": true
+      },
+      {
+       "sub": "Other ways to pay"
+      },
+      [
+       "Semi-annual (2×)",
+       "$909.91"
+      ],
+      [
+       "Quarterly (4×)",
+       "$454.96"
+      ],
+      [
+       "Monthly (12×)",
+       "$151.65"
+      ],
+      [
+       "Monthly · cost per year",
+       "$1,819.80"
+      ]
+     ]
+    },
+    {
+     "title": "MassMutual",
+     "rows": [
+      {
+       "label": "Annual",
+       "value": "$2,384.95",
+       "total": true
+      },
+      {
+       "sub": "Other ways to pay"
+      },
+      [
+       "Semi-annual (2×)",
+       "$1,239.18"
+      ],
+      [
+       "Quarterly (4×)",
+       "$619.58"
+      ],
+      [
+       "Monthly (12×)",
+       "$206.14"
+      ],
+      [
+       "Monthly · cost per year",
+       "$2,473.68"
+      ]
+     ]
+    }
+   ],
+   "fine": "Amounts come from each carrier's quote. The Standard and MassMutual charge a little more to pay in installments; Principal's monthly payments add up to the annual price.",
+   "info": [
+    {
+     "title": "About The Standard's eApply discount",
+     "text": "The Standard's price includes a $96.20 discount for applying electronically with its online medical questionnaire. We'll apply that way so you keep the discount."
+    },
+    {
+     "title": "What underwriting looks like",
+     "text": "Expect a health questionnaire, possibly a quick paramedical visit or lab sample, and proof of your income such as a recent tax return or pay stubs. We'll walk you through each step."
+    }
+   ],
+   "steps": {
+    "review": "Pick a carrier, waiting period and benefit length. We recommend The Standard with a 90-day wait to age 65, or 180 days to age 67 if you have six months of savings."
+   }
+  }
+ ],
+ "checks": [
+  {
+   "label": "Standard premium build",
+   "parts": [
+    "$1,433.99",
+    "$139.21",
+    "$191.23",
+    "$159.56",
+    "-$96.20"
+   ],
+   "total": "$1,827.79"
+  },
+  {
+   "label": "Principal premium build",
+   "parts": [
+    "$1,425.00",
+    "$133.90",
+    "$248.81",
+    "$12.11"
+   ],
+   "total": "$1,819.82"
+  },
+  {
+   "label": "MassMutual premium build",
+   "parts": [
+    "$1,714.19",
+    "$366.13",
+    "$304.63"
+   ],
+   "total": "$2,384.95"
+  },
+  {
+   "label": "Standard vs Principal",
+   "parts": [
+    "$1,827.79",
+    "-$1,819.82"
+   ],
+   "total": "$7.97"
+  },
+  {
+   "label": "MassMutual vs Standard",
+   "parts": [
+    "$2,384.95",
+    "-$1,827.79"
+   ],
+   "total": "$557.16"
+  },
+  {
+   "label": "Standard monthly cost per year",
+   "parts": [
+    "$159.93",
+    "$159.93",
+    "$159.93",
+    "$159.93",
+    "$159.93",
+    "$159.93",
+    "$159.93",
+    "$159.93",
+    "$159.93",
+    "$159.93",
+    "$159.93",
+    "$159.93"
+   ],
+   "total": "$1,919.16"
+  },
+  {
+   "label": "Principal monthly cost per year",
+   "parts": [
+    "$151.65",
+    "$151.65",
+    "$151.65",
+    "$151.65",
+    "$151.65",
+    "$151.65",
+    "$151.65",
+    "$151.65",
+    "$151.65",
+    "$151.65",
+    "$151.65",
+    "$151.65"
+   ],
+   "total": "$1,819.80"
+  },
+  {
+   "label": "MassMutual monthly cost per year",
+   "parts": [
+    "$206.14",
+    "$206.14",
+    "$206.14",
+    "$206.14",
+    "$206.14",
+    "$206.14",
+    "$206.14",
+    "$206.14",
+    "$206.14",
+    "$206.14",
+    "$206.14",
+    "$206.14"
+   ],
+   "total": "$2,473.68"
+  },
+  {
+   "label": "Standard 180-day savings",
+   "parts": [
+    "$1,827.79",
+    "-$1,553.50"
+   ],
+   "total": "$274.29"
+  },
+  {
+   "label": "Standard age-67 cost",
+   "parts": [
+    "$2,054.12",
+    "-$1,827.79"
+   ],
+   "total": "$226.33"
+  },
+  {
+   "label": "Benefit gap Standard vs Principal",
+   "parts": [
+    "$4,060",
+    "-$4,000"
+   ],
+   "total": "$60",
+   "hidden": true
+  }
+ ],
+ "email": {
+  "greeting": "Jordan",
+  "intro": "It compares disability income plans from The Standard, Principal and MassMutual.",
+  "recommendation": "We recommend The Standard:",
+  "reasons": [
+   "It pays $4,060 a month if you can't do your own occupation, for $1,827.79 a year.",
+   "Mental health and substance-related disabilities are covered with no time limit.",
+   "It adds a Family Care Benefit, a survivor benefit and the option to grow your benefit later without health questions."
+  ],
+  "heads_up": [
+   "Your final premium is set by medical and financial underwriting after you apply."
+  ]
+ }
+}

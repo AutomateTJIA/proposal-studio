@@ -1,0 +1,82 @@
+[
+  {
+    "family": "Barlow",
+    "style": "normal",
+    "weight": "300",
+    "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "file": "Barlow-300.woff2",
+    "bytes": 15568
+  },
+  {
+    "family": "Barlow",
+    "style": "normal",
+    "weight": "400",
+    "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "file": "Barlow-400.woff2",
+    "bytes": 15656
+  },
+  {
+    "family": "Barlow",
+    "style": "normal",
+    "weight": "500",
+    "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "file": "Barlow-500.woff2",
+    "bytes": 15640
+  },
+  {
+    "family": "Barlow",
+    "style": "normal",
+    "weight": "600",
+    "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "file": "Barlow-600.woff2",
+    "bytes": 15832
+  },
+  {
+    "family": "Barlow Condensed",
+    "style": "normal",
+    "weight": "400",
+    "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "file": "BarlowCondensed-400.woff2",
+    "bytes": 14672
+  },
+  {
+    "family": "Barlow Condensed",
+    "style": "normal",
+    "weight": "500",
+    "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "file": "BarlowCondensed-500.woff2",
+    "bytes": 14680
+  },
+  {
+    "family": "Barlow Condensed",
+    "style": "normal",
+    "weight": "600",
+    "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "file": "BarlowCondensed-600.woff2",
+    "bytes": 14844
+  },
+  {
+    "family": "Cormorant Garamond",
+    "style": "italic",
+    "weight": "400",
+    "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "file": "CormorantGaramond-Italic-400.woff2",
+    "bytes": 39304
+  },
+  {
+    "family": "Cormorant Garamond",
+    "style": "italic",
+    "weight": "600",
+    "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "file": "CormorantGaramond-Italic-600.woff2",
+    "bytes": 39304
+  },
+  {
+    "family": "Cormorant Garamond",
+    "style": "normal",
+    "weight": "600",
+    "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "file": "CormorantGaramond-600.woff2",
+    "bytes": 23384
+  }
+]

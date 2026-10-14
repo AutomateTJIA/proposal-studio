@@ -1,0 +1,594 @@
+{
+ "proposal_type": "Auto",
+ "lines": [
+  "auto"
+ ],
+ "prepared": "2026-10-07",
+ "client": {
+  "last_name": "Example",
+  "full_names": "Alex &amp; Jamie Example",
+  "address_line": "200 Sample Ridge Drive · Charlotte, NC 28277",
+  "address_short": "200 Sample Ridge Dr, Charlotte, NC 28277"
+ },
+ "options": [
+  {
+   "name": "Safeco",
+   "sub": "American States · 100/300/50",
+   "tag": "Option 1 · Accident forgiveness",
+   "price": "$4,281.32",
+   "price_label": "Paid in full · 12 months",
+   "col_title": "Option 1 · Safeco",
+   "col_sub": "American States"
+  },
+  {
+   "name": "National General",
+   "sub": "Integon · 100/300/100",
+   "tag": "Option 2 · Lowest premium",
+   "price": "$2,613.72",
+   "price_label": "Auto · 12 months",
+   "col_title": "Option 2 · Nat. General",
+   "col_sub": "Integon · 100/300"
+  },
+  {
+   "name": "National General",
+   "sub": "Integon · 250/500/100",
+   "tag": "Option 3 · Highest limits",
+   "price": "$3,025.50",
+   "price_label": "Auto · 12 months",
+   "col_title": "Option 3 · Nat. General",
+   "col_sub": "Highest limits · 250/500",
+   "recommended": true
+  }
+ ],
+ "cover": {
+  "eyebrow": "Personal Auto Proposal",
+  "headline": "Three auto options, side by side, for Alex &amp; Jamie",
+  "subtext": "We quoted your F-150 Lightning and CX-9 with Safeco and National General. Here's how each option compares, from the lowest premium to the highest liability protection available to you today.",
+  "insured_label": "Insured vehicles",
+  "insured_lines": [
+   "2025 Ford F-150 Lightning XLT",
+   "2019 Mazda CX-9 Grand Touring"
+  ],
+  "premium_label": "12-month premium",
+  "premium_value": "From $2,613.72",
+  "premium_note": "Three options enclosed"
+ },
+ "pages": [
+  {
+   "type": "note",
+   "headline": "Alex &amp; Jamie, thank you.",
+   "pull_quote": "An umbrella isn't available right now, so we raised the limits underneath it instead.",
+   "paragraphs": [
+    "Thank you for letting us shop your auto insurance. We quoted both vehicles with Safeco and National General. Every option at least <b>doubles the $50,000/$100,000</b> bodily injury limits on your current policy.",
+    "We would normally pair your auto policy with a personal umbrella. Based on the household's current driving record, an umbrella isn't available at this time. So we built Option 3: National General at <b>$250,000/$500,000</b> for bodily injury and uninsured motorist coverage. It costs <b>$34.81 more per month</b> than Option 2.",
+    "If you move your homeowners policy to us down the road, we'll re-quote home and auto together for a multi-policy discount. When you're ready, call or email me and we can bind the same day."
+   ],
+   "summary": {
+    "label": "Your three options",
+    "name": "Two carriers",
+    "sub": "Safeco · National General · two vehicles",
+    "big": "$2,613.72",
+    "big_label": "Lowest 12-month premium",
+    "rows": [
+     [
+      "Option 1 · Safeco (paid in full)",
+      "$4,281.32"
+     ],
+     [
+      "Option 2 · National General",
+      "$2,613.72"
+     ],
+     [
+      "Option 3 · National General",
+      "$3,025.50"
+     ],
+     [
+      "Option 3 vs. Option 2",
+      "+ $411.78/yr"
+     ],
+     [
+      "Safeco paid-in-full savings",
+      "– $415.50"
+     ]
+    ],
+    "fine": "National General totals include a $40.00 pay-plan setup charge. Premiums are quotes, not a binder of coverage, and are subject to carrier underwriting."
+   }
+  },
+  {
+   "type": "comparison",
+   "section": "Option Comparison",
+   "headline": "Your three options at a glance.",
+   "lede": "All three quotes cover the same two vehicles and the same two drivers for a 12-month term. Option 3 is highlighted because it carries the highest liability limits.",
+   "rows": [
+    [
+     "12-month quoted premium",
+     "$4,696.82",
+     "$2,613.72",
+     "$3,025.50"
+    ],
+    {
+     "label": "Best quoted price",
+     "values": [
+      "$4,281.32 paid in full",
+      "$2,613.72",
+      "$3,025.50"
+     ],
+     "total": true
+    },
+    [
+     "Monthly auto-pay",
+     "$393.39 down + 11 × $393.40",
+     "$185.94 down + 11 × $223.98",
+     "$214.81 down + 11 × $258.79"
+    ],
+    [
+     "Bodily injury liability",
+     "$100,000 / $300,000",
+     "$100,000 / $300,000",
+     "<b>$250,000 / $500,000</b>"
+    ],
+    [
+     "Property damage liability",
+     "$50,000",
+     "$100,000",
+     "$100,000"
+    ],
+    [
+     "Uninsured / underinsured motorist BI",
+     "$100,000 / $300,000",
+     "$100,000 / $300,000",
+     "<b>$250,000 / $500,000</b>"
+    ],
+    [
+     "Medical payments",
+     "$2,000",
+     "$2,000",
+     "<b>$5,000</b>"
+    ],
+    [
+     "Accident forgiveness",
+     "Included (after 3 years)",
+     "—",
+     "—"
+    ]
+   ],
+   "why": [
+    {
+     "title": "Why Option 3",
+     "recommended": true,
+     "text": "The highest bodily injury and uninsured motorist limits, plus higher medical payments and rental. Since an umbrella isn't available, this is the most liability protection we can offer today."
+    },
+    {
+     "title": "Why Option 2",
+     "text": "The lowest premium. Same $500 deductibles as Option 3, and double Safeco's property damage limit at $100,000."
+    },
+    {
+     "title": "Why Option 1",
+     "text": "Safeco's Enhanced package with accident forgiveness, and $415.50 off when you pay in full. Its property damage limit is $50,000."
+    }
+   ]
+  },
+  {
+   "type": "auto",
+   "headline": "Your two vehicles, both drivers.",
+   "cards": [
+    {
+     "cap": "Vehicle 1",
+     "name": "2025 Ford F-150 Lightning XLT",
+     "sub": "VIN EXAMPLEVIN0000003 · To/from work"
+    },
+    {
+     "cap": "Vehicle 2",
+     "name": "2019 Mazda CX-9 Grand Touring",
+     "sub": "VIN EXAMPLEVIN0000004 · To/from work"
+    },
+    {
+     "cap": "Drivers",
+     "name": "Alex &amp; Jamie",
+     "sub": "Both rated drivers · garaged in Charlotte 28277"
+    }
+   ],
+   "first_col": "Coverage (same on both vehicles)",
+   "rows": [
+    [
+     "Bodily Injury Liability",
+     "$100,000 / $300,000",
+     "$100,000 / $300,000",
+     "$250,000 / $500,000"
+    ],
+    [
+     "Property Damage Liability",
+     "$50,000",
+     "$100,000",
+     "$100,000"
+    ],
+    [
+     "Uninsured / Underinsured Motorist BI",
+     "$100,000 / $300,000",
+     "$100,000 / $300,000",
+     "$250,000 / $500,000"
+    ],
+    [
+     "Uninsured Motorist Property Damage",
+     "$50,000",
+     "$100,000",
+     "$100,000"
+    ],
+    [
+     "Medical Payments",
+     "$2,000",
+     "$2,000",
+     "$5,000"
+    ],
+    [
+     "Comprehensive deductible",
+     "$500",
+     "$500",
+     "$500"
+    ],
+    [
+     "Collision deductible",
+     "$500",
+     "$500",
+     "$500"
+    ],
+    [
+     "Rental / transportation",
+     "$50/day",
+     "$50/day · $1,500 max",
+     "$100/day · $3,000 max"
+    ],
+    [
+     "Towing &amp; labor",
+     "$100",
+     "$100",
+     "$100"
+    ],
+    [
+     "Accident forgiveness",
+     "Included (after 3 years)",
+     "—",
+     "—"
+    ],
+    [
+     "2025 Ford F-150 Lightning premium",
+     "$2,528.91",
+     "$1,293.13",
+     "$1,420.58"
+    ],
+    [
+     "2019 Mazda CX-9 premium",
+     "$1,908.91",
+     "$1,280.59*",
+     "$1,564.92*"
+    ],
+    [
+     "Policy-level charges",
+     "$259.00 UM/UIM + UMPD",
+     "$40.00 pay-plan setup",
+     "$40.00 pay-plan setup"
+    ],
+    {
+     "label": "12-month auto premium",
+     "values": [
+      "$4,696.82",
+      "$2,613.72",
+      "$3,025.50"
+     ],
+     "total": true
+    }
+   ],
+   "fine": "* National General charges uninsured/underinsured motorist coverage once, on the CX-9, and it applies to both vehicles at no extra cost.",
+   "discounts": [
+    {
+     "title": "Safeco · American States",
+     "text": "Accident free · Advance quoting · Anti-theft · Coverage · Multi-car · New vehicle · Passive restraint"
+    },
+    {
+     "title": "National General · Integon",
+     "text": "Advance quote · Credit zip match · Homeowner · Multi-car · Paperless · Airbag (both vehicles)"
+    }
+   ]
+  },
+  {
+   "type": "exclusions",
+   "headline": "What these policies won't cover.",
+   "lede": "Every auto policy has exclusions and limits. Here is what applies to all three options, and where each one differs.",
+   "common": [
+    {
+     "title": "Rideshare &amp; delivery driving",
+     "text": "Personal auto policies limit coverage while driving for an app. Tell us before you start."
+    },
+    {
+     "title": "Vehicle value",
+     "text": "Comprehensive and collision pay what the vehicle is worth at the time of the loss, minus your deductible."
+    }
+   ],
+   "carriers": [
+    {
+     "name": "Safeco",
+     "items": [
+      {
+       "title": "Property damage",
+       "key": true,
+       "text": "$50,000, half the other options. A crash with a newer truck or several cars can exceed it."
+      },
+      {
+       "title": "Uninsured motorist property damage",
+       "text": "$50,000."
+      }
+     ]
+    },
+    {
+     "name": "National General",
+     "items": [
+      {
+       "title": "Rental car",
+       "text": "$50 a day, up to $1,500 per claim."
+      }
+     ]
+    },
+    {
+     "name": "National General",
+     "items": [
+      {
+       "title": "Rental car",
+       "text": "$100 a day, up to $3,000 per claim."
+      }
+     ]
+    }
+   ],
+   "fine": "This is a summary of what each quote lists, not the full policy. The policy contract controls."
+  },
+  {
+   "type": "explained",
+   "headline": "Plain language. Real protection.",
+   "sections": [
+    {
+     "title": "Your autos",
+     "rows": [
+      [
+       "Bodily injury liability",
+       "If you cause an accident that injures someone, this pays their medical bills and lost wages and covers your legal defense if you're sued. Without an umbrella, this limit is your main line of protection."
+      ],
+      [
+       "Property damage liability",
+       "Pays for damage you cause to someone else's car or property. With newer vehicles on the road often costing $50,000 or more, a higher limit matters."
+      ],
+      [
+       "Uninsured / underinsured motorist BI",
+       "If a driver with no insurance, or too little, injures you or your passengers, this covers your medical bills and lost wages."
+      ],
+      [
+       "Uninsured motorist property damage",
+       "Covers your vehicle's damage when the at-fault driver is uninsured, so you aren't paying for someone else's mistake."
+      ],
+      [
+       "Medical payments",
+       "Pays medical bills for you and your passengers after an accident, whoever was at fault, so care isn't delayed."
+      ],
+      [
+       "Comprehensive",
+       "Covers theft, vandalism, hail, a deer strike or a falling branch. You pay the deductible first."
+      ],
+      [
+       "Collision",
+       "Repairs your vehicle after a crash, whoever caused it. You pay the deductible first."
+      ],
+      [
+       "Rental / transportation",
+       "Pays for a rental car while yours is in the shop after a covered loss, up to the daily and total limits shown."
+      ],
+      [
+       "Towing &amp; labor",
+       "Helps pay for a tow or on-site labor if a vehicle breaks down or won't start."
+      ],
+      [
+       "Accident forgiveness",
+       "Safeco only. Helps keep your premium from going up after a qualifying at-fault accident, under the carrier's rules."
+      ]
+     ]
+    }
+   ],
+   "callout": {
+    "title": "Why higher limits matter without an umbrella",
+    "text": "An umbrella normally sits on top of your auto liability and adds protection after a serious accident. Since one isn't available right now, your auto limits are the ceiling. Option 3 raises that ceiling to $250,000 per person and $500,000 per accident, both for anyone you injure and for your own family if an uninsured driver hits you."
+   }
+  },
+  {
+   "type": "payment",
+   "headline": "Choosing a plan and getting started.",
+   "cards": [
+    {
+     "title": "Option 1 · Safeco",
+     "rows": [
+      [
+       "12-month premium",
+       "$4,696.82"
+      ],
+      [
+       "Paid-in-full discount",
+       "– $415.50"
+      ],
+      {
+       "label": "Paid in full",
+       "value": "$4,281.32",
+       "total": true
+      },
+      {
+       "sub": "Monthly EFT"
+      },
+      [
+       "First payment",
+       "$393.39"
+      ],
+      [
+       "Then 11 ×",
+       "$393.40"
+      ],
+      [
+       "Monthly-plan total",
+       "$4,720.82"
+      ]
+     ]
+    },
+    {
+     "title": "Option 2 · National General",
+     "rows": [
+      [
+       "Quoted premium",
+       "$2,573.72"
+      ],
+      [
+       "Pay-plan setup",
+       "$40.00"
+      ],
+      {
+       "label": "12-month total",
+       "value": "$2,613.72",
+       "total": true
+      },
+      {
+       "sub": "Monthly auto-pay"
+      },
+      [
+       "Down payment",
+       "$185.94"
+      ],
+      [
+       "Then 11 ×",
+       "$223.98"
+      ],
+      [
+       "Monthly-plan total",
+       "$2,649.72"
+      ]
+     ]
+    },
+    {
+     "title": "Option 3 · Highest limits",
+     "best": true,
+     "rows": [
+      [
+       "Quoted premium",
+       "$2,985.50"
+      ],
+      [
+       "Pay-plan setup",
+       "$40.00"
+      ],
+      {
+       "label": "12-month total",
+       "value": "$3,025.50",
+       "total": true
+      },
+      {
+       "sub": "Monthly auto-pay"
+      },
+      [
+       "Down payment",
+       "$214.81"
+      ],
+      [
+       "Then 11 ×",
+       "$258.79"
+      ],
+      [
+       "Monthly-plan total",
+       "$3,061.50"
+      ]
+     ]
+    }
+   ],
+   "fine": "Monthly amounts come from each carrier's quote and include installment fees: $2.00 per payment on Safeco's EFT plan, and built into National General's payments.",
+   "info": [
+    {
+     "title": "About the umbrella",
+     "text": "An umbrella isn't available at this time because of the household's driving record. We'll check eligibility again as the record improves and let you know as soon as it's an option."
+    },
+    {
+     "title": "Future savings: add your home",
+     "text": "If your homeowners policy moves to The Jordan Insurance Agency later, we'll re-quote home and auto as a bundle. A multi-policy discount typically lowers the combined cost."
+    }
+   ],
+   "steps": {
+    "review": "Pick the option and payment plan that fit your budget and the protection you want."
+   },
+   "qr_extra": "Safeco is quoted to start October 26, 2026."
+  }
+ ],
+ "checks": [
+  {
+   "label": "Safeco paid in full",
+   "parts": [
+    "$4,696.82",
+    "-$415.50"
+   ],
+   "total": "$4,281.32"
+  },
+  {
+   "label": "Option 2 total",
+   "parts": [
+    "$2,573.72",
+    "$40.00"
+   ],
+   "total": "$2,613.72"
+  },
+  {
+   "label": "Option 3 total",
+   "parts": [
+    "$2,985.50",
+    "$40.00"
+   ],
+   "total": "$3,025.50"
+  },
+  {
+   "label": "Option 3 vs Option 2",
+   "parts": [
+    "$3,025.50",
+    "-$2,613.72"
+   ],
+   "total": "$411.78",
+   "hidden": true
+  },
+  {
+   "label": "Safeco vehicles + policy",
+   "parts": [
+    "$2,528.91",
+    "$1,908.91",
+    "$259.00"
+   ],
+   "total": "$4,696.82"
+  },
+  {
+   "label": "Option 2 vehicles + setup",
+   "parts": [
+    "$1,293.13",
+    "$1,280.59",
+    "$40.00"
+   ],
+   "total": "$2,613.72"
+  },
+  {
+   "label": "Option 3 vehicles + setup",
+   "parts": [
+    "$1,420.58",
+    "$1,564.92",
+    "$40.00"
+   ],
+   "total": "$3,025.50"
+  }
+ ],
+ "email": {
+  "greeting": "Alex and Jamie",
+  "intro": "It compares three options for your auto policy: Safeco and two versions from National General.",
+  "recommendation": "We recommend National General with the higher limits (Option 3):",
+  "reasons": [
+   "$250,000/$500,000 of bodily injury and uninsured motorist coverage, since an umbrella isn't available right now.",
+   "It costs far less than the Safeco option and only a little more than the lower-limit National General option."
+  ],
+  "heads_up": [
+   "Each carrier confirms your final rate when it runs every driver's Motor Vehicle Report at binding."
+  ]
+ }
+}

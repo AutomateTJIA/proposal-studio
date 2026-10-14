@@ -1,0 +1,50 @@
+{
+  "_readme": "LOCKED agency settings for every proposal. The build script reads this file directly; Claude never re-asks for these. To change staff or contact details, edit this file, bump VERSION, and add a CHANGELOG entry.",
+  "agency_name": "The Jordan Insurance Agency, LLC",
+  "agency_display_name": "The Jordan Insurance Agency",
+  "phone": "(704) 926-7565",
+  "website": "thejordaninsuranceagency.com",
+  "address": "3540 Toringdon Way, Suite 200 · Charlotte, NC 28277",
+  "proposal_prefix": "P",
+  "logo": "assets/logo.png",
+  "logo_white": "assets/logo_white.png",
+  "colors": {
+    "navy": "#163A70",
+    "royal": "#1F5AA6",
+    "gold": "#E0B43B",
+    "panel": "#F4F6F9",
+    "tint": "#EEF3FA",
+    "line": "#DDE3EC",
+    "ink": "#1D2433",
+    "muted": "#6B7486"
+  },
+  "agent": {
+    "name": "Billy Jordan Jr.",
+    "title": "Agent",
+    "email": "billy@thejordaninsuranceagency.com",
+    "phone": "(704) 926-7565"
+  },
+  "service_team": [
+    {
+      "name": "Chelssy Valles",
+      "first_name": "Chelssy",
+      "title": "Agency Support Specialist",
+      "phone": "(980) 285-1135",
+      "email": "chelssy@agencyhlpc.com"
+    },
+    {
+      "name": "Gloria Lechuga",
+      "first_name": "Gloria",
+      "title": "Agency Support Specialist",
+      "phone": "(704) 469-5290",
+      "email": "gloria@agencyhlpc.com"
+    }
+  ],
+  "banned_phrases": [
+    "full coverage",
+    "Billy E. Jordan",
+    "Billy Edward Jordan",
+    "TJIA",
+    "Your Agency Name"
+  ]
+}

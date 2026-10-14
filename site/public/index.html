@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Proposal Studio · The Jordan Insurance Agency</title>
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<style>
+@font-face{font-family:Barlow;font-weight:400;src:url(/fonts/Barlow-400.woff2) format('woff2')}
+@font-face{font-family:Barlow;font-weight:500;src:url(/fonts/Barlow-500.woff2) format('woff2')}
+@font-face{font-family:Barlow;font-weight:600;src:url(/fonts/Barlow-600.woff2) format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:600;src:url(/fonts/BarlowCondensed-600.woff2) format('woff2')}
+@font-face{font-family:Cormorant;font-weight:600;src:url(/fonts/CormorantGaramond-600.woff2) format('woff2')}
+:root{--navy:#163A70;--royal:#1F5AA6;--gold:#E0B43B;--panel:#F4F6F9;--tint:#EEF3FA;--line:#DDE3EC;--ink:#1D2433;--muted:#6B7486;--ok:#1E7B4F;--warn:#A86A00;--bad:#B3261E}
+*{box-sizing:border-box}
+body{margin:0;background:var(--panel);color:var(--ink);font:400 15px/1.55 Barlow,Arial,sans-serif}
+header{background:var(--navy);border-bottom:3px solid var(--gold)}
+.bar{max-width:1120px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px}
+.bar img{height:34px}
+.bar .t{color:#fff;font:600 13px 'Barlow Condensed',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-left:auto}
+main{max-width:1120px;margin:0 auto;padding:24px 16px 64px}
+h1{font:600 34px/1.1 Cormorant,Georgia,serif;color:var(--navy);margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 22px}
+.cap{font:600 11px 'Barlow Condensed',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--royal)}
+.card{background:#fff;border:1px solid var(--line);border-top:3px solid var(--navy);padding:22px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+label{display:block;font-weight:500;margin:14px 0 6px}
+input,select,textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:2px}
+textarea{min-height:76px;resize:vertical}
+.drop{margin-top:16px;border:2px dashed #b9c6da;background:var(--tint);padding:28px 16px;text-align:center;cursor:pointer;transition:.15s}
+.drop.on{border-color:var(--royal);background:#e3ecf8}
+.drop b{color:var(--navy);font-size:17px}
+.files{list-style:none;margin:12px 0 0;padding:0}
+.files li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.files button{border:0;background:none;color:var(--bad);cursor:pointer;font:inherit}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;background:var(--navy);color:#fff;font:600 14px Barlow,sans-serif;padding:12px 20px;cursor:pointer;border-radius:2px;text-decoration:none}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--navy)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.steps{list-style:none;margin:10px 0 0;padding:0}
+.steps li{padding:9px 0 9px 28px;position:relative;border-top:1px solid var(--line);color:var(--muted)}
+.steps li::before{content:'';position:absolute;left:4px;top:15px;width:10px;height:10px;border-radius:50%;background:var(--line)}
+.steps li.now{color:var(--ink);font-weight:500}.steps li.now::before{background:var(--gold);animation:p 1s infinite alternate}
+.steps li.done{color:var(--ink)}.steps li.done::before{background:var(--ok)}
+.steps li.fail{color:var(--bad)}.steps li.fail::before{background:var(--bad)}
+@keyframes p{to{opacity:.3}}
+.badge{display:inline-block;font:600 11px 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px}
+.badge.ready{background:#E5F3EC;color:var(--ok)}.badge.needs_review{background:#FFF4DC;color:var(--warn)}
+.badge.failed{background:#FBE9E7;color:var(--bad)}.badge.reading,.badge.drafted{background:var(--tint);color:var(--royal)}
+.notes{margin:10px 0 0;padding-left:20px}.notes li{margin:6px 0}
+.warnbox{background:#FFF8E6;border-left:3px solid var(--gold);padding:14px 16px;margin-top:16px}
+pre.email{white-space:pre-wrap;background:var(--panel);border:1px solid var(--line);padding:16px;font:14px/1.6 Barlow,sans-serif;max-height:420px;overflow:auto}
+iframe{width:100%;height:640px;border:1px solid var(--line);background:#fff}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font:600 11px 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:8px 6px;border-bottom:2px solid var(--line)}
+td{padding:10px 6px;border-bottom:1px solid var(--line)}
+tr.click{cursor:pointer}tr.click:hover td{background:var(--tint)}
+.err{color:var(--bad);margin-top:10px}
+.muted{color:var(--muted)}
+.hidden{display:none!important}
+.login{max-width:420px;margin:60px auto}
+</style>
+</head>
+<body>
+<header><div class="bar"><img src="/assets/logo-white.png" alt="The Jordan Insurance Agency"><span class="t">Proposal Studio</span></div></header>
+<main>
+  <section id="login" class="card login hidden">
+    <span class="cap">Team sign-in</span>
+    <h1>Proposal Studio</h1>
+    <p class="sub">Drop in carrier quotes, get the client-ready proposal and email.</p>
+    <form id="loginForm"><label for="pw">Team password</label><input id="pw" type="password" autocomplete="current-password" required>
+      <div class="row"><button class="btn" type="submit">Sign in</button></div><div id="loginErr" class="err"></div></form>
+  </section>
+
+  <section id="app" class="hidden">
+    <h1>New proposal</h1>
+    <p class="sub">Upload every quote PDF for one client. The studio reads them, builds the proposal in the agency design, checks it, writes the client email and logs it in the Command Center.</p>
+    <div class="grid">
+      <div class="card">
+        <span class="cap">1 · Quotes</span>
+        <div id="drop" class="drop" tabindex="0"><b>Drop quote PDFs here</b><div class="muted">or click to choose files · one client per proposal</div>
+          <input id="pick" type="file" accept="application/pdf" multiple class="hidden"></div>
+        <ul id="files" class="files"></ul>
+        <span class="cap" style="display:block;margin-top:20px">2 · Details</span>
+        <label for="by">Prepared by</label>
+        <select id="by"><option>Chelssy Valles</option><option>Gloria Lechuga</option><option>Billy Jordan Jr.</option></select>
+        <label for="email">Client email <span class="muted">(optional, fills in the email “To”)</span></label>
+        <input id="email" type="email" placeholder="client@example.com">
+        <label for="notes">Notes for the proposal <span class="muted">(optional)</span></label>
+        <textarea id="notes" placeholder="e.g. Client wants an umbrella quote mentioned. Effective date 11/1."></textarea>
+        <div class="row"><button id="go" class="btn gold" disabled>Build proposal</button></div>
+        <div id="goErr" class="err"></div>
+      </div>
+      <div class="card">
+        <span class="cap">Progress</span>
+        <ul id="steps" class="steps">
+          <li data-s="upload">Upload quotes</li><li data-s="reading">Read the quotes</li><li data-s="writing">Write the proposal</li>
+          <li data-s="building">Build the PDF and run the checks</li><li data-s="fixing">Fix anything the checks catch</li>
+          <li data-s="logging">Log it in the Command Center</li><li data-s="done">Ready for review</li>
+        </ul>
+        <p id="stepMsg" class="muted">Reading and writing usually takes 2–4 minutes. Keep this tab open.</p>
+      </div>
+    </div>
+
+    <section id="result" class="card hidden"></section>
+
+    <div class="card">
+      <span class="cap">Recent proposals</span>
+      <table><thead><tr><th>Created</th><th>Client</th><th>Prepared by</th><th>Status</th><th>Sent</th></tr></thead><tbody id="recent"></tbody></table>
+    </div>
+  </section>
+</main>
+<script type="module">
+import { upload } from '/js/blob-client.js';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+let token = sessionStorage.getItem('ps_token') || '';
+let picked = [];
+
+const api = (path, opts = {}) => fetch(path, { ...opts, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token, ...(opts.headers || {}) } });
+
+async function signIn(pw) {
+  token = pw;
+  const r = await api('/api/jobs');
+  if (r.status === 401) { token = ''; return false; }
+  sessionStorage.setItem('ps_token', pw);
+  return true;
+}
+function show(id) { for (const s of ['#login', '#app']) $(s).classList.toggle('hidden', s !== id); }
+
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault(); $('#loginErr').textContent = '';
+  if (await signIn($('#pw').value)) { show('#app'); loadRecent(); } else $('#loginErr').textContent = 'That password did not work.';
+});
+
+// ---- picking files
+function renderFiles() {
+  $('#files').innerHTML = picked.map((f, i) => `<li><span>${esc(f.name)} <span class="muted">· ${(f.size / 1048576).toFixed(1)} MB</span></span><button data-i="${i}" aria-label="Remove">Remove</button></li>`).join('');
+  $('#go').disabled = !picked.length;
+}
+function addFiles(list) {
+  for (const f of list) if (/\.pdf$/i.test(f.name) && !picked.some(p => p.name === f.name && p.size === f.size)) picked.push(f);
+  renderFiles();
+}
+$('#files').addEventListener('click', e => { if (e.target.dataset.i) { picked.splice(+e.target.dataset.i, 1); renderFiles(); } });
+const drop = $('#drop');
+drop.addEventListener('click', () => $('#pick').click());
+drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') $('#pick').click(); });
+$('#pick').addEventListener('change', e => { addFiles(e.target.files); e.target.value = ''; });
+for (const ev of ['dragenter', 'dragover']) drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('on'); });
+for (const ev of ['dragleave', 'drop']) drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('on'); });
+drop.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+
+// ---- progress
+const ORDER = ['upload', 'reading', 'writing', 'building', 'fixing', 'logging', 'done'];
+function step(s, msg, failed) {
+  const idx = ORDER.indexOf(s);
+  document.querySelectorAll('#steps li').forEach(li => {
+    const i = ORDER.indexOf(li.dataset.s);
+    li.className = failed && i === idx ? 'fail' : i < idx ? 'done' : i === idx ? (s === 'done' ? 'done' : 'now') : '';
+  });
+  if (msg) $('#stepMsg').textContent = msg;
+}
+async function readStream(r, onLine) {
+  if (!r.ok && !r.body) throw new Error(`Server returned ${r.status}`);
+  const ctype = r.headers.get('content-type') || '';
+  if (!ctype.includes('ndjson')) { const b = await r.json().catch(() => ({})); throw new Error(b.error || `Server returned ${r.status}`); }
+  const reader = r.body.getReader(); const dec = new TextDecoder(); let buf = ''; let last = null;
+  for (;;) {
+    const { value, done } = await reader.read(); if (done) break;
+    buf += dec.decode(value, { stream: true });
+    let n; while ((n = buf.indexOf('\n')) >= 0) { const line = buf.slice(0, n).trim(); buf = buf.slice(n + 1); if (line) { last = JSON.parse(line); onLine(last); } }
+  }
+  return last;
+}
+
+$('#go').addEventListener('click', async () => {
+  $('#go').disabled = true; $('#goErr').textContent = ''; $('#result').classList.add('hidden');
+  try {
+    step('upload', `Uploading ${picked.length} file(s)…`);
+    const files = [];
+    for (const f of picked) {
+      const safe = f.name.replace(/[^A-Za-z0-9._-]+/g, '_');
+      const blob = await upload(`quotes/${Date.now()}-${safe}`, f, { access: 'private', handleUploadUrl: '/api/upload', clientPayload: token, multipart: f.size > 4.5 * 1048576, contentType: 'application/pdf' });
+      files.push({ pathname: blob.pathname, name: f.name, size: f.size });
+    }
+    step('reading', 'Claude is reading every page of the quotes…');
+    const r1 = await api('/api/extract', { method: 'POST', body: JSON.stringify({ files, clientEmail: $('#email').value, notes: $('#notes').value, preparedBy: $('#by').value }) });
+    const end1 = await readStream(r1, m => {
+      if (m.step === 'writing') step('writing', `Writing the proposal… (${Math.round(m.chars / 1000)}k characters so far)`);
+    });
+    if (!end1 || end1.step !== 'drafted') throw new Error(end1?.message || 'Reading the quotes failed.');
+    step('building', 'Building the PDF in the agency design and running the checks…');
+    const r2 = await api('/api/finish', { method: 'POST', body: JSON.stringify({ id: end1.id }) });
+    const end2 = await readStream(r2, m => {
+      if (m.step === 'fixing') step('fixing', m.message);
+      else if (m.step === 'building') step('building', m.message);
+      else if (m.step === 'logging') step('logging', m.message);
+    });
+    if (!end2 || end2.step !== 'done') throw new Error(end2?.message || 'Building the proposal failed.');
+    step('done', 'Done. Review the proposal below before sending.');
+    picked = []; renderFiles(); $('#notes').value = ''; $('#email').value = '';
+    await openJob(end2.id);
+    loadRecent();
+  } catch (e) {
+    const now = document.querySelector('#steps li.now'); step(now ? now.dataset.s : 'upload', e.message, true);
+    $('#goErr').textContent = e.message; $('#go').disabled = !picked.length;
+  }
+});
+
+// ---- result
+function gmailUrl(job) {
+  const lines = (job.email?.text || '').split('\n');
+  const subject = (lines[0] || '').replace(/^Subject:\s*/, '');
+  const body = lines.slice(2).join('\n');
+  const q = new URLSearchParams({ view: 'cm', fs: '1', to: job.client_email || '', su: subject, body });
+  return 'https://mail.google.com/mail/?' + q.toString();
+}
+async function openJob(id) {
+  const r = await api('/api/job?id=' + encodeURIComponent(id)); const { job } = await r.json();
+  const el = $('#result');
+  const crm = job.crm || {};
+  const crmLine = crm.status === 'logged' ? `Logged in the Command Center · assigned to ${esc(crm.assigned_to)} · follow-up scheduled.`
+    : crm.status === 'skipped' ? `Not logged in the Command Center: ${esc(crm.message)}` : crm.status === 'error' ? `Command Center logging failed: ${esc(crm.message)}` : '';
+  const notes = (job.agent_notes || []).map(n => `<li>${esc(n)}</li>`).join('');
+  const failed = (job.checks?.failed || []).map(n => `<li>${esc(n)}</li>`).join('');
+  el.innerHTML = job.status === 'failed' ? `<span class="badge failed">Failed</span><p>${esc(job.error)}</p>` : `
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
+      <div><span class="cap">Proposal</span><h1 style="margin-top:4px">${esc(job.client_name || job.file_name)}</h1>
+      <span class="badge ${esc(job.status)}">${job.status === 'ready' ? 'Ready · all checks passed' : job.status === 'needs_review' ? 'Needs review' : esc(job.status)}</span>
+      <span class="muted"> ${job.checks ? `${job.checks.passed}/${job.checks.total} checks passed · ${job.pages} pages` : ''}${job.sent_at ? ' · sent ' + new Date(job.sent_at).toLocaleString() : ''}</span></div>
+    </div>
+    ${failed ? `<div class="warnbox"><b>Checks that still fail</b> — do not send until Billy reviews:<ul class="notes">${failed}</ul></div>` : ''}
+    ${notes ? `<div class="warnbox"><b>Verify before sending</b><ul class="notes">${notes}</ul></div>` : ''}
+    <div class="row">
+      <a class="btn" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Open PDF</a>
+      <a class="btn ghost" href="${esc(job.pdf_url)}&download=1">Download PDF</a>
+      <button class="btn ghost" id="copy">Copy email</button>
+      <a class="btn ghost" href="${esc(gmailUrl(job))}" target="_blank" rel="noopener">Open in Gmail</a>
+      <button class="btn gold" id="sent" ${job.sent_at ? 'disabled' : ''}>${job.sent_at ? 'Marked as sent' : 'Mark as sent'}</button>
+    </div>
+    <p class="muted" style="margin-top:10px">In Gmail, attach the downloaded PDF before sending. ${crmLine}</p>
+    <div class="grid" style="margin-top:8px">
+      <div><span class="cap">The proposal</span><iframe src="${esc(job.pdf_url)}" title="Proposal PDF"></iframe></div>
+      <div><span class="cap">Client email</span><pre class="email">${esc(job.email?.text || '')}</pre></div>
+    </div>`;
+  el.classList.remove('hidden');
+  el.scrollIntoView({ behavior: 'smooth' });
+  const copy = $('#copy');
+  if (copy) copy.onclick = async () => { await navigator.clipboard.writeText((job.email?.text || '').split('\n').slice(2).join('\n')); copy.textContent = 'Copied'; };
+  const sent = $('#sent');
+  if (sent && !job.sent_at) sent.onclick = async () => { sent.disabled = true; await api('/api/sent', { method: 'POST', body: JSON.stringify({ id }) }); openJob(id); loadRecent(); };
+}
+
+async function loadRecent() {
+  const r = await api('/api/jobs'); if (r.status === 401) { show('#login'); return; }
+  const { items = [] } = await r.json();
+  const label = { ready: 'Ready', needs_review: 'Needs review', failed: 'Failed', reading: 'In progress', drafted: 'In progress' };
+  $('#recent').innerHTML = items.map(j => `<tr class="click" data-id="${esc(j.id)}"><td>${j.created_at ? new Date(j.created_at).toLocaleString() : ''}</td><td>${esc(j.client_name || '—')}</td><td>${esc(j.prepared_by)}</td>
+    <td><span class="badge ${esc(j.status)}">${esc(label[j.status] || j.status)}</span></td><td>${j.sent_at ? new Date(j.sent_at).toLocaleDateString() : '—'}</td></tr>`).join('')
+    || '<tr><td colspan="5" class="muted">No proposals yet.</td></tr>';
+}
+$('#recent').addEventListener('click', e => { const tr = e.target.closest('tr[data-id]'); if (tr) openJob(tr.dataset.id); });
+
+(async () => { if (token && await signIn(token)) { show('#app'); loadRecent(); } else show('#login'); })();
+</script>
+</body>
+</html>
