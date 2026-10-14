@@ -10,6 +10,20 @@ const APP_URL = () => (process.env.APP_URL || 'https://proposals.thejordaninsura
 
 export const emailConfigured = () => Boolean(process.env.RESEND_API_KEY);
 
+/** Asks Resend whether the key is valid without sending anything. A sending-only key is reported
+ *  by Resend as "restricted", which still means it is a real, working key. */
+export async function checkEmailKey() {
+  if (!emailConfigured()) return { ok: false, message: 'RESEND_API_KEY is not set' };
+  const r = await fetch('https://api.resend.com/domains', { headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` } });
+  const body = await r.json().catch(() => ({}));
+  if (r.ok) {
+    const domain = (body.data || []).find(d => FROM().includes(d.name));
+    return { ok: true, message: domain ? `Sender domain ${domain.name} is ${domain.status}` : 'Key works' };
+  }
+  if (body.name === 'restricted_api_key') return { ok: true, message: 'Sending-only key works' };
+  return { ok: false, message: body.message || `Resend returned ${r.status}` };
+}
+
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const HEADLINE = {
