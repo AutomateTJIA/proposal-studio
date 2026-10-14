@@ -427,7 +427,7 @@ footer .legal{width:100%;font-size:13px;color:rgba(233,237,242,.55);margin:0}
 </footer>
 
 <script type="module">
-import { upload } from '/js/blob-client.js';
+import { uploadPresigned } from '/js/blob-client.js';
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let session = JSON.parse(sessionStorage.getItem('ps_session') || 'null');
@@ -514,7 +514,7 @@ $('#go').addEventListener('click', async () => {
     const files = [];
     for (const f of picked) {
       const safe = f.name.replace(/[^A-Za-z0-9._-]+/g, '_');
-      const blob = await upload(`quotes/${Date.now()}-${safe}`, f, { access: 'private', handleUploadUrl: '/api/upload', clientPayload: await token(), multipart: f.size > 4.5 * 1048576, contentType: 'application/pdf' });
+      const blob = await uploadPresigned(`quotes/${Date.now()}-${safe}`, f, { access: 'private', handleUploadUrl: '/api/upload', clientPayload: await token(), contentType: 'application/pdf' });
       files.push({ pathname: blob.pathname, name: f.name, size: f.size });
     }
     step('reading', 'Reading every page of the quotes…');

@@ -1,6 +1,10 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-14
+- **Fixed:** File storage now uses Vercel's newer keyless connection (the one Vercel sets up by
+  default), so no storage password has to be added. Quote uploads use short-lived, one-file upload
+  links. The health check now really saves and reads back a tiny test file, so "storage ready"
+  means storage truly works.
 - **Changed:** Proposal Studio now has its own private file storage (`proposal-studio-files`), kept
   separate from Census. Uploaded quotes and finished proposals are stored there.
 - **Fixed:** Sign-in now works with the keys already in Vercel. The page signs in through the

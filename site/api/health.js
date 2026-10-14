@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { send, callBuilder, ccApiKey } from './_lib.js';
+import { send, callBuilder, ccApiKey, putFile, readBytes } from './_lib.js';
 import { renderPdf } from './_render.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -11,7 +11,15 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 export default async function handler(req, res) {
   const t0 = Date.now();
   const out = { ok: false, signin_ready: Boolean(ccApiKey()), claude_ready: Boolean(process.env.ANTHROPIC_API_KEY),
-    storage_ready: Boolean(process.env.BLOB_READ_WRITE_TOKEN) };
+    storage_ready: false };
+  try {
+    // Round-trip a tiny file so "storage_ready" means storage really works, not just that a setting exists.
+    const stamp = new Date().toISOString();
+    await putFile('health/ping.txt', stamp, 'text/plain');
+    out.storage_ready = (await readBytes('health/ping.txt'))?.toString() === stamp;
+  } catch (e) {
+    out.storage_error = e.message;
+  }
   try {
     const proposal = JSON.parse(fs.readFileSync(path.join(here, '..', 'skill', 'examples', 'example-home-single-carrier.json'), 'utf8'));
     const built = await callBuilder(req, { mode: 'build', proposal });
