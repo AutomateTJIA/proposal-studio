@@ -1,6 +1,9 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-14
+- **Fixed:** Team emails now send from noreply@thejordaninsuranceagency.com, the domain verified in
+  the agency's Resend account (the mail. subdomain is not set up there, so sends would have failed).
+  The health check now confirms the exact sending domain with Resend.
 - **Changed:** The proposal form now has a slot for each carrier (Carrier 1, 2, 3, and "+ Add another
   carrier" up to six). A slot can hold more than one PDF, for when a carrier sends home and auto
   separately. Each slot has a "Recommend" button to tell the writer which carrier to favor.

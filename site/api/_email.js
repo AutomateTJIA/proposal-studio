@@ -3,7 +3,7 @@
 // One email per proposal: guarded by job.internal_email on the job and Resend's Idempotency-Key.
 // Needs RESEND_API_KEY (same Resend account and sender the Command Center uses).
 
-const FROM = () => process.env.RESEND_FROM_ADDRESS || 'The Jordan Insurance Agency <noreply@mail.thejordaninsuranceagency.com>';
+const FROM = () => process.env.RESEND_FROM_ADDRESS || 'The Jordan Insurance Agency <noreply@thejordaninsuranceagency.com>';
 const TEAM = () => (process.env.PROPOSAL_EMAIL_TO || 'billy@agencyhlpc.com,chelssy@agencyhlpc.com')
   .split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
 const APP_URL = () => (process.env.APP_URL || 'https://proposals.thejordaninsuranceagency.com').replace(/\/$/, '');
