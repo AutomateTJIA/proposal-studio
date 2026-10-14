@@ -15,17 +15,19 @@ const sha = s => crypto.createHash('sha256').update(String(s)).digest();
 
 // ---- Command Center sign-in (same accounts the team already uses)
 export const ccUrl = () => (process.env.CC_SUPABASE_URL || 'https://rcqhyiiywdpkndiwizxb.supabase.co').replace(/\/$/, '');
-export const ccAnonKey = () => process.env.CC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
+// Server-side only, never sent to the browser. Any Command Center project key works here; every data call
+// still runs as the signed-in person (their token decides what they can see and do).
+export const ccApiKey = () => process.env.CC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || process.env.CC_SUPABASE_SERVICE_KEY || '';
 export const STAFF_ROLES = ['csr', 'agent', 'admin', 'super_admin'];
 export const APPROVER_ROLES = ['agent', 'admin', 'super_admin'];
 
 const seen = new Map(); // token -> { user, until }
 /** Returns {id, email, full_name, role, token} for an active Command Center team member, else null. */
 export async function userFromToken(token) {
-  if (!token || !ccAnonKey()) return null;
+  if (!token || !ccApiKey()) return null;
   const hit = seen.get(token);
   if (hit && hit.until > Date.now()) return hit.user;
-  const headers = { apikey: ccAnonKey(), Authorization: `Bearer ${token}` };
+  const headers = { apikey: ccApiKey(), Authorization: `Bearer ${token}` };
   const u = await fetch(`${ccUrl()}/auth/v1/user`, { headers });
   if (!u.ok) return null;
   const { id } = await u.json();

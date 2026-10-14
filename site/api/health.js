@@ -3,14 +3,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { send, callBuilder, ccAnonKey } from './_lib.js';
+import { send, callBuilder, ccApiKey } from './_lib.js';
 import { renderPdf } from './_render.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
 export default async function handler(req, res) {
   const t0 = Date.now();
-  const out = { ok: false, signin_ready: Boolean(ccAnonKey()), claude_ready: Boolean(process.env.ANTHROPIC_API_KEY),
+  const out = { ok: false, signin_ready: Boolean(ccApiKey()), claude_ready: Boolean(process.env.ANTHROPIC_API_KEY),
     storage_ready: Boolean(process.env.BLOB_READ_WRITE_TOKEN) };
   try {
     const proposal = JSON.parse(fs.readFileSync(path.join(here, '..', 'skill', 'examples', 'example-home-single-carrier.json'), 'utf8'));

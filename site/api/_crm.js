@@ -1,12 +1,12 @@
 // Logs each proposal in the Command Center's Personal Lines Quote Tracker (revenue_opportunities)
 // as the signed-in team member, so the Command Center's own permissions and follow-up rules apply.
-import { ccUrl, ccAnonKey } from './_lib.js';
+import { ccUrl, ccApiKey } from './_lib.js';
 
 const ASSIGNEE = () => (process.env.CC_ASSIGNEE_EMAIL || 'chelssy@agencyhlpc.com').toLowerCase();
 const LEADERS = ['admin', 'super_admin'];
 
 async function rest(user, path, { method = 'GET', body, prefer } = {}) {
-  const headers = { apikey: ccAnonKey(), Authorization: `Bearer ${user.token}`, 'Content-Type': 'application/json' };
+  const headers = { apikey: ccApiKey(), Authorization: `Bearer ${user.token}`, 'Content-Type': 'application/json' };
   if (prefer) headers.Prefer = prefer;
   const r = await fetch(`${ccUrl()}/rest/v1/${path}`, { method, headers, body: body ? JSON.stringify(body) : undefined });
   const text = await r.text();

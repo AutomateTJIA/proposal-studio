@@ -34,8 +34,8 @@ own proposal studio enforces. Proposals built by Billy are approved as they are 
 | Name | What it is |
 |---|---|
 | `ANTHROPIC_API_KEY` | Claude API key (console.anthropic.com → API keys) |
-| `CC_SUPABASE_ANON_KEY` | The Command Center's public sign-in key — copy the value of `VITE_SUPABASE_ANON_KEY` from the agency-command-center project's environment variables |
-| `BLOB_READ_WRITE_TOKEN` | Added automatically when the private Blob store is connected |
+| `CC_SUPABASE_SERVICE_KEY` | The Command Center's Supabase key. Used only on the server to talk to the Command Center; it is never sent to the browser. Sign-in and every Command Center change still run as the signed-in person, so their own permissions apply. (`CC_SUPABASE_ANON_KEY` works too if you ever prefer the public key.) |
+| `BLOB_READ_WRITE_TOKEN` | Added automatically when a **new private** Blob store is connected with "Add a read-write token env var" checked. Don't reuse the Census store |
 | `CC_SUPABASE_URL` | Optional. Defaults to the Command Center project URL |
 | `CC_ASSIGNEE_EMAIL` | Optional. When Billy builds a proposal, who gets the follow-up. Default `chelssy@agencyhlpc.com` (a CSR who builds one owns it herself) |
 | `REQUIRE_AGENT_APPROVAL` | Optional. `true` (default) or `false` |

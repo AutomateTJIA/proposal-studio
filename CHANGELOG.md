@@ -1,6 +1,9 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-14
+- **Fixed:** Sign-in now works with the keys already in Vercel. The page signs in through the
+  server (new `/api/session`), which uses the Command Center key that's already set — no extra
+  "anon key" to copy. The key stays on the server and never reaches the browser.
 - **Changed:** New look in the same style as the Podcast Studio (navy, royal and gold only; Archivo and
   Public Sans). The page now doubles as a showcase: hero with real sample proposal pages, a gold
   carrier ticker, the proposal desk (sign-in, upload and live progress in one white card), "What the
