@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <title>Proposal Studio · The Jordan Insurance Agency</title>
-<meta name="description" content="Home & Auto proposals from The Jordan Insurance Agency: carrier quotes in, a clear side-by-side proposal out.">
+<meta name="description" content="Staff-only tool for The Jordan Insurance Agency team: carrier quotes in, a client-ready Home & Auto proposal out.">
 <link rel="icon" type="image/png" href="/assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
-/* Same family as the Podcast Studio: one broadcast-navy world, giant hero, gold ticker,
-   a white working desk, then what the client receives and the carriers we quote.
+/* Staff-only tool in the Podcast Studio family: one broadcast-navy world, a white working desk,
+   the team's proposals list, and a carrier quick reference.
    Brand colors only: navy, royal, gold (accent), white, mist. No other hues, even for status. */
 :root{
   --navy:#163A70;--royal:#1F5AA6;--gold:#E0B43B;--mist:#E9EDF2;--white:#FFFFFF;
@@ -81,12 +81,6 @@ h2.big .g{color:var(--gold)}
 }
 @media (max-width:920px){.hero .wrap{grid-template-columns:1fr;padding-block:52px 72px}.art{min-height:440px}.sheet{width:min(62%,300px)}}
 
-/* Ticker */
-.ticker{background:var(--gold);color:var(--ink);overflow:hidden;white-space:nowrap}
-.ticker .track{display:inline-flex;padding-block:14px;font:900 22px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
-.ticker span{padding-inline:22px;display:inline-flex;align-items:center;gap:44px}
-.ticker span::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--ink)}
-@media (prefers-reduced-motion:no-preference){.ticker .track{animation:roll 38s linear infinite}@keyframes roll{to{transform:translateX(-50%)}}}
 
 /* Desk */
 section.band{padding-block:96px}
@@ -191,6 +185,12 @@ td.client{font-weight:700}
 tr.click{cursor:pointer}
 tr.click:hover td{background:#f5f7fa}
 .tablewrap{overflow-x:auto}
+.listtools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.listtools input{flex:1 1 260px;min-width:0;border:2px solid var(--mist);background:var(--mist);color:var(--ink);border-radius:14px;padding:12px 16px;font:500 15px/1.4 var(--body)}
+.listtools input:focus{outline:none;border-color:var(--royal);background:var(--white)}
+.listtools .chips{margin:0}
+.chips button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--white)}
+.listfoot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
 
 /* What the client receives */
 .samples{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:44px}
@@ -255,12 +255,12 @@ footer .legal{width:100%;font-size:13px;color:rgba(233,237,242,.55);margin:0}
 <section class="hero">
   <div class="wrap">
     <div class="copy">
-      <div class="kicker">Home &amp; Auto proposals from The Jordan Insurance Agency</div>
+      <div class="kicker">Staff only · The Jordan Insurance Agency</div>
       <h1>Quotes in.<span class="g">Proposals out.</span></h1>
-      <p class="lede">Drop in quote PDFs from <b>Liberty Mutual, Travelers, Chubb or AIG</b>. Proposal Studio reads every page, builds a side-by-side <b>Home &amp; Auto</b> proposal in our design, checks every number and writes the client email, ready for a licensed agent to approve.</p>
+      <p class="lede">The team's tool for Home &amp; Auto proposals. Drop in the carrier quotes, add your instructions, and get a checked, client-ready proposal plus the client email, logged in the <b>Command Center</b> for follow-up. Sign in with your Command Center account.</p>
       <div class="btns">
         <a class="btn gold" href="#desk">Build a proposal</a>
-        <a class="btn line" href="#sample">See a sample</a>
+        <a class="btn line" href="#recentBand">Team proposals</a>
       </div>
     </div>
     <div class="art" aria-hidden="true">
@@ -271,11 +271,6 @@ footer .legal{width:100%;font-size:13px;color:rgba(233,237,242,.55);margin:0}
     </div>
   </div>
 </section>
-
-<div class="ticker" aria-hidden="true"><div class="track">
-  <span>Home</span><span>Auto</span><span>Bundles</span><span>Liberty Mutual</span><span>Travelers</span><span>Chubb</span><span>AIG Private Client</span><span>Charlotte, NC</span><span>Nashville, TN</span>
-  <span>Home</span><span>Auto</span><span>Bundles</span><span>Liberty Mutual</span><span>Travelers</span><span>Chubb</span><span>AIG Private Client</span><span>Charlotte, NC</span><span>Nashville, TN</span>
-</div></div>
 
 <section class="band" id="desk">
   <div class="wrap desk">
@@ -342,44 +337,31 @@ footer .legal{width:100%;font-size:13px;color:rgba(233,237,242,.55);margin:0}
   <div class="wrap"><div class="card" id="resultCard"></div></div>
 </section>
 
-<section class="sheetband" id="recentBand" hidden style="padding-top:0">
+<section class="sheetband" id="recentBand" hidden>
   <div class="wrap">
+    <div class="rhead"><div><div class="kicker">The team's work</div><h2 class="big" style="font-size:clamp(32px,4.4vw,48px);margin-bottom:6px">Proposals</h2></div><span class="meta" id="recentCount"></span></div>
     <div class="card">
-      <span class="cap">Recent proposals</span>
-      <div class="tablewrap"><table><thead><tr><th>Created</th><th>Client</th><th>Prepared by</th><th>Status</th><th>Sent</th></tr></thead><tbody id="recent"></tbody></table></div>
-    </div>
-  </div>
-</section>
-
-<section class="band" id="sample">
-  <div class="wrap">
-    <div class="kicker">What the client receives</div>
-    <h2 class="big">A proposal clients <span class="g">actually read</span></h2>
-    <p class="lead">Every proposal follows the same approved design: the carriers side by side, our recommendation and why, what each policy won't cover, and the next steps with Billy and his team. Shown with a sample client.</p>
-    <div class="samples">
-      <figure><div class="pg"><img src="/assets/showcase/comparison.jpg" alt="Sample proposal page comparing three home and auto bundles side by side" loading="lazy" width="1000" height="1294"></div>
-        <figcaption><b>Side by side</b><span>Price, limits and deductibles for every carrier, with the recommended bundle highlighted.</span></figcaption></figure>
-      <figure><div class="pg"><img src="/assets/showcase/exclusions.jpg" alt="Sample proposal page listing exclusions and limitations for each carrier" loading="lazy" width="1000" height="1294"></div>
-        <figcaption><b>No surprises</b><span>Exclusions and limits for every carrier on their own page, with the key differences flagged.</span></figcaption></figure>
-      <figure><div class="pg"><img src="/assets/showcase/next-steps.jpg" alt="Sample proposal page with payment options and next steps" loading="lazy" width="1000" height="1294"></div>
-        <figcaption><b>Clear next steps</b><span>Payment options, how the final rate is set, and how to reach Billy and his team.</span></figcaption></figure>
-    </div>
-    <div class="feats">
-      <div><b>Every number checked</b><span>Totals, differences and discounts are recomputed before anything is shown.</span></div>
-      <div><b>Plain language</b><span>Each coverage explained in a sentence or two, no jargon.</span></div>
-      <div><b>Licensed approval</b><span>A licensed agent signs off before any proposal reaches a client.</span></div>
-      <div><b>Client email included</b><span>A ready-to-send email in our voice comes with every proposal.</span></div>
-      <div><b>Followed up</b><span>Every proposal is logged in the Command Center with a follow-up date.</span></div>
-      <div><b>Our whole team</b><span>Billy, Chelssy and Gloria on every proposal, so clients always reach someone.</span></div>
+      <div class="listtools">
+        <input id="q" type="search" placeholder="Search by client or who prepared it" aria-label="Search proposals">
+        <div class="chips" id="filt" role="group" aria-label="Filter by status">
+          <button type="button" data-f="all" aria-pressed="true">All</button>
+          <button type="button" data-f="approval" aria-pressed="false">Needs approval</button>
+          <button type="button" data-f="tosend" aria-pressed="false">Ready to send</button>
+          <button type="button" data-f="sent" aria-pressed="false">Sent</button>
+          <button type="button" data-f="review" aria-pressed="false">Needs review</button>
+        </div>
+      </div>
+      <div class="tablewrap"><table><thead><tr><th>Created</th><th>Client</th><th>Prepared by</th><th>Follow-up</th><th>Status</th><th>Sent</th></tr></thead><tbody id="recent"></tbody></table></div>
+      <div class="listfoot"><span class="meta" id="listNote"></span><button id="more" class="btn ghost" type="button" hidden>Show 25 more</button></div>
     </div>
   </div>
 </section>
 
 <section class="band carriers" id="carriers">
   <div class="wrap">
-    <div class="kicker">Carriers we quote</div>
+    <div class="kicker">Carrier quick reference</div>
     <h2 class="big">Home &amp; Auto carriers, <span class="g">side by side</span></h2>
-    <p class="lead">As an independent agency we shop several carriers for every client, so the proposal shows real choices. A few of the carriers we quote often:</p>
+    <p class="lead">What stands out about the carriers we quote most. Use it as a starting point; always confirm against the actual quote.</p>
     <div class="cgrid">
       <article class="carrier">
         <div class="icons"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16v-3l2-5h14l2 5v3"/><path d="M3 16h18v2H3z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span></div>
@@ -414,21 +396,9 @@ footer .legal{width:100%;font-size:13px;color:rgba(233,237,242,.55);margin:0}
   </div>
 </section>
 
-<section class="band" style="padding-block:72px">
-  <div class="wrap">
-    <div class="kicker">On every proposal</div>
-    <h2 class="big" style="font-size:clamp(32px,4.4vw,48px)">Billy and his team</h2>
-    <div class="team">
-      <div><b>Billy Jordan Jr.</b><span>Licensed agent</span></div>
-      <div><b>Chelssy Valles</b><span>Agency Support Specialist</span></div>
-      <div><b>Gloria Lechuga</b><span>Agency Support Specialist</span></div>
-    </div>
-  </div>
-</section>
-
 <footer>
   <div class="wrap">
-    <span>Proposal Studio · The Jordan Insurance Agency · Charlotte, NC and Nashville, TN</span>
+    <span>Proposal Studio · Staff only · The Jordan Insurance Agency</span>
     <span class="sig">Built with ❤️ by Breakpoint Systems LLC.</span>
     <p class="legal">Proposals are quotes, not binders of coverage. Final premiums are set by each carrier's underwriting.</p>
   </div>
@@ -463,7 +433,7 @@ function flash(el, text) { el.textContent = text; el.hidden = !text; }
 async function enter() {
   const r = await api('/api/jobs');
   if (r.status === 401) { const b = await r.json().catch(() => ({})); throw new Error(b.error || 'This account cannot use Proposal Studio.'); }
-  signedIn(true); renderRecent(await r.json());
+  signedIn(true); setList(await r.json(), false);
 }
 $('#signin').addEventListener('submit', async e => {
   e.preventDefault(); flash($('#signinErr'), '');
@@ -620,15 +590,44 @@ async function openJob(id) {
 }
 
 const SHORT = { ready: 'Approved', needs_review: 'Needs review', pending_approval: 'Needs approval', failed: 'Failed', reading: 'In progress', drafted: 'In progress' };
-function renderRecent({ items = [] } = {}) {
-  $('#recent').innerHTML = items.map(j => `<tr class="click" data-id="${esc(j.id)}" tabindex="0"><td>${j.created_at ? new Date(j.created_at).toLocaleDateString() : ''}</td><td class="client">${esc(j.client_name || '—')}</td><td>${esc(j.prepared_by)}</td>
+let listItems = [], listMore = false, listTotal = 0, listFilter = 'all';
+const MATCH = {
+  all: () => true,
+  approval: j => j.status === 'pending_approval',
+  tosend: j => j.status === 'ready' && !j.sent_at,
+  sent: j => !!j.sent_at,
+  review: j => j.status === 'needs_review' || j.status === 'failed',
+};
+function renderRecent() {
+  const q = $('#q').value.trim().toLowerCase();
+  const rows = listItems.filter(MATCH[listFilter]).filter(j => !q || `${j.client_name} ${j.prepared_by}`.toLowerCase().includes(q));
+  $('#recent').innerHTML = rows.map(j => `<tr class="click" data-id="${esc(j.id)}" tabindex="0"><td>${j.created_at ? new Date(j.created_at).toLocaleDateString() : ''}</td><td class="client">${esc(j.client_name || '—')}</td><td>${esc(j.prepared_by)}</td><td>${esc(j.follow_up || '—')}</td>
     <td><span class="badge ${esc(j.status)}">${esc(SHORT[j.status] || j.status)}</span></td><td>${j.sent_at ? new Date(j.sent_at).toLocaleDateString() : '—'}</td></tr>`).join('')
-    || '<tr><td colspan="5">No proposals yet. Your first one will show up here.</td></tr>';
+    || `<tr><td colspan="6">${listItems.length ? 'No proposals match.' : 'No proposals yet. Your first one will show up here.'}</td></tr>`;
+  $('#recentCount').textContent = listTotal ? `${listTotal} proposal${listTotal === 1 ? '' : 's'} in all` : '';
+  $('#more').hidden = !listMore;
+  $('#listNote').textContent = listMore ? `Showing the newest ${listItems.length}. ${q || listFilter !== 'all' ? 'Load more to search older ones.' : ''}` : (listItems.length ? `Showing all ${listItems.length}.` : '');
+}
+function setList(d, append) {
+  listItems = append ? listItems.concat(d.items || []) : (d.items || []);
+  listMore = !!d.more; listTotal = d.total || listItems.length; renderRecent();
 }
 async function refreshRecent() {
   const r = await api('/api/jobs'); if (r.status === 401) { signedIn(false); return; }
-  renderRecent(await r.json());
+  setList(await r.json(), false);
 }
+$('#more').addEventListener('click', async () => {
+  $('#more').disabled = true;
+  const r = await api('/api/jobs?offset=' + listItems.length); if (r.ok) setList(await r.json(), true);
+  $('#more').disabled = false;
+});
+$('#q').addEventListener('input', renderRecent);
+$('#filt').addEventListener('click', e => {
+  const b = e.target.closest('[data-f]'); if (!b) return;
+  listFilter = b.dataset.f;
+  document.querySelectorAll('#filt [data-f]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  renderRecent();
+});
 $('#recent').addEventListener('click', e => { const tr = e.target.closest('tr[data-id]'); if (tr) openJob(tr.dataset.id); });
 $('#recent').addEventListener('keydown', e => { const tr = e.target.closest('tr[data-id]'); if (tr && e.key === 'Enter') openJob(tr.dataset.id); });
 

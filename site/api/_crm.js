@@ -1,12 +1,16 @@
-// Logs each proposal in the Command Center's Personal Lines Quote Tracker (revenue_opportunities)
-// as the signed-in team member, so the Command Center's own permissions and follow-up rules apply.
-import { ccUrl, ccApiKey } from './_lib.js';
+// Logs each proposal in the Command Center's Personal Lines Quote Tracker (revenue_opportunities).
+// The Command Center turns each one into a scheduled follow-up for the assigned CSR (its home/auto
+// follow-up trigger). Every proposal goes to the dedicated CSR (Chelssy by default), whoever built it;
+// the builder is recorded as created_by. With the Command Center server key this runs server-side after
+// the builder is verified as active staff; without it, it falls back to the builder's own permissions.
+import { ccUrl, ccApiKey, ccServiceKey } from './_lib.js';
 
 const ASSIGNEE = () => (process.env.CC_ASSIGNEE_EMAIL || 'chelssy@agencyhlpc.com').toLowerCase();
 const LEADERS = ['admin', 'super_admin'];
 
 async function rest(user, path, { method = 'GET', body, prefer } = {}) {
-  const headers = { apikey: ccApiKey(), Authorization: `Bearer ${user.token}`, 'Content-Type': 'application/json' };
+  const key = ccServiceKey();
+  const headers = { apikey: key || ccApiKey(), Authorization: `Bearer ${key || user.token}`, 'Content-Type': 'application/json' };
   if (prefer) headers.Prefer = prefer;
   const r = await fetch(`${ccUrl()}/rest/v1/${path}`, { method, headers, body: body ? JSON.stringify(body) : undefined });
   const text = await r.text();
@@ -15,9 +19,9 @@ async function rest(user, path, { method = 'GET', body, prefer } = {}) {
   return data;
 }
 
-/** Owners/admins can hand the follow-up to the CSR (Chelssy by default); a CSR or agent owns their own. */
+/** The dedicated CSR owns every proposal's follow-up. Without the server key a CSR can only assign herself. */
 async function assigneeFor(user) {
-  if (!LEADERS.includes(user.role)) return { id: user.id, full_name: user.full_name };
+  if (!ccServiceKey() && !LEADERS.includes(user.role)) return { id: user.id, full_name: user.full_name };
   const rows = await rest(user, `profiles?select=id,full_name&status=eq.active&email=ilike.${encodeURIComponent(ASSIGNEE())}&limit=1`);
   return rows && rows.length ? rows[0] : { id: user.id, full_name: user.full_name };
 }

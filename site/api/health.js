@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { send, callBuilder, ccApiKey, putFile, readBytes } from './_lib.js';
+import { send, callBuilder, ccApiKey, ccServiceKey, putFile, readBytes } from './_lib.js';
 import { renderPdf } from './_render.js';
 import { checkEmailKey } from './_email.js';
 
@@ -11,7 +11,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 
 export default async function handler(req, res) {
   const t0 = Date.now();
-  const out = { ok: false, signin_ready: Boolean(ccApiKey()), claude_ready: Boolean(process.env.ANTHROPIC_API_KEY), email_ready: false,
+  const out = { ok: false, signin_ready: Boolean(ccApiKey()), followups_to: ccServiceKey() ? 'dedicated CSR' : 'whoever builds it', claude_ready: Boolean(process.env.ANTHROPIC_API_KEY), email_ready: false,
     storage_ready: false };
   try {
     const mail = await checkEmailKey();

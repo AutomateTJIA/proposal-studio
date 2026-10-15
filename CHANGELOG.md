@@ -1,5 +1,17 @@
 # Changelog — Proposal Studio
 
+## 2026-10-15
+- **Changed:** Proposal Studio is now clearly a staff-only tool. Removed the consumer-facing parts (the
+  gold carrier ticker, "What the client receives" showcase, and the "Billy and his team" section). The
+  carrier cards stay as a team quick reference.
+- **Changed:** "Recent proposals" is now a full **Proposals** list: shows the total count, 25 at a time
+  with "Show 25 more", search by client or preparer, and filters (Needs approval, Ready to send, Sent,
+  Needs review). New "Follow-up" column shows which CSR owns the Command Center follow-up.
+- **Fixed:** Every proposal's Command Center follow-up now goes to the dedicated CSR (Chelssy by
+  default), even when Gloria builds it. Before, the Command Center's permissions forced a CSR's
+  proposals onto herself. Logging runs on the server with the Command Center key after the builder is
+  verified as active staff; the builder is still recorded as the creator.
+
 ## 2026-10-14
 - **Fixed:** Extra carrier slots can now be removed. Every optional carrier (2 and up) has an × button;
   if it already holds PDFs it asks first. The remaining carriers renumber and the Recommend choice

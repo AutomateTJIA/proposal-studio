@@ -17,6 +17,13 @@ const sha = s => crypto.createHash('sha256').update(String(s)).digest();
 export const ccUrl = () => (process.env.CC_SUPABASE_URL || 'https://rcqhyiiywdpkndiwizxb.supabase.co').replace(/\/$/, '');
 // Server-side only, never sent to the browser. Any Command Center project key works here; every data call
 // still runs as the signed-in person (their token decides what they can see and do).
+/** The Command Center's server key, when the configured key is one (never sent to the browser). Used only
+ *  for Command Center logging after this server has verified the person is active agency staff. */
+export function ccServiceKey() {
+  const k = process.env.CC_SUPABASE_SERVICE_KEY || '';
+  if (k.startsWith('sb_secret_')) return k;
+  try { return JSON.parse(Buffer.from(k.split('.')[1], 'base64url').toString()).role === 'service_role' ? k : ''; } catch { return ''; }
+}
 export const ccApiKey = () => process.env.CC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || process.env.CC_SUPABASE_SERVICE_KEY || '';
 export const STAFF_ROLES = ['csr', 'agent', 'admin', 'super_admin'];
 export const APPROVER_ROLES = ['agent', 'admin', 'super_admin'];
