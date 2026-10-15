@@ -1,6 +1,11 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-15
+- **Fixed:** Sign-in hardening. Proposal Studio now always talks to the Command Center's own sign-in
+  service, even if the address setting in Vercel was filled in with the Command Center's web address.
+  Emails are matched case-insensitively. Sign-in errors now say what actually went wrong (wrong
+  password, unconfirmed email, too many tries, or a setup problem) instead of always "did not match".
+  The health check now tests the Command Center sign-in connection itself.
 - **Added:** Coverage differences check. Every proposal now lists, line by line, where the carriers'
   quotes don't match (different limits like $100,000 vs $500,000 property damage, different
   deductibles, coverage quoted on one but missing on another like rental car or renters, different

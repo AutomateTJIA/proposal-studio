@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { send, callBuilder, ccApiKey, ccServiceKey, putFile, readBytes } from './_lib.js';
+import { send, callBuilder, ccApiKey, ccServiceKey, ccUrl, ccUrlSetting, putFile, readBytes } from './_lib.js';
 import { renderPdf } from './_render.js';
 import { checkEmailKey } from './_email.js';
 
@@ -13,6 +13,17 @@ export default async function handler(req, res) {
   const t0 = Date.now();
   const out = { ok: false, signin_ready: Boolean(ccApiKey()), followups_to: ccServiceKey() ? 'dedicated CSR' : 'whoever builds it', claude_ready: Boolean(process.env.ANTHROPIC_API_KEY), email_ready: false,
     storage_ready: false };
+  try {
+    // Does the configured key belong to the Command Center project? (/auth/v1/settings needs a valid key.)
+    const r = await fetch(`${ccUrl()}/auth/v1/settings`, { headers: { apikey: ccApiKey() } });
+    const b = await r.json().catch(() => ({}));
+    out.signin_ready = r.ok;
+    out.signin_check = r.ok ? `Command Center sign-in reachable (${ccUrl().replace('https://', '')}); email sign-in ${b.external?.email === false ? 'DISABLED' : 'enabled'}`
+      : `Command Center rejected the key (${r.status} ${b.message || ''}). Check CC_SUPABASE_SERVICE_KEY belongs to the Command Center project.`;
+    out.cc_url_setting = ccUrlSetting();
+  } catch (e) {
+    out.signin_ready = false; out.signin_check = `Command Center unreachable: ${e.message}`;
+  }
   try {
     const mail = await checkEmailKey();
     out.email_ready = mail.ok;

@@ -14,7 +14,18 @@ export function send(res, status, body) {
 const sha = s => crypto.createHash('sha256').update(String(s)).digest();
 
 // ---- Command Center sign-in (same accounts the team already uses)
-export const ccUrl = () => (process.env.CC_SUPABASE_URL || 'https://rcqhyiiywdpkndiwizxb.supabase.co').replace(/\/$/, '');
+const CC_DEFAULT = 'https://rcqhyiiywdpkndiwizxb.supabase.co';
+/** The Command Center's Supabase address. A setting that isn't a Supabase project address (for example the
+ *  Command Center's web address) is ignored, because sign-in and logging only work against Supabase. */
+export const ccUrl = () => {
+  const v = (process.env.CC_SUPABASE_URL || '').trim().replace(/\/+$/, '');
+  return /^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(v) ? v : CC_DEFAULT;
+};
+export const ccUrlSetting = () => {
+  const v = (process.env.CC_SUPABASE_URL || '').trim();
+  if (!v) return 'not set (using the Command Center default)';
+  return /^https:\/\/[a-z0-9]{20}\.supabase\.co\/?$/.test(v) ? 'ok' : `ignored: "${v.replace(/^https?:\/\//, '').slice(0, 60)}" is not a Supabase address`;
+};
 // Server-side only, never sent to the browser. Any Command Center project key works here; every data call
 // still runs as the signed-in person (their token decides what they can see and do).
 /** The Command Center's server key, when the configured key is one (never sent to the browser). Used only
