@@ -180,6 +180,8 @@ section.band{padding-block:96px}
 .diffs p{margin:6px 0 10px;font-size:14.5px}
 .diffs table{font-size:14.5px;background:var(--white);border-radius:10px}
 .diffs td,.diffs th{padding:9px 10px}
+.linkbtn{margin-top:8px;background:none;border:0;padding:4px 0;font:700 14.5px var(--body);color:var(--royal);text-decoration:underline;cursor:pointer}
+.cap a{color:var(--royal)}
 .ack{display:flex;gap:10px;align-items:center;margin-top:12px;font-weight:700;cursor:pointer}
 .ack input{width:20px;height:20px;accent-color:var(--navy)}
 .btn.danger{box-shadow:inset 0 0 0 2px var(--navy);color:var(--navy);margin-left:auto}
@@ -623,7 +625,8 @@ async function openJob(id) {
   const diffBox = diffs.length ? `<div class="diffs">
       <b>Coverage differences between the quotes (${diffs.length})</b>
       <p>These may be quoting mistakes. Check each one against the quotes. If one is wrong, fix the quote with the carrier, delete this proposal and build it again.</p>
-      <table><thead><tr><th>Line</th><th>Coverage</th><th>What differs</th></tr></thead><tbody>${diffs.map(d => `<tr><td>${esc(d.line || '')}</td><td>${esc(d.coverage || '')}</td><td>${esc(d.detail || '')}</td></tr>`).join('')}</tbody></table>
+      <table><thead><tr><th>Line</th><th>Coverage</th><th>What differs</th></tr></thead><tbody>${diffs.map((d, i) => `<tr${i >= 5 ? ' class="more" hidden' : ''}><td>${esc(d.line || '')}</td><td>${esc(d.coverage || '')}</td><td>${esc(d.detail || '')}</td></tr>`).join('')}</tbody></table>
+      ${diffs.length > 5 ? `<button class="linkbtn" id="allDiffs" type="button">Show all ${diffs.length}</button>` : ''}
       ${needAck ? '<label class="ack"><input type="checkbox" id="ack"> I checked every difference against the quotes</label>'
         : job.coverage_reviewed ? `<p class="meta">Checked by ${esc(job.coverage_reviewed.by)} on ${new Date(job.coverage_reviewed.at).toLocaleDateString()}.</p>` : ''}
     </div>` : '';
@@ -633,6 +636,10 @@ async function openJob(id) {
       <span class="badge ${esc(job.status)}">${esc(LABEL[job.status] || job.status)}</span>
       <span class="meta">&nbsp; ${job.checks ? `${job.checks.passed} of ${job.checks.total} checks passed · ${job.pages} pages` : ''}${job.prepared_by ? ' · prepared by ' + esc(job.prepared_by) : ''}${job.approved_by ? ' · approved by ' + esc(job.approved_by) : ''}${job.sent_at ? ' · sent ' + new Date(job.sent_at).toLocaleDateString() : ''}</span>
     </div></div>
+    <div class="split">
+      <div><span class="cap">The proposal · <a href="${esc(job.pdf_url)}" target="_blank" rel="noopener">open full size</a></span><iframe class="pdf" src="${esc(job.pdf_url)}" title="Proposal PDF"></iframe></div>
+      <div><span class="cap">Client email</span><pre class="email">${esc(job.email?.text || '')}</pre></div>
+    </div>
     ${diffBox}
     ${failed ? `<div class="verify"><b>Checks that still fail</b><ul>${failed}</ul></div>` : ''}
     ${notes ? `<div class="verify"><b>Verify before sending</b><ul>${notes}</ul></div>` : ''}
@@ -646,12 +653,11 @@ async function openJob(id) {
       ${delBtn}
     </div>
     <p class="crm">${mailLine}${ready && !job.sent_at ? 'Send it to the client from your own Gmail, then click Mark as sent. ' : ''}${crmLine}</p>
-    <div class="split">
-      <div><span class="cap">The proposal</span><iframe class="pdf" src="${esc(job.pdf_url)}" title="Proposal PDF"></iframe></div>
-      <div><span class="cap">Client email</span><pre class="email">${esc(job.email?.text || '')}</pre></div>
-    </div>`;
+    `;
   $('#result').hidden = false;
   $('#result').scrollIntoView({ behavior: 'smooth' });
+  const all = $('#allDiffs');
+  if (all) all.onclick = () => { document.querySelectorAll('.diffs tr.more').forEach(t => t.hidden = false); all.remove(); };
   const ack = $('#ack');
   const reviewed = () => !needAck || (ack && ack.checked);
   if (ack) ack.onchange = () => { for (const b of [$('#approve'), $('#sent')]) if (b && !(b.id === 'sent' && job.sent_at)) b.disabled = !ack.checked; };

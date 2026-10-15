@@ -45,6 +45,11 @@ tjia-proposal-builder skill below exactly, with these differences for the web ap
   property address or year built; different effective dates or policy terms. Copy the values exactly.
   Mismatches are often quoting mistakes, so list them even when they look intentional. Use [] only
   when the quotes truly match line for line (or there is one carrier with nothing to compare).
+  Keep the list short and useful: one row per coverage (put every carrier's value in that row's
+  detail), most important first (missing coverages and liability limits, then deductibles, then
+  the rest), and at most 10 rows. Leave out premiums, fees, discounts, payment plans, form numbers
+  and wording that means the same thing. If more than 10 real differences remain, keep the 10 that
+  matter most and add one agent_notes line saying how many smaller ones were left off.
 - Reply with ONE JSON object and nothing else (no code fences, no commentary):
   {"proposal": { ...proposal.json... },
    "coverage_review": [{"line": "Auto|Home|Umbrella|Renters|Other", "coverage": "Property damage liability",

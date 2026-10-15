@@ -1,6 +1,14 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-15
+- **Fixed:** The proposal is back at the top. When you open a proposal, the PDF and the client email
+  now show right under the client's name, before the coverage differences. Before this, a long
+  differences list pushed the PDF far down the page, so it looked like it was gone. The PDF caption
+  also has an "open full size" link.
+- **Changed:** The coverage differences box shows the first 5 rows, with "Show all" for the rest.
+  New proposals list at most 10 differences, most important first (missing coverage and liability
+  limits first), one row per coverage, and skip premiums, fees, discounts and wording-only differences.
+  If more were left off, a note says how many.
 - **Changed:** The three proposal pages at the top of the site now float, tilt and breathe like the
   Podcast Studio hero, each on its own rhythm, and the gold rings pulse gently. Motion turns off for
   anyone whose device is set to reduce motion.
