@@ -1,6 +1,9 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-15
+- **Changed:** The three proposal pages at the top of the site now float, tilt and breathe like the
+  Podcast Studio hero, each on its own rhythm, and the gold rings pulse gently. Motion turns off for
+  anyone whose device is set to reduce motion.
 - **Added:** Sign in with your agency email and a 6-digit code. Type your email, get a code in your
   inbox, enter it, done. Only active team members in the Command Center get a code. Codes last 10
   minutes, 5 tries per code, at most 5 codes per 15 minutes. You stay signed in for 12 hours, even

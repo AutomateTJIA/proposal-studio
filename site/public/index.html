@@ -75,8 +75,16 @@ h2.big .g{color:var(--gold)}
 .sheet.s2{transform:translate(22%,2%) rotate(7deg)}
 .sheet.s3{transform:translate(0,-2%) rotate(-1.5deg);z-index:2}
 @media (prefers-reduced-motion:no-preference){
-  .sheet.s3{animation:float 7s ease-in-out infinite}
-  @keyframes float{50%{transform:translate(0,-4%) rotate(-1.5deg)}}
+  /* Same feel as the Podcast Studio hero: each page floats, tilts and breathes on its own rhythm */
+  .sheet.s1{animation:drift1 6.5s ease-in-out infinite}
+  .sheet.s2{animation:drift2 7s ease-in-out infinite;animation-delay:-2.3s}
+  .sheet.s3{animation:float 5s ease-in-out infinite}
+  @keyframes drift1{0%,100%{transform:translate(-24%,4%) rotate(-9deg)}50%{transform:translate(-29%,-3%) rotate(-12.5deg) scale(1.02)}}
+  @keyframes drift2{0%,100%{transform:translate(22%,2%) rotate(7deg)}50%{transform:translate(27%,-5%) rotate(10.5deg) scale(1.02)}}
+  @keyframes float{0%,100%{transform:translate(0,-1%) rotate(-3deg) scale(1)}50%{transform:translate(0,-8%) rotate(0deg) scale(1.04)}}
+  .art .ring{animation:pulse 6s ease-in-out infinite}
+  .art .ring.two{animation-duration:8s;animation-delay:-3s}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:.55}}
   .pill i{animation:blink 1.4s ease-in-out infinite}@keyframes blink{50%{opacity:.25}}
 }
 @media (max-width:920px){.hero .wrap{grid-template-columns:1fr;padding-block:52px 72px}.art{min-height:440px}.sheet{width:min(62%,300px)}}
