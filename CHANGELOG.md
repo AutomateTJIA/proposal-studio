@@ -1,6 +1,11 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-15
+- **Added:** Sign in with your agency email and a 6-digit code. Type your email, get a code in your
+  inbox, enter it, done. Only active team members in the Command Center get a code. Codes last 10
+  minutes, 5 tries per code, at most 5 codes per 15 minutes. You stay signed in for 12 hours, even
+  across tabs. "Use my password instead" is still there as a backup.
+- **Changed:** Every team member who can sign in (CSRs, agents, admins) now sees Delete proposal.
 - **Fixed:** Sign-in hardening. Proposal Studio now always talks to the Command Center's own sign-in
   service, even if the address setting in Vercel was filled in with the Command Center's web address.
   Emails are matched case-insensitively. Sign-in errors now say what actually went wrong (wrong

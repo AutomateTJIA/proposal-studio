@@ -1,8 +1,8 @@
 // Deletes a proposal the team doesn't want to keep (a redo, a wrong quote): its record, uploaded
-// quotes and generated files, plus its Command Center record if it had one. The person who built it
-// or a licensed agent can delete an unsent proposal; once sent, only a licensed agent can.
+// quotes and generated files, plus its Command Center record if it had one. Any signed-in team member
+// (CSR, agent or admin) can delete; the page asks them to confirm first.
 import { del, list } from '@vercel/blob';
-import { send, currentUser, canApprove, readBody, safeId, readJob, JOBS, OUTPUT } from './_lib.js';
+import { send, currentUser, readBody, safeId, readJob, JOBS, OUTPUT } from './_lib.js';
 import { deleteOpportunity } from './_crm.js';
 
 export default async function handler(req, res) {
@@ -13,10 +13,6 @@ export default async function handler(req, res) {
   if (!safeId(id)) return send(res, 400, { ok: false, error: 'Bad job id' });
   const j = await readJob(id);
   if (!j) return send(res, 404, { ok: false, error: 'Not found' });
-  const own = j.prepared_by_id && j.prepared_by_id === user.id;
-  if (j.sent_at ? !canApprove(user) : !(own || canApprove(user))) {
-    return send(res, 403, { ok: false, error: j.sent_at ? 'Only a licensed agent can delete a proposal that was sent.' : 'Only the person who built it or a licensed agent can delete this proposal.' });
-  }
   let crm = { status: 'none' };
   if (j.crm?.opportunity_id) {
     try { crm = await deleteOpportunity(user, j.crm.opportunity_id); }

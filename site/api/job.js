@@ -11,5 +11,5 @@ export default async function handler(req, res) {
   const { proposal, claude, ...rest } = j;
   return send(res, 200, { ok: true, job: { ...rest, options: proposal?.options?.map(o => ({ name: o.name, price: o.price, recommended: !!o.recommended })) || [],
     pdf_url: j.pdf_path ? signPath(j.pdf_path) : null, can_approve: canApprove(user),
-    can_delete: j.sent_at ? canApprove(user) : (canApprove(user) || j.prepared_by_id === user.id) } });
+    can_delete: true } });
 }

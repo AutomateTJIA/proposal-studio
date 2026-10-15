@@ -99,6 +99,8 @@ section.band{padding-block:96px}
 .panel h3{font:900 30px/1.05 var(--display);letter-spacing:-.02em;margin:0 0 6px;color:var(--navy)}
 .panel .hint{margin:0 0 20px;color:var(--muted);font-size:15.5px}
 .panel .hint a{color:var(--royal);font-weight:600}
+.altlinks{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:14px 0 0;font-size:14.5px}
+.altlinks a{color:var(--royal);font-weight:600}
 .panel label{display:block;font:600 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--royal);margin:16px 0 8px}
 .panel label small{text-transform:none;letter-spacing:0;font:500 12px var(--body);color:var(--muted)}
 .panel input,.panel textarea{display:block;width:100%;max-width:100%;min-width:0;border:2px solid var(--mist);background:var(--mist);color:var(--ink);border-radius:14px;padding:13px 16px;font:500 15px/1.4 var(--body)}
@@ -295,12 +297,18 @@ footer .legal{width:100%;font-size:13px;color:rgba(233,237,242,.55);margin:0}
     </div>
 
     <div class="panel">
-      <form id="signin" hidden>
+      <form id="signin" hidden novalidate>
         <h3>Team sign in</h3>
-        <p class="hint">Use your Command Center email and password.</p>
-        <label for="em">Email</label><input id="em" type="email" autocomplete="username" required>
-        <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required>
-        <button class="btn gold full" type="submit">Sign in</button>
+        <p class="hint" id="signinHint">Enter your agency email. We'll email you a 6-digit code to sign in.</p>
+        <label for="em">Agency email</label><input id="em" type="email" autocomplete="username" placeholder="you@agencyhlpc.com" required>
+        <div id="stepCode" hidden>
+          <label for="code">6-digit code</label><input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456">
+        </div>
+        <div id="stepPw" hidden>
+          <label for="pw">Command Center password</label><input id="pw" type="password" autocomplete="current-password">
+        </div>
+        <button class="btn gold full" type="submit" id="signinBtn">Email me a code</button>
+        <p class="altlinks"><a href="#" id="newCode" hidden>Send a new code</a><a href="#" id="usePw">Use my password instead</a><a href="#" id="useCode" hidden>Email me a code instead</a></p>
         <p id="signinErr" class="msg" hidden></p>
       </form>
 
@@ -416,7 +424,7 @@ footer .legal{width:100%;font-size:13px;color:rgba(233,237,242,.55);margin:0}
 import { uploadPresigned } from '/js/blob-client.js';
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-let session = JSON.parse(sessionStorage.getItem('ps_session') || 'null');
+let session = JSON.parse(localStorage.getItem('ps_session') || 'null');
 
 // ---- sign-in (Command Center accounts)
 async function authCall(grant, body) {
@@ -424,10 +432,13 @@ async function authCall(grant, body) {
   const d = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(d.error || 'Sign-in failed');
   session = { token: d.access_token, refresh: d.refresh_token, until: Date.now() + (d.expires_in - 60) * 1000, name: d.name };
-  sessionStorage.setItem('ps_session', JSON.stringify(session));
+  localStorage.setItem('ps_session', JSON.stringify(session));
 }
 async function token() {
-  if (session && session.until < Date.now()) { try { await authCall('refresh_token', { refresh_token: session.refresh }); } catch { session = null; } }
+  if (session && session.until < Date.now()) {
+    if (!session.refresh) { session = null; localStorage.removeItem('ps_session'); }
+    else { try { await authCall('refresh_token', { refresh_token: session.refresh }); } catch { session = null; } }
+  }
   return session ? session.token : '';
 }
 const api = async (path, opts = {}) => fetch(path, { ...opts, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + await token(), ...(opts.headers || {}) } });
@@ -443,12 +454,43 @@ async function enter() {
   if (r.status === 401) { const b = await r.json().catch(() => ({})); throw new Error(b.error || 'This account cannot use Proposal Studio.'); }
   signedIn(true); setList(await r.json(), false);
 }
+let signMode = 'email'; // email -> code, or password
+function signStep(mode) {
+  signMode = mode;
+  $('#stepCode').hidden = mode !== 'code'; $('#stepPw').hidden = mode !== 'password';
+  $('#em').readOnly = mode === 'code';
+  $('#signinBtn').textContent = mode === 'email' ? 'Email me a code' : 'Sign in';
+  $('#newCode').hidden = mode !== 'code'; $('#usePw').hidden = mode === 'password'; $('#useCode').hidden = mode !== 'password';
+  $('#signinHint').textContent = mode === 'code' ? `We emailed a 6-digit code to ${$('#em').value.trim()}. It works for 10 minutes.`
+    : mode === 'password' ? 'Use the same email and password you use for the Command Center.'
+    : "Enter your agency email. We'll email you a 6-digit code to sign in.";
+  if (mode === 'code') $('#code').focus();
+}
+async function sendCode() {
+  const r = await fetch('/api/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ grant: 'code_request', email: $('#em').value.trim() }) });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || 'The code could not be sent.');
+  $('#code').value = ''; signStep('code');
+}
 $('#signin').addEventListener('submit', async e => {
   e.preventDefault(); flash($('#signinErr'), '');
-  try { await authCall('password', { email: $('#em').value.trim(), password: $('#pw').value }); await enter(); await openLinked(); }
-  catch (err) { session = null; sessionStorage.removeItem('ps_session'); flash($('#signinErr'), err.message); }
+  const btn = $('#signinBtn'); btn.disabled = true;
+  try {
+    if (!$('#em').value.trim()) throw new Error('Enter your agency email.');
+    if (signMode === 'email') { await sendCode(); return; }
+    if (signMode === 'code') await authCall('code', { email: $('#em').value.trim(), code: $('#code').value.trim() });
+    else await authCall('password', { email: $('#em').value.trim(), password: $('#pw').value });
+    await enter(); await openLinked();
+  } catch (err) {
+    if (signMode !== 'email') { session = null; localStorage.removeItem('ps_session'); }
+    flash($('#signinErr'), err.message);
+  } finally { btn.disabled = false; }
 });
-$('#signout').addEventListener('click', e => { e.preventDefault(); session = null; sessionStorage.removeItem('ps_session'); signedIn(false); });
+$('#newCode').addEventListener('click', async e => { e.preventDefault(); flash($('#signinErr'), ''); try { await sendCode(); flash($('#signinErr'), 'A new code is on its way.'); } catch (err) { flash($('#signinErr'), err.message); } });
+$('#usePw').addEventListener('click', e => { e.preventDefault(); flash($('#signinErr'), ''); signStep('password'); $('#pw').focus(); });
+$('#useCode').addEventListener('click', e => { e.preventDefault(); flash($('#signinErr'), ''); signStep('email'); });
+$('#em').addEventListener('dblclick', () => { if (signMode === 'code') signStep('email'); });
+$('#signout').addEventListener('click', e => { e.preventDefault(); session = null; localStorage.removeItem('ps_session'); signStep('email'); signedIn(false); });
 
 // ---- carrier slots (each slot = one carrier; a slot can hold several PDFs)
 const MAX_SLOTS = 6;
@@ -671,7 +713,7 @@ $('#recent').addEventListener('keydown', e => { const tr = e.target.closest('tr[
 
 const linked = (location.hash.match(/^#job=([0-9]{14}-[0-9a-f]{6})$/) || [])[1];
 async function openLinked() { if (linked && session) { history.replaceState(null, '', location.pathname); await openJob(linked).catch(() => {}); } }
-(async () => { if (session) { try { await enter(); await openLinked(); return; } catch { session = null; sessionStorage.removeItem('ps_session'); } } signedIn(false); })();
+(async () => { if (session) { try { await enter(); await openLinked(); return; } catch { session = null; localStorage.removeItem('ps_session'); } } signedIn(false); })();
 </script>
 </body>
 </html>

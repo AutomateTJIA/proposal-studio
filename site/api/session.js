@@ -1,11 +1,23 @@
-// Signs a team member in with their Command Center email and password (or refreshes the session).
+// Signs a team member in: by a code emailed to their agency email (main way), or with their Command
+// Center email and password (backup), and refreshes password sessions.
 // The Command Center checks the password; this only passes it along and returns the person's own session.
-import { send, readBody, ccUrl, ccApiKey, userFromToken } from './_lib.js';
+import { send, readBody, ccUrl, ccApiKey, userFromToken, SESSION_HOURS } from './_lib.js';
+import { requestCode, verifyCode, codeLoginReady } from './_auth.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'Method not allowed' });
   if (!ccApiKey()) return send(res, 503, { ok: false, error: 'Sign-in is not set up yet.' });
   const body = await readBody(req);
+  if (body.grant === 'code_request' || body.grant === 'code') {
+    if (!codeLoginReady()) return send(res, 503, { ok: false, error: 'Email sign-in is not set up yet. Use your password.' });
+    if (body.grant === 'code_request') {
+      const r = await requestCode(body.email);
+      return send(res, r.ok ? 200 : 400, r.ok ? { ok: true, message: 'If that is a team email, a 6-digit code is on its way. Check your inbox.' } : r);
+    }
+    const v = await verifyCode(body.email, body.code);
+    if (!v.ok) return send(res, 401, v);
+    return send(res, 200, { ok: true, access_token: v.token, refresh_token: null, expires_in: SESSION_HOURS * 3600, name: v.profile.full_name, role: v.profile.role });
+  }
   let grant, payload;
   if (body.grant === 'refresh_token' && typeof body.refresh_token === 'string') {
     grant = 'refresh_token'; payload = { refresh_token: body.refresh_token };

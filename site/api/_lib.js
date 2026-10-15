@@ -41,10 +41,45 @@ export const APPROVER_ROLES = ['agent', 'admin', 'super_admin'];
 
 const seen = new Map(); // token -> { user, until }
 /** Returns {id, email, full_name, role, token} for an active Command Center team member, else null. */
+// ---- Email-code sessions: issued by this server after a code sent to the person's agency email is
+// verified. Signed with a secret derived from the Command Center server key; checked on every request.
+const sessionSecret = () => crypto.createHmac('sha256', 'proposal-studio-session').update(ccServiceKey()).digest();
+export const SESSION_HOURS = 12;
+export function makeSession(profileId) {
+  const body = Buffer.from(JSON.stringify({ u: profileId, e: Date.now() + SESSION_HOURS * 3600_000 })).toString('base64url');
+  return `ps1.${body}.${crypto.createHmac('sha256', sessionSecret()).update(body).digest('base64url')}`;
+}
+function readSession(token) {
+  const [, body, sig] = token.split('.');
+  if (!body || !sig || !ccServiceKey()) return null;
+  const want = crypto.createHmac('sha256', sessionSecret()).update(body).digest('base64url');
+  if (want.length !== sig.length || !crypto.timingSafeEqual(Buffer.from(want), Buffer.from(sig))) return null;
+  const d = JSON.parse(Buffer.from(body, 'base64url').toString());
+  return d.e > Date.now() && /^[0-9a-f-]{36}$/.test(d.u) ? d.u : null;
+}
+/** Looks up an active team member in the Command Center with the server key (by id or by email). */
+export async function staffProfile({ id, email }) {
+  const key = ccServiceKey();
+  if (!key) return null;
+  const q = id ? `id=eq.${id}` : `email=ilike.${encodeURIComponent(email)}`;
+  const r = await fetch(`${ccUrl()}/rest/v1/profiles?select=id,email,full_name,role,status&${q}&limit=5`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+  const rows = r.ok ? await r.json() : [];
+  const p = rows.find(x => id ? x.id === id : String(x.email || '').toLowerCase() === email);
+  return p && p.status === 'active' && STAFF_ROLES.includes(p.role) ? p : null;
+}
+
 export async function userFromToken(token) {
   if (!token || !ccApiKey()) return null;
   const hit = seen.get(token);
   if (hit && hit.until > Date.now()) return hit.user;
+  if (token.startsWith('ps1.')) {
+    const id = readSession(token);
+    const profile = id ? await staffProfile({ id }) : null;
+    if (!profile) return null;
+    const user = { ...profile, token };
+    seen.set(token, { user, until: Date.now() + 5 * 60_000 });
+    return user;
+  }
   const headers = { apikey: ccApiKey(), Authorization: `Bearer ${token}` };
   const u = await fetch(`${ccUrl()}/auth/v1/user`, { headers });
   if (!u.ok) return null;
