@@ -1,6 +1,19 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-15
+- **Added:** Coverage differences check. Every proposal now lists, line by line, where the carriers'
+  quotes don't match (different limits like $100,000 vs $500,000 property damage, different
+  deductibles, coverage quoted on one but missing on another like rental car or renters, different
+  vehicles, drivers or dates). It shows in a gold box on the proposal, in the team email, and as an
+  "N to check" flag in the Proposals list. Approve and Mark as sent stay locked until someone ticks
+  "I checked every difference against the quotes"; who checked it is recorded.
+- **Added:** Delete proposal. The person who built it (or a licensed agent) can delete an unsent
+  proposal; only a licensed agent can delete one that was sent. Deleting removes the record, PDF,
+  uploaded quotes and, if it has one, its Command Center record and follow-up.
+- **Changed:** A proposal now reaches the Command Center only when it is marked as sent: one
+  "Presented" opportunity with a follow-up for the dedicated CSR. Drafts, redos and deleted
+  proposals never show up there. (Proposals built before this change were logged at build time;
+  deleting one also removes it from the Command Center.)
 - **Changed:** Proposal Studio is now clearly a staff-only tool. Removed the consumer-facing parts (the
   gold carrier ticker, "What the client receives" showcase, and the "Billy and his team" section). The
   carrier cards stay as a team quick reference.

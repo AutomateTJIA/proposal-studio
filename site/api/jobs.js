@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       const j = await readJob(id);
       return { id, status: j.status, created_at: j.created_at, client_name: j.client_name || '', file_name: j.file_name || '',
         files: (j.files || []).length, sent_at: j.sent_at || null, prepared_by: j.prepared_by || '',
-        follow_up: j.crm?.assigned_to || '' };
+        follow_up: j.crm?.assigned_to || '', differences: (j.coverage_review || []).length };
     } catch { return { id, status: 'unknown' }; }
   }));
   return send(res, 200, { ok: true, items, total: all.length, offset, more: offset + limit < all.length });

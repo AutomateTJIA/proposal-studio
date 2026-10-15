@@ -51,8 +51,9 @@ function proposalLines(lines) {
   return [...out];
 }
 
-/** Creates the opportunity (stage "quoted") and confirms its follow-up. Returns a summary for the job. */
-export async function logProposal({ user, proposal, clientEmail, proposalNumber, fileName }) {
+/** Creates the opportunity once the proposal has been sent to the client (stage "presented") and confirms
+ *  its follow-up. Only sent proposals reach the Command Center. Returns a summary for the job. */
+export async function logProposal({ user, proposal, clientEmail, proposalNumber, fileName, quotedAt }) {
   const assignee = await assigneeFor(user);
   const opts = proposal.options || [];
   const rec = opts.find(o => o.recommended) || opts[0] || {};
@@ -66,16 +67,18 @@ export async function logProposal({ user, proposal, clientEmail, proposalNumber,
     product_type: productType(proposal.lines || []),
     source_type: 'inbound_request',
     client_type: 'new_prospect',
-    stage: 'quoted',
+    stage: 'presented',
     priority: 'high',
     opportunity_reason: `Proposal ${proposalNumber} built in Proposal Studio (${fileName}). ` +
       `Carriers: ${opts.map(o => `${plain(o.name)} ${o.price}`).join(' · ')}. Recommended: ${plain(rec.name)} ${rec.price || ''}.`,
-    next_action: 'Send the proposal email, then follow up to answer questions and bind.',
+    next_action: 'Proposal sent. Follow up to answer questions and bind.',
     quoted_premium: money(rec.price),
     carrier_names: opts.map(o => plain(o.name)),
     proposal_lines: proposalLines(proposal.lines || []),
     follow_up_cadence_days: 2,
-    quoted_at: now.toISOString(),
+    quoted_at: quotedAt || now.toISOString(),
+    presented_at: now.toISOString(),
+    proposal_sent_at: now.toISOString(),
     next_follow_up_at: followUp.toISOString(),
   };
   const [opp] = await rest(user, 'revenue_opportunities', { method: 'POST', body: row, prefer: 'return=representation' });
@@ -85,10 +88,17 @@ export async function logProposal({ user, proposal, clientEmail, proposalNumber,
   } catch (e) {
     followUpResult = { error: e.message };
   }
-  return { status: 'logged', opportunity_id: opp.id, assigned_to: assignee.full_name, follow_up: followUpResult };
+  return { status: 'logged', opportunity_id: opp.id, assigned_to: assignee.full_name, follow_up: followUpResult, at: now.toISOString() };
 }
 
-/** Marks the opportunity as presented once the email has gone out. */
+/** Removes a proposal's Command Center record (its follow-up reminder and history go with it). */
+export async function deleteOpportunity(user, opportunityId) {
+  if (!opportunityId) return { status: 'none' };
+  await rest(user, `revenue_opportunities?id=eq.${encodeURIComponent(opportunityId)}`, { method: 'DELETE', prefer: 'return=minimal' });
+  return { status: 'deleted' };
+}
+
+/** Older proposals were logged when built; sending one of those just moves it to Presented. */
 export async function markSent(user, opportunityId) {
   if (!opportunityId) return { status: 'skipped' };
   const now = new Date().toISOString();

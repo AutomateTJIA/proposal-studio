@@ -165,6 +165,14 @@ section.band{padding-block:96px}
 .rhead{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end}
 .rhead h3{font:900 clamp(28px,4vw,42px)/1.05 var(--display);letter-spacing:-.02em;color:var(--navy);margin:8px 0 10px}
 .meta{color:var(--muted);font-size:14.5px}
+.diffs{margin-top:20px;padding:16px 18px;border-radius:14px;background:var(--mist);border:2px solid var(--gold);color:var(--navy)}
+.diffs>b{font:800 18px var(--display)}
+.diffs p{margin:6px 0 10px;font-size:14.5px}
+.diffs table{font-size:14.5px;background:var(--white);border-radius:10px}
+.diffs td,.diffs th{padding:9px 10px}
+.ack{display:flex;gap:10px;align-items:center;margin-top:12px;font-weight:700;cursor:pointer}
+.ack input{width:20px;height:20px;accent-color:var(--navy)}
+.btn.danger{box-shadow:inset 0 0 0 2px var(--navy);color:var(--navy);margin-left:auto}
 .verify{margin-top:20px;padding:16px 18px;border-radius:14px;background:var(--mist);border-left:6px solid var(--gold);color:var(--navy)}
 .verify b{font:800 16px var(--display)}
 .verify ul{margin:8px 0 0;padding-left:20px}
@@ -553,40 +561,70 @@ async function openJob(id) {
   const crm = job.crm || {};
   const mail = job.internal_email || {};
   const mailLine = mail.status === 'sent' ? `Emailed to ${esc((mail.to || []).join(', '))} with the PDF attached. ` : mail.status === 'error' ? `Team email did not go out: ${esc(mail.message)}. ` : mail.status === 'skipped' ? `${esc(mail.message)} ` : '';
-  const crmLine = crm.status === 'logged' ? `Logged in the Command Center · follow-up assigned to ${esc(crm.assigned_to)}.`
-    : crm.status === 'error' ? `Command Center logging did not go through: ${esc(crm.message)}` : '';
+  const crmLine = crm.status === 'logged' ? `In the Command Center · follow-up assigned to ${esc(crm.assigned_to)}.`
+    : crm.status === 'error' ? `Command Center logging did not go through: ${esc(crm.message)}`
+    : 'It goes into the Command Center follow-ups when you click Mark as sent.';
   const notes = (job.agent_notes || []).map(n => `<li>${esc(n)}</li>`).join('');
   const failed = (job.checks?.failed || []).map(n => `<li>${esc(n)}</li>`).join('');
+  const diffs = job.coverage_review || [];
+  const needAck = diffs.length && !job.coverage_reviewed && !job.sent_at;
   const ready = job.status === 'ready';
-  $('#resultCard').innerHTML = job.status === 'failed' ? `<span class="badge failed">Failed</span><p class="meta" style="margin-top:12px">${esc(job.error)}</p>` : `
+  const delBtn = job.can_delete ? '<button class="btn ghost danger" id="del" type="button">Delete proposal</button>' : '';
+  const diffBox = diffs.length ? `<div class="diffs">
+      <b>Coverage differences between the quotes (${diffs.length})</b>
+      <p>These may be quoting mistakes. Check each one against the quotes. If one is wrong, fix the quote with the carrier, delete this proposal and build it again.</p>
+      <table><thead><tr><th>Line</th><th>Coverage</th><th>What differs</th></tr></thead><tbody>${diffs.map(d => `<tr><td>${esc(d.line || '')}</td><td>${esc(d.coverage || '')}</td><td>${esc(d.detail || '')}</td></tr>`).join('')}</tbody></table>
+      ${needAck ? '<label class="ack"><input type="checkbox" id="ack"> I checked every difference against the quotes</label>'
+        : job.coverage_reviewed ? `<p class="meta">Checked by ${esc(job.coverage_reviewed.by)} on ${new Date(job.coverage_reviewed.at).toLocaleDateString()}.</p>` : ''}
+    </div>` : '';
+  $('#resultCard').innerHTML = job.status === 'failed' ? `<span class="badge failed">Failed</span><p class="meta" style="margin-top:12px">${esc(job.error)}</p><div class="actions">${delBtn}</div>` : `
     <div class="rhead"><div>
       <span class="cap">Proposal</span><h3>${esc(job.client_name || job.file_name)}</h3>
       <span class="badge ${esc(job.status)}">${esc(LABEL[job.status] || job.status)}</span>
       <span class="meta">&nbsp; ${job.checks ? `${job.checks.passed} of ${job.checks.total} checks passed · ${job.pages} pages` : ''}${job.prepared_by ? ' · prepared by ' + esc(job.prepared_by) : ''}${job.approved_by ? ' · approved by ' + esc(job.approved_by) : ''}${job.sent_at ? ' · sent ' + new Date(job.sent_at).toLocaleDateString() : ''}</span>
     </div></div>
+    ${diffBox}
     ${failed ? `<div class="verify"><b>Checks that still fail</b><ul>${failed}</ul></div>` : ''}
     ${notes ? `<div class="verify"><b>Verify before sending</b><ul>${notes}</ul></div>` : ''}
     <div class="actions">${ready ? `
       <a class="btn navy" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Open PDF</a>
       <a class="btn ghost" href="${esc(job.pdf_url)}&download=1">Download PDF</a>
       <button class="btn ghost" id="copy" type="button">Copy email</button>
-      <button class="btn gold" id="sent" type="button" ${job.sent_at ? 'disabled' : ''}>${job.sent_at ? 'Marked as sent' : 'Mark as sent'}</button>` : `
-      ${job.can_approve ? '<button class="btn gold" id="approve" type="button">Approve for sending</button>' : '<span class="note">A licensed agent must approve this before it goes to the client. Ask Billy to open it here and approve.</span>'}
+      <button class="btn gold" id="sent" type="button" ${job.sent_at || needAck ? 'disabled' : ''}>${job.sent_at ? 'Marked as sent' : 'Mark as sent'}</button>` : `
+      ${job.can_approve ? `<button class="btn gold" id="approve" type="button" ${needAck ? 'disabled' : ''}>Approve for sending</button>` : '<span class="note">A licensed agent must approve this before it goes to the client. Ask Billy to open it here and approve.</span>'}
       <a class="btn ghost" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Preview PDF</a>`}
+      ${delBtn}
     </div>
-    <p class="crm">${mailLine}${ready ? 'Send it to the client from your own Gmail, then click Mark as sent. ' : ''}${crmLine}</p>
+    <p class="crm">${mailLine}${ready && !job.sent_at ? 'Send it to the client from your own Gmail, then click Mark as sent. ' : ''}${crmLine}</p>
     <div class="split">
       <div><span class="cap">The proposal</span><iframe class="pdf" src="${esc(job.pdf_url)}" title="Proposal PDF"></iframe></div>
       <div><span class="cap">Client email</span><pre class="email">${esc(job.email?.text || '')}</pre></div>
     </div>`;
   $('#result').hidden = false;
   $('#result').scrollIntoView({ behavior: 'smooth' });
+  const ack = $('#ack');
+  const reviewed = () => !needAck || (ack && ack.checked);
+  if (ack) ack.onchange = () => { for (const b of [$('#approve'), $('#sent')]) if (b && !(b.id === 'sent' && job.sent_at)) b.disabled = !ack.checked; };
   const copy = $('#copy');
   if (copy) copy.onclick = async () => { await navigator.clipboard.writeText((job.email?.text || '').split('\n').slice(2).join('\n')); copy.textContent = 'Copied'; };
   const approve = $('#approve');
-  if (approve) approve.onclick = async () => { approve.disabled = true; const a = await api('/api/approve', { method: 'POST', body: JSON.stringify({ id }) }); if (!a.ok) alert((await a.json()).error); openJob(id); refreshRecent(); };
+  if (approve) approve.onclick = async () => { if (!reviewed()) return; approve.disabled = true; const a = await api('/api/approve', { method: 'POST', body: JSON.stringify({ id, reviewed: true }) }); if (!a.ok) alert((await a.json()).error); openJob(id); refreshRecent(); };
   const sent = $('#sent');
-  if (sent && !job.sent_at) sent.onclick = async () => { sent.disabled = true; await api('/api/sent', { method: 'POST', body: JSON.stringify({ id }) }); openJob(id); refreshRecent(); };
+  if (sent && !job.sent_at) sent.onclick = async () => {
+    if (!reviewed()) return;
+    if (!confirm('Mark as sent? This adds it to the Command Center follow-ups.')) return;
+    sent.disabled = true; const a = await api('/api/sent', { method: 'POST', body: JSON.stringify({ id, reviewed: true }) });
+    if (!a.ok) alert((await a.json()).error); openJob(id); refreshRecent();
+  };
+  const del = $('#del');
+  if (del) del.onclick = async () => {
+    const extra = job.crm?.opportunity_id ? ' It will also be removed from the Command Center follow-ups.' : '';
+    if (!confirm(`Delete the proposal for ${job.client_name || 'this client'}? The PDF, the uploaded quotes and the record are removed for good.${extra}`)) return;
+    del.disabled = true;
+    const d = await api('/api/delete', { method: 'POST', body: JSON.stringify({ id }) });
+    if (!d.ok) { alert((await d.json()).error); del.disabled = false; return; }
+    $('#result').hidden = true; $('#resultCard').innerHTML = ''; refreshRecent();
+  };
 }
 
 const SHORT = { ready: 'Approved', needs_review: 'Needs review', pending_approval: 'Needs approval', failed: 'Failed', reading: 'In progress', drafted: 'In progress' };
@@ -602,7 +640,7 @@ function renderRecent() {
   const q = $('#q').value.trim().toLowerCase();
   const rows = listItems.filter(MATCH[listFilter]).filter(j => !q || `${j.client_name} ${j.prepared_by}`.toLowerCase().includes(q));
   $('#recent').innerHTML = rows.map(j => `<tr class="click" data-id="${esc(j.id)}" tabindex="0"><td>${j.created_at ? new Date(j.created_at).toLocaleDateString() : ''}</td><td class="client">${esc(j.client_name || '—')}</td><td>${esc(j.prepared_by)}</td><td>${esc(j.follow_up || '—')}</td>
-    <td><span class="badge ${esc(j.status)}">${esc(SHORT[j.status] || j.status)}</span></td><td>${j.sent_at ? new Date(j.sent_at).toLocaleDateString() : '—'}</td></tr>`).join('')
+    <td><span class="badge ${esc(j.status)}">${esc(SHORT[j.status] || j.status)}</span>${j.differences && !j.sent_at ? ` <span class="badge needs_review" title="Coverage differences to check">${j.differences} to check</span>` : ''}</td><td>${j.sent_at ? new Date(j.sent_at).toLocaleDateString() : '—'}</td></tr>`).join('')
     || `<tr><td colspan="6">${listItems.length ? 'No proposals match.' : 'No proposals yet. Your first one will show up here.'}</td></tr>`;
   $('#recentCount').textContent = listTotal ? `${listTotal} proposal${listTotal === 1 ? '' : 's'} in all` : '';
   $('#more').hidden = !listMore;

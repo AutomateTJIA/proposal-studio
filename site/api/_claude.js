@@ -34,8 +34,21 @@ tjia-proposal-builder skill below exactly, with these differences for the web ap
 - "prepared" is the date given in the request.
 - Include a "checks" entry for every total, difference and computed figure, an "exclusions" page,
   and the "email" block (all required by the build).
+- Coverage review (required, for the agency team only, never shown to the client): compare every
+  coverage line by line across all carriers/options and list each difference the CSR must check
+  before the proposal is sent. Include: different limits (e.g. auto property damage $100,000 on one
+  quote vs $500,000 on another; bodily injury; UM/UIM; dwelling, other structures, personal property,
+  loss of use, personal liability, medical payments); different deductibles (home, wind/hail,
+  comprehensive, collision); a coverage or endorsement quoted on one but missing on another (rental
+  reimbursement, roadside/towing, renters, umbrella, water back-up, service line, equipment
+  breakdown, identity theft, scheduled property, replacement cost); different vehicles, drivers,
+  property address or year built; different effective dates or policy terms. Copy the values exactly.
+  Mismatches are often quoting mistakes, so list them even when they look intentional. Use [] only
+  when the quotes truly match line for line (or there is one carrier with nothing to compare).
 - Reply with ONE JSON object and nothing else (no code fences, no commentary):
   {"proposal": { ...proposal.json... },
+   "coverage_review": [{"line": "Auto|Home|Umbrella|Renters|Other", "coverage": "Property damage liability",
+                        "detail": "Chubb $500,000 vs AIG $100,000", "kind": "limit|deductible|missing|vehicle_or_driver|property|dates|other"}],
    "agent_notes": ["plain sentences for the agent: data conflicts, stale or passed effective dates,
                     re-quotes needed, consent-to-rate forms, placeholder VINs, anything to verify"]}
 - If the files are not insurance quotes or cannot be read, reply {"error": "<plain explanation>"}.
@@ -121,7 +134,7 @@ export function fixInstruction({ today, proposal, problems }) {
   return [
     `Today is ${today}. You already wrote the proposal below from these quotes, but the build reported problems.`,
     'Fix every problem and reply with the complete corrected JSON object in the same format',
-    '({"proposal": ..., "agent_notes": [...]}). Overflowing page: shorten that page\'s text or drop a',
+    '({"proposal": ..., "coverage_review": [...], "agent_notes": [...]}). Overflowing page: shorten that page\'s text or drop a',
     'low-value row; never remove required content. Math failure: recheck the numbers against the quotes.',
     '',
     'Problems:',

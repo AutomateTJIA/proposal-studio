@@ -52,6 +52,7 @@ export async function emailTeam({ job, user, pdf }) {
   const clientSubject = (lines.split('\n')[0] || '').replace(/^Subject:\s*/, '');
   const clientBody = lines.split('\n').slice(2).join('\n');
   const verify = [...(job.checks?.failed || []), ...(job.agent_notes || [])];
+  const diffs = (job.coverage_review || []).map(d => `${d.line ? d.line + ' · ' : ''}${d.coverage}: ${d.detail}`);
   const subject = `${job.status === 'ready' ? 'Proposal ready' : 'Proposal to review'}: ${client}`;
 
   const html = `<div style="font-family:Arial,Helvetica,sans-serif;color:#0E2650;max-width:640px">
@@ -60,6 +61,7 @@ export async function emailTeam({ job, user, pdf }) {
   <p style="margin:0 0 16px"><b>${esc(status)}</b> · prepared by ${esc(job.prepared_by)}${job.checks ? ` · ${job.checks.passed} of ${job.checks.total} checks passed` : ''}</p>
   ${job.status === 'ready' ? '' : `<p style="background:#E9EDF2;border-left:6px solid #E0B43B;padding:12px 14px;margin:0 0 16px"><b>Do not send to the client yet.</b> A licensed agent needs to open it and click Approve first.</p>`}
   <p style="margin:0 0 16px"><a href="${esc(link)}" style="display:inline-block;background:#163A70;color:#fff;padding:12px 18px;border-radius:999px;text-decoration:none;font-weight:bold">Open in Proposal Studio</a></p>
+  ${diffs.length ? `<div style="background:#E9EDF2;border-left:6px solid #E0B43B;padding:12px 14px;margin:0 0 16px"><p style="margin:0 0 6px"><b>Coverage differences between the quotes (${diffs.length})</b> · check each one; fix the quote if it's a mistake</p><ul style="margin:0;padding-left:20px">${diffs.map(v => `<li>${esc(v)}</li>`).join('')}</ul></div>` : ''}
   ${verify.length ? `<p style="margin:0 0 6px"><b>Verify before sending</b></p><ul style="margin:0 0 16px;padding-left:20px">${verify.map(v => `<li>${esc(v)}</li>`).join('')}</ul>` : ''}
   ${job.notes ? `<p style="margin:0 0 16px"><b>Instructions given:</b> ${esc(job.notes)}</p>` : ''}
   <p style="margin:0 0 6px"><b>Client email, ready to copy</b> (subject: ${esc(clientSubject)})</p>
@@ -67,6 +69,7 @@ export async function emailTeam({ job, user, pdf }) {
   <p style="font-size:13px;color:#163A70;margin:0">The proposal PDF is attached. Send it to the client from your own Gmail once it's approved, then click "Mark as sent" in Proposal Studio so the Command Center follow-up stays on track.</p>
 </div>`;
   const text = [`${client}: ${status}`, `Prepared by ${job.prepared_by}`, `Open: ${link}`,
+    diffs.length ? `\nCoverage differences between the quotes (check each one):\n- ${diffs.join('\n- ')}` : '',
     verify.length ? `\nVerify before sending:\n- ${verify.join('\n- ')}` : '', job.notes ? `\nInstructions given: ${job.notes}` : '',
     `\nClient email, ready to copy (subject: ${clientSubject}):\n\n${clientBody}`].filter(Boolean).join('\n');
 

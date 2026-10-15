@@ -42,7 +42,8 @@ export default async function handler(req, res) {
     });
     if (reply.error) throw new Error(reply.error);
     if (!reply.proposal) throw new Error('Claude did not return a proposal.');
-    Object.assign(job, { status: 'drafted', today, proposal: reply.proposal, agent_notes: reply.agent_notes || [], claude: { model, usage } });
+    Object.assign(job, { status: 'drafted', today, proposal: reply.proposal, agent_notes: reply.agent_notes || [],
+      coverage_review: Array.isArray(reply.coverage_review) ? reply.coverage_review.slice(0, 60) : [], claude: { model, usage } });
     job.client_name = String(reply.proposal.client?.full_names || '').replace(/&amp;/g, '&');
     await saveJob(job);
     out.end({ step: 'drafted', id: job.id });

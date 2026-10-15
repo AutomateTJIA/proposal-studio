@@ -1,9 +1,9 @@
 // Step 2: build the PDF with the locked template, run every check, let Claude fix any failure once,
-// save the PDF and client email, and log the proposal in the Command Center.
+// save the PDF and client email, and email the team. The Command Center record is created only when
+// the proposal is marked as sent (api/sent.js), so drafts and redos never reach the follow-up queue.
 import { send, currentUser, canApprove, approvalRequired, readBody, safeId, readJob, saveJob, readBytes, putFile, callBuilder, signPath, OUTPUT } from './_lib.js';
 import { renderPdf } from './_render.js';
 import { askClaude, fixInstruction } from './_claude.js';
-import { logProposal } from './_crm.js';
 import { emailTeam } from './_email.js';
 import { progress } from './_stream.js';
 
@@ -38,6 +38,7 @@ export default async function handler(req, res) {
       if (reply.proposal) {
         job.proposal = reply.proposal;
         job.agent_notes = reply.agent_notes || job.agent_notes;
+        if (Array.isArray(reply.coverage_review)) job.coverage_review = reply.coverage_review.slice(0, 60);
         job.fixed = result.problems;
         out.say({ step: 'building', message: 'Rebuilding with the fixes…' });
         result = await buildAndCheck(req, job.proposal);
@@ -54,16 +55,11 @@ export default async function handler(req, res) {
     Object.assign(job, {
       status: problems.length ? 'needs_review' : (approvalRequired() && !canApprove(user) ? 'pending_approval' : 'ready'),
       file_name: built.file_name, pdf_path: base + built.file_name, pages: built.pages,
+      proposal_number: (built.html.match(/P-\d{4}-\d{4}-[A-Z]/) || [''])[0],
       email: { subject: built.email.subject, text: built.email.text },
       checks: { passed: checks.filter(c => c.passed).length, total: checks.length, failed: problems },
     });
     if (job.status === 'ready') Object.assign(job, { approved_by: user.full_name, approved_at: new Date().toISOString() });
-    if (!job.crm) {
-      out.say({ step: 'logging', message: 'Logging it in the Command Center…' });
-      const pno = (built.html.match(/P-\d{4}-\d{4}-[A-Z]/) || [''])[0];
-      job.crm = await logProposal({ user, proposal: job.proposal, clientEmail: null, proposalNumber: pno, fileName: built.file_name })
-        .catch(e => ({ status: 'error', message: e.message }));
-    }
     await saveJob(job);
     if (job.internal_email?.status !== 'sent') {
       out.say({ step: 'emailing', message: 'Emailing the proposal to the team…' });
