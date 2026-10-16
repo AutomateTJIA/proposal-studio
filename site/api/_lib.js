@@ -5,6 +5,17 @@ import crypto from 'node:crypto';
 export const JOBS = 'jobs/';
 export const QUOTES = 'quotes/';
 export const OUTPUT = 'proposals/';
+// A build step that hasn't saved in this long has died (functions stop at 5 minutes).
+export const STALE_MS = 6 * 60_000;
+/** Where a proposal stands if a step died: 'finish' = quotes were read but the PDF was never built
+ *  (one click finishes it); 'rebuild' = it died while reading the quotes (build it again). */
+export function stuckState(j) {
+  const idle = Date.now() - Date.parse(j.updated_at || j.created_at || 0);
+  if (j.status === 'drafted' && idle > 90_000) return 'finish';
+  if (j.status === 'building' && idle > STALE_MS) return 'finish';
+  if (j.status === 'reading' && idle > STALE_MS) return 'rebuild';
+  return '';
+}
 
 export function send(res, status, body) {
   res.setHeader('Cache-Control', 'no-store');

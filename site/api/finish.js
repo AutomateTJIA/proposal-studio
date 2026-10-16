@@ -1,7 +1,7 @@
 // Step 2: build the PDF with the locked template, run every check, let Claude fix any failure once,
 // save the PDF and client email, and email the team. The Command Center record is created only when
 // the proposal is marked as sent (api/sent.js), so drafts and redos never reach the follow-up queue.
-import { send, currentUser, canApprove, approvalRequired, readBody, safeId, readJob, saveJob, readBytes, putFile, callBuilder, signPath, OUTPUT } from './_lib.js';
+import { send, currentUser, canApprove, approvalRequired, readBody, safeId, readJob, saveJob, readBytes, putFile, callBuilder, signPath, OUTPUT, STALE_MS } from './_lib.js';
 import { renderPdf } from './_render.js';
 import { askClaude, fixInstruction } from './_claude.js';
 import { emailTeam } from './_email.js';
@@ -26,6 +26,10 @@ export default async function handler(req, res) {
   if (!safeId(id)) return send(res, 400, { ok: false, error: 'Bad job id' });
   const job = await readJob(id);
   if (!job || !job.proposal) return send(res, 404, { ok: false, error: 'Job not found or not drafted yet' });
+  if (job.status === 'building' && Date.now() - Date.parse(job.updated_at || 0) < STALE_MS)
+    return send(res, 409, { ok: false, error: 'This proposal is already being built. Give it a minute, then refresh.' });
+  job.status = 'building';
+  await saveJob(job);
   const out = progress(res);
   try {
     out.say({ step: 'building', message: 'Building the PDF and running the checks…' });

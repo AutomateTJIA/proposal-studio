@@ -1,6 +1,14 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-16
+- **Fixed (the real cause of "I can't see the proposal"):** The proposal opened on 10/15 had no PDF.
+  Its quotes were read, but the PDF step never ran. Building happens in two steps, and the second
+  step only started if the browser stayed open and connected the whole time. Now:
+  - If the connection drops mid-build, the page checks the server and carries on instead of quitting.
+  - Any proposal that stopped halfway shows "Not finished" in the list, says plainly what happened,
+    and has a **Finish building it** button. One click builds the PDF from the quotes already read.
+  - Two people can't build the same proposal at once.
+  - The health check now flags any proposal stuck halfway.
 - **Fixed:** The proposal PDF now shows on phones and tablets. Phones can't display a PDF inside a
   web page (Android shows a blank box), so on a phone you now get a big "Open the proposal PDF"
   button that opens it full screen. Computers still show it right on the page.

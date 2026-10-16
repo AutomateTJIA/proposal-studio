@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { list } from '@vercel/blob';
-import { send, callBuilder, ccApiKey, ccServiceKey, ccUrl, ccUrlSetting, putFile, readBytes, readJob, JOBS } from './_lib.js';
+import { send, callBuilder, ccApiKey, ccServiceKey, ccUrl, ccUrlSetting, putFile, readBytes, readJob, JOBS, stuckState } from './_lib.js';
 import { renderPdf } from './_render.js';
 import { checkEmailKey } from './_email.js';
 
@@ -48,9 +48,9 @@ export default async function handler(req, res) {
       const j = await readJob(b.pathname.slice(JOBS.length, -5)).catch(() => null);
       if (!j) return { id: b.pathname.slice(JOBS.length, -5), status: 'unreadable' };
       return { id: j.id, status: j.status, pdf: !j.pdf_path ? 'none yet' : files.has(j.pdf_path) ? 'found' : 'MISSING',
-        pages: j.pages || 0, differences: (j.coverage_review || []).length, error: j.status === 'failed' ? String(j.error || '').slice(0, 200) : undefined };
+        stuck: stuckState(j) || undefined, pages: j.pages || 0, differences: (j.coverage_review || []).length, error: j.status === 'failed' ? String(j.error || '').slice(0, 200) : undefined };
     }));
-    out.proposals_ok = out.recent_proposals.every(p => p.pdf !== 'MISSING');
+    out.proposals_ok = out.recent_proposals.every(p => p.pdf !== 'MISSING' && !p.stuck);
   } catch (e) {
     out.proposals_error = e.message;
   }

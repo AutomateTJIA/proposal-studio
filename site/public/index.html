@@ -578,6 +578,40 @@ async function readStream(r, onLine) {
 }
 $('#again').addEventListener('click', () => { $('#again').hidden = true; panel('compose'); });
 
+async function waitForDraft(id) {
+  for (let i = 0; i < 40; i++) {
+    const r = await api('/api/job?id=' + encodeURIComponent(id)).catch(() => null);
+    const j = r && r.ok ? (await r.json()).job : null;
+    if (j && j.status !== 'reading') return j.status === 'drafted' || j.status === 'building';
+    await new Promise(ok => setTimeout(ok, 8000));
+  }
+  return false;
+}
+/** Step 2: build the PDF, run the checks, email the team. Also finishes a proposal that stopped halfway. */
+async function finishJob(id) {
+  panel('run'); $('#again').hidden = true; $('#run h3').textContent = 'Building the proposal';
+  step('building', 'Building the PDF in our design and running the checks…');
+  let end2 = null;
+  try {
+    const r2 = await api('/api/finish', { method: 'POST', body: JSON.stringify({ id }) });
+    if (r2.status === 409) throw new Error((await r2.json()).error);
+    end2 = await readStream(r2, m => { if (['fixing', 'building', 'logging', 'emailing'].includes(m.step)) step(m.step, m.message); });
+  } catch (e) { if (/already being built/.test(e.message)) throw e; }
+  if (!end2 || end2.step !== 'done') {
+    if (end2?.step === 'error') throw new Error(end2.message || 'Building the proposal failed.');
+    // Connection dropped while building: the server keeps going, so check before giving up.
+    step('building', 'The connection dropped. Checking whether the PDF finished…');
+    await new Promise(ok => setTimeout(ok, 20000));
+    const r = await api('/api/job?id=' + encodeURIComponent(id)).catch(() => null);
+    const j = r && r.ok ? (await r.json()).job : null;
+    if (!j || !j.pdf_url || j.stuck) throw new Error('The PDF did not finish. Open it from the Proposals list and click Finish building it.');
+  }
+  step('done', 'Done. Review the proposal below before it goes out.');
+  $('#run h3').textContent = 'Proposal ready';
+  $('#again').hidden = false;
+  await openJob(id); refreshRecent();
+}
+
 $('#go').addEventListener('click', async () => {
   flash($('#goErr'), ''); $('#result').hidden = true; panel('run'); $('#again').hidden = true;
   $('#run h3').textContent = 'Building the proposal';
@@ -591,18 +625,19 @@ $('#go').addEventListener('click', async () => {
       files.push({ pathname: blob.pathname, name: f.name, size: f.size, slot });
     }
     step('reading', 'Reading every page of the quotes…');
-    const r1 = await api('/api/extract', { method: 'POST', body: JSON.stringify({ files, favor, notes: $('#notes').value }) });
-    const end1 = await readStream(r1, m => { if (m.step === 'writing') step('writing', `Writing the proposal… (${Math.round(m.chars / 1000)}k characters so far)`); });
-    if (!end1 || end1.step !== 'drafted') throw new Error(end1?.message || 'Reading the quotes failed.');
-    step('building', 'Building the PDF in our design and running the checks…');
-    const r2 = await api('/api/finish', { method: 'POST', body: JSON.stringify({ id: end1.id }) });
-    const end2 = await readStream(r2, m => { if (['fixing', 'building', 'logging', 'emailing'].includes(m.step)) step(m.step, m.message); });
-    if (!end2 || end2.step !== 'done') throw new Error(end2?.message || 'Building the proposal failed.');
-    step('done', 'Done. Review the proposal below before it goes out.');
-    $('#run h3').textContent = 'Proposal ready';
+    let id = null, end1 = null;
+    try {
+      const r1 = await api('/api/extract', { method: 'POST', body: JSON.stringify({ files, favor, notes: $('#notes').value }) });
+      end1 = await readStream(r1, m => { if (m.id) id = m.id; if (m.step === 'writing') step('writing', `Writing the proposal… (${Math.round(m.chars / 1000)}k characters so far)`); });
+    } catch (e) { if (!id) throw e; }
+    if (!end1 || end1.step !== 'drafted') {
+      // The connection dropped mid-read: wait for the server to finish reading, then carry on.
+      if (!id || end1?.step === 'error') throw new Error(end1?.message || 'Reading the quotes failed.');
+      step('writing', 'The connection dropped. Checking whether the quotes finished reading…');
+      if (!(await waitForDraft(id))) throw new Error('Reading the quotes did not finish. Open it from the Proposals list to see where it stopped.');
+    }
     slots = [[], [], []]; favor = 0; renderSlots(); $('#notes').value = '';
-    $('#again').hidden = false;
-    await openJob(end2.id); refreshRecent();
+    await finishJob(id);
   } catch (e) {
     const now = document.querySelector('#steps li.now'); step(now ? now.dataset.s : 'upload', e.message, true);
     $('#run h3').textContent = 'Something needs attention';
@@ -613,7 +648,7 @@ $('#go').addEventListener('click', async () => {
 // ---- result
 // Phones and tablets can't show a PDF inside the page (Android shows a blank box), so they get a button.
 const PHONE = matchMedia('(pointer:coarse)').matches || innerWidth < 720;
-const LABEL = { ready: 'Approved · ready to send', needs_review: 'Needs review', pending_approval: 'Waiting for agent approval', failed: 'Failed', reading: 'In progress', drafted: 'In progress' };
+const LABEL = { ready: 'Approved · ready to send', needs_review: 'Needs review', pending_approval: 'Waiting for agent approval', failed: 'Failed', reading: 'In progress', drafted: 'In progress', building: 'In progress' };
 async function openJob(id) {
   const r = await api('/api/job?id=' + encodeURIComponent(id)); const { job } = await r.json();
   const crm = job.crm || {};
@@ -636,6 +671,26 @@ async function openJob(id) {
       ${needAck ? '<label class="ack"><input type="checkbox" id="ack"> I checked every difference against the quotes</label>'
         : job.coverage_reviewed ? `<p class="meta">Checked by ${esc(job.coverage_reviewed.by)} on ${new Date(job.coverage_reviewed.at).toLocaleDateString()}.</p>` : ''}
     </div>` : '';
+  if (job.stuck || ['reading', 'drafted', 'building'].includes(job.status)) {
+    const msg = job.stuck === 'finish' ? 'The quotes were read, but the PDF was never built. This happens when the page is closed or the connection drops partway through. One click finishes it.'
+      : job.stuck === 'rebuild' ? 'This one stopped while reading the quotes. Delete it and build it again.'
+      : 'This proposal is still being built. Give it a minute, then refresh.';
+    $('#resultCard').innerHTML = `<div class="rhead"><div><span class="cap">Proposal</span><h3>${esc(job.client_name || 'New proposal')}</h3>
+      <span class="badge needs_review">${job.stuck ? 'Not finished' : 'In progress'}</span><span class="meta">${job.prepared_by ? '&nbsp; prepared by ' + esc(job.prepared_by) : ''}</span></div></div>
+      <div class="pdfcard none" style="margin-top:18px"><b>No PDF yet</b><span>${msg}</span></div>
+      <div class="actions">${job.stuck === 'finish' ? '<button class="btn gold" id="finish" type="button">Finish building it</button>' : ''}${delBtn}</div>`;
+    $('#result').hidden = false; $('#result').scrollIntoView({ behavior: 'smooth' });
+    const fin = $('#finish');
+    if (fin) fin.onclick = async () => {
+      fin.disabled = true; $('#result').hidden = true; scrollTo({ top: $('#run').getBoundingClientRect().top + scrollY - 80, behavior: 'smooth' });
+      try { await finishJob(id); } catch (e) {
+        const now = document.querySelector('#steps li.now'); step(now ? now.dataset.s : 'building', e.message, true);
+        $('#run h3').textContent = 'Something needs attention'; $('#again').textContent = 'Back to the form'; $('#again').hidden = false;
+      }
+    };
+    wireDelete(job, id);
+    return;
+  }
   $('#resultCard').innerHTML = job.status === 'failed' ? `<span class="badge failed">Failed</span><p class="meta" style="margin-top:12px">${esc(job.error)}</p><div class="actions">${delBtn}</div>` : `
     <div class="rhead"><div>
       <span class="cap">Proposal</span><h3>${esc(job.client_name || job.file_name)}</h3>
@@ -681,6 +736,9 @@ async function openJob(id) {
     sent.disabled = true; const a = await api('/api/sent', { method: 'POST', body: JSON.stringify({ id, reviewed: true }) });
     if (!a.ok) alert((await a.json()).error); openJob(id); refreshRecent();
   };
+  wireDelete(job, id);
+}
+function wireDelete(job, id) {
   const del = $('#del');
   if (del) del.onclick = async () => {
     const extra = job.crm?.opportunity_id ? ' It will also be removed from the Command Center follow-ups.' : '';
@@ -692,7 +750,7 @@ async function openJob(id) {
   };
 }
 
-const SHORT = { ready: 'Approved', needs_review: 'Needs review', pending_approval: 'Needs approval', failed: 'Failed', reading: 'In progress', drafted: 'In progress' };
+const SHORT = { ready: 'Approved', needs_review: 'Needs review', pending_approval: 'Needs approval', failed: 'Failed', reading: 'In progress', drafted: 'In progress', building: 'In progress' };
 let listItems = [], listMore = false, listTotal = 0, listFilter = 'all';
 const MATCH = {
   all: () => true,
@@ -705,7 +763,7 @@ function renderRecent() {
   const q = $('#q').value.trim().toLowerCase();
   const rows = listItems.filter(MATCH[listFilter]).filter(j => !q || `${j.client_name} ${j.prepared_by}`.toLowerCase().includes(q));
   $('#recent').innerHTML = rows.map(j => `<tr class="click" data-id="${esc(j.id)}" tabindex="0"><td>${j.created_at ? new Date(j.created_at).toLocaleDateString() : ''}</td><td class="client">${esc(j.client_name || '—')}</td><td>${esc(j.prepared_by)}</td><td>${esc(j.follow_up || '—')}</td>
-    <td><span class="badge ${esc(j.status)}">${esc(SHORT[j.status] || j.status)}</span>${j.differences && !j.sent_at ? ` <span class="badge needs_review" title="Coverage differences to check">${j.differences} to check</span>` : ''}</td><td>${j.sent_at ? new Date(j.sent_at).toLocaleDateString() : '—'}</td></tr>`).join('')
+    <td>${j.stuck ? '<span class="badge needs_review">Not finished</span>' : `<span class="badge ${esc(j.status)}">${esc(SHORT[j.status] || j.status)}</span>`}${j.differences && !j.sent_at ? ` <span class="badge needs_review" title="Coverage differences to check">${j.differences} to check</span>` : ''}</td><td>${j.sent_at ? new Date(j.sent_at).toLocaleDateString() : '—'}</td></tr>`).join('')
     || `<tr><td colspan="6">${listItems.length ? 'No proposals match.' : 'No proposals yet. Your first one will show up here.'}</td></tr>`;
   $('#recentCount').textContent = listTotal ? `${listTotal} proposal${listTotal === 1 ? '' : 's'} in all` : '';
   $('#more').hidden = !listMore;
