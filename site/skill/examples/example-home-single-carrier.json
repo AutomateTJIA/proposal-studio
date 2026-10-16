@@ -224,12 +224,12 @@
  "checks": [],
  "email": {
   "greeting": "Taylor",
-  "intro": "It covers your home with Travelers.",
-  "other": [
-   "Your home is insured for $420,000, plus 25% more if rebuilding costs run over, with $300,000 of personal liability and water back-up coverage included."
-  ],
   "heads_up": [
-   "You can pay in full or monthly. Let me know which you prefer and your ideal start date."
+   "Let me know if you'd like to pay in full or monthly, and your ideal start date."
+  ],
+  "reasons": [
+   "Your home is insured for $420,000, plus 25% more if rebuilding costs run over.",
+   "$300,000 of personal liability, with water back-up coverage included."
   ]
  }
 }

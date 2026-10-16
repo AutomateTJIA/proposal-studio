@@ -64,13 +64,16 @@ policy-level charges, "12-month auto premium" total, "Paid in full" row if offer
 
 **`exclusions`** (required — see `references/writing-rules.md` → "Exclusions & limitations") —
 `headline` ("What these policies won't cover." / "What these plans won't pay for."), `lede`,
-`common` [{`title`, `text`}] — exclusions that apply to every option (shown in two columns; use an even
+`common` [{`title`, `text`, `line`}] — exclusions that apply to every option (shown in two columns; use an even
 number when you can), optional `common_label` (default "Applies to every option"; single carrier:
-"Exclusions &amp; limits in this quote"), `carriers` [{`name`, `items` [{`title`, `text`, `key`}]}] — one card
+"Exclusions &amp; limits in this quote"), `carriers` [{`name`, `items` [{`title`, `text`, `key`, `line`}]}] — one card
 per option, same order as `options` (`sub` defaults to the option's `sub`; the recommended card gets the
 gold top). `key: true` adds a gold "Key difference" tag — use it for the one or two items that most
 separate a carrier from the others. Optional `callout` {`title`, `text`} (e.g. "Closing the gaps"), `fine`.
 Single carrier: put everything in `common` and leave out `carriers`.
+`line` ("home", "auto", "umbrella", or "all" for something that applies to every policy) files the item
+under that policy's heading on the page. **Required on every item when the proposal has more than one
+line** (home + auto); the build fails if one is missing. Single-line proposals can leave it out.
 
 **`explained`** — `sections` [{`title`: "Your home" | "Your autos", `rows`: [[name, explanation]…]}],
 optional `callout` {`title`, `text`} (e.g. "Why higher limits matter without an umbrella").
@@ -93,20 +96,23 @@ umbrella", "Future savings: add your home", "About the property damage limit"), 
 `qr_extra` (sentence appended to the Quoted Rates bar, e.g. "Safeco is quoted to start October 26, 2026.").
 
 ## `email` (required)
-The client email is built from a locked template (`scripts/build_email.py`). Subject, opening thanks,
-"The short version", the exclusions-page line, the closing, the service-team line and the signature
-are automatic. You supply only the client-specific sentences (plain text, no HTML):
+The client email is built from a locked, **short** template (`scripts/build_email.py`). The proposal
+does the heavy lifting (plans side by side, every coverage explained, what isn't covered); the email
+only names the carriers, the prices and the recommendation, and points to the proposal. Subject,
+thanks, price lines (recommended one marked "our recommendation"), the "Why we recommend X:" heading,
+the pointer to the proposal and its "won't cover" page, the closing, the service-team line and the
+signature are automatic. You supply only (plain text, no HTML):
 
 | Field | Required | Notes |
 |---|---|---|
 | `greeting` | yes | first names as you'd say them: "Kamari and Sonya" |
-| `intro` | yes | one sentence on what was quoted and with whom |
+| `reasons` | yes when 2+ options | **1–3 bullets**, one short sentence each, real numbers: why the recommended option wins. Single carrier: 1–3 bullets on what stands out. The build fails with more than 3 |
+| `heads_up` | no | **at most 1** short sentence, only for something the client must know or do before deciding (a pending re-quote, a start date to confirm). Upsells, exclusions and coverage detail belong in the proposal, not here. The build fails with more than 1 |
 | `price_lines` | no | one line per option, e.g. "Chubb: $10,503.01 for 12 months (home $5,179.00 + auto $5,324.01)"; default is "<name>: <price> (<price_label>)" |
-| `recommendation` | when 2+ options | must contain "recommend <recommended option name>", e.g. "We recommend Chubb. AIG is $603.01 less, but…" |
-| `reasons` | no | 2–4 bullets backing the recommendation, real numbers |
-| `other` | no | list of short paragraphs (the other option's strengths, a single carrier's highlights, a pending re-quote) |
-| `heads_up` | no | bullets for "A few things to know" — dates, inspections, re-quotes, upsells. The "Page N lists what… won't cover" line is added automatically; don't repeat it |
 | `subject` | no | override only if the automatic subject doesn't fit |
+
+The build fails if the email runs over 170 words before the closing line. Don't write `intro`,
+`recommendation` or `other` (older fields); they are ignored.
 
 ## `checks`
 

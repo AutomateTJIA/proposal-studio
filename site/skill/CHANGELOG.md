@@ -3,6 +3,20 @@
 Rule: every change to the design, people or wording is made in these files, gets a new version
 number in `VERSION`, and gets an entry here. Changes made only inside a chat are lost next session.
 
+## 3.5.0 — 2026-10-16
+- **Shorter client email.** The proposal does the heavy lifting; the email is now a cover note:
+  thanks naming the carriers, one price line per carrier with the recommended one marked
+  "our recommendation", "Why we recommend X:" with 1–3 bullets, one line pointing to the proposal
+  and its "won't cover" page, at most one heads-up line, closing and signature. The "short version"
+  header, the intro sentence, extra paragraphs (`other`) and the multi-item "A few things to know"
+  list are gone. Two options from the same carrier are told apart by their tag.
+- New email checks: no more than 3 reasons, no more than 1 heads-up line, under 170 words before the
+  closing. The build fails otherwise.
+- **Exclusions in the right section.** On home + auto proposals each exclusion carries a `line`
+  (home / auto / umbrella / all) and is shown under a Home or Auto heading, in the shared panel and
+  in each carrier's card. The build fails if a multi-line proposal leaves one untagged.
+- All four examples updated; all pass every check.
+
 ## 3.4.0 — 2026-10-14
 - Every proposal now comes with its **client email**, built from a locked template
   (`scripts/build_email.py`): automatic subject, thanks, "The short version" price lines, the

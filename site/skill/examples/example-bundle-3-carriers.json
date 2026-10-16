@@ -486,19 +486,23 @@
    "common": [
     {
      "title": "Flood",
-     "text": "Homeowners policies never cover flood. Flood insurance is a separate policy we can quote."
+     "text": "Homeowners policies never cover flood. Flood insurance is a separate policy we can quote.",
+     "line": "home"
     },
     {
      "title": "Earthquake",
-     "text": "Not included in any of the three home quotes."
+     "text": "Not included in any of the three home quotes.",
+     "line": "home"
     },
     {
      "title": "Water back-up",
-     "text": "Sewer or sump back-up is capped at $15,000 on all three."
+     "text": "Sewer or sump back-up is capped at $15,000 on all three.",
+     "line": "home"
     },
     {
      "title": "Rideshare &amp; delivery driving",
-     "text": "Personal auto policies limit coverage while driving for an app. Tell us before you start."
+     "text": "Personal auto policies limit coverage while driving for an app. Tell us before you start.",
+     "line": "auto"
     }
    ],
    "carriers": [
@@ -508,11 +512,13 @@
       {
        "title": "Auto property damage",
        "key": true,
-       "text": "Quoted at $50,000, lower than the others. We are re-quoting at $100,000."
+       "text": "Quoted at $50,000, lower than the others. We are re-quoting at $100,000.",
+       "line": "auto"
       },
       {
        "title": "Loss assessment",
-       "text": "HOA assessments covered up to $26,000."
+       "text": "HOA assessments covered up to $26,000.",
+       "line": "home"
       }
      ]
     },
@@ -521,11 +527,13 @@
      "items": [
       {
        "title": "Buried utility lines",
-       "text": "Underground lines covered up to $10,000."
+       "text": "Underground lines covered up to $10,000.",
+       "line": "home"
       },
       {
        "title": "Loss assessment",
-       "text": "Not shown on the quote."
+       "text": "Not shown on the quote.",
+       "line": "home"
       }
      ]
     },
@@ -535,19 +543,23 @@
       {
        "title": "Roof wind &amp; hail",
        "key": true,
-       "text": "Roof surfacing damaged by wind or hail is paid at actual cash value (depreciated), not replacement cost."
+       "text": "Roof surfacing damaged by wind or hail is paid at actual cash value (depreciated), not replacement cost.",
+       "line": "home"
       },
       {
        "title": "Wind &amp; hail deductible",
-       "text": "$2,000, double the other carriers."
+       "text": "$2,000, double the other carriers.",
+       "line": "home"
       },
       {
        "title": "Personal liability",
-       "text": "$100,000, versus $300,000 with the others."
+       "text": "$100,000, versus $300,000 with the others.",
+       "line": "home"
       },
       {
        "title": "Service line",
-       "text": "Not included."
+       "text": "Not included.",
+       "line": "home"
       }
      ]
     }
@@ -961,16 +973,13 @@
  ],
  "email": {
   "greeting": "Sam and Pat",
-  "intro": "It compares your home and both vehicles with three carriers: Liberty Mutual, Travelers and National General.",
-  "recommendation": "We recommend Liberty Mutual. It's the lowest price and the most home protection:",
   "reasons": [
    "$231.18 a year less than Travelers and $791.18 less than National General.",
    "The highest personal property limit ($350,000) and $300,000 of personal liability.",
    "Water back-up and service line coverage, plus accident forgiveness on the auto policy."
   ],
   "heads_up": [
-   "Liberty Mutual's quote carries $50,000 of auto property damage. We'll raise it to $100,000 to match the others and confirm the small price change before you sign.",
-   "With a home and two vehicles, a personal umbrella is worth a conversation. I'd be glad to quote it."
+   "Liberty Mutual quoted $50,000 of auto property damage. We'll raise it to $100,000 to match the others and confirm the price before you sign."
   ]
  }
 }

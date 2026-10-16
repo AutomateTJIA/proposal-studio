@@ -581,14 +581,9 @@
  ],
  "email": {
   "greeting": "Alex and Jamie",
-  "intro": "It compares three options for your auto policy: Safeco and two versions from National General.",
-  "recommendation": "We recommend National General with the higher limits (Option 3):",
   "reasons": [
    "$250,000/$500,000 of bodily injury and uninsured motorist coverage, since an umbrella isn't available right now.",
    "It costs far less than the Safeco option and only a little more than the lower-limit National General option."
-  ],
-  "heads_up": [
-   "Each carrier confirms your final rate when it runs every driver's Motor Vehicle Report at binding."
   ]
  }
 }

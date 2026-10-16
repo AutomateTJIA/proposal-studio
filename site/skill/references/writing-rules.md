@@ -57,16 +57,23 @@
   never cover flood; personal auto limits rideshare/delivery use). Never invent an exclusion. If a quote
   is silent on something the others limit, say so ("The quote does not state a limit. We will confirm
   the policy wording before you apply.") and flag it to the agent.
+- Put every item in the right section: on home + auto proposals give each one its `line` ("home",
+  "auto", "umbrella", or "all") so home exclusions sit under Home and auto exclusions under Auto.
 - Plain words, one or two short sentences per item. End with the `fine` line: "This is a summary of
   what each quote lists, not the full policy. The policy contract controls."
 - Where a gap can be closed (flood policy, higher water back-up, service line), say so in a `callout`.
 
-## Client email
-- Same voice as the proposal, shorter. Every number must match the proposal exactly.
-- Say plainly what's pending (a re-quote, an inspection) and what you need from the client
-  (start date, valuables to schedule). Never tell the client about internal data errors
+## Client email — short; the proposal does the work
+- The email is a cover note, not a summary of the proposal. It names the carriers and prices, says
+  which one we recommend and why in **1–3 bullets**, and points the client to the proposal and its
+  "won't cover" page. No page-by-page recap, no coverage explanations, no exclusion lists.
+- Reasons: one short sentence each, real numbers, the strongest first (price difference after
+  matching limits, a limit or coverage the others lack, a weak spot the others have).
+- `heads_up`: at most one sentence, only for something the client must act on or know before
+  choosing (a pending re-quote, a start date). Upsells (umbrella, flood) go in the proposal's
+  `info` box or exclusions `callout`, not the email.
+- Every number must match the proposal exactly. Never tell the client about internal data errors
   (a wrong birth date on a quote) — fix those with the carrier.
-- One upsell at most in `heads_up` (umbrella/excess, flood), framed as a recommendation.
 
 ## Before delivering, tell the agent (not the client)
 - Any name/spelling differences between quotes (e.g. a spouse's last name).

@@ -111,6 +111,16 @@ def notice_texts(lines):
 
 
 # ----------------------------------------------------------------------------- builder
+EX_LINE_ORDER = ["Home", "Auto", "Umbrella", "Every policy"]
+
+
+def ex_line(v):
+    """Normalise an exclusion's `line` ("home", "Auto", "all"...) to its section label."""
+    v = str(v or "").strip().lower()
+    return {"home": "Home", "homeowners": "Home", "auto": "Auto", "umbrella": "Umbrella",
+            "all": "Every policy", "both": "Every policy", "": "Every policy"}.get(v, v.title())
+
+
 class Builder:
     def __init__(self, data, brand):
         self.d, self.B = data, brand
@@ -260,12 +270,23 @@ class Builder:
         return out
 
     def page_exclusions(self, roman, sec, p):
-        def items(lst):
+        def ul(lst):
             out = "<ul>"
             for it in lst:
                 flag = '<span class="tag gold">Key difference</span> ' if it.get("key") else ""
                 out += f'<li>{flag}<b>{it["title"]}</b>{it["text"]}</li>'
             return out + "</ul>"
+
+        def items(lst):
+            # Multi-line proposals (home + auto): group each exclusion under its line so it sits in
+            # the right section. Single-line proposals stay one list.
+            if len(self.d["lines"]) < 2 or not any(it.get("line") for it in lst):
+                return ul(lst)
+            groups = {}
+            for it in lst:
+                groups.setdefault(ex_line(it.get("line")), []).append(it)
+            order = sorted(groups, key=lambda k: EX_LINE_ORDER.index(k) if k in EX_LINE_ORDER else 99)
+            return "".join(f'<div class="ex-line">{k}</div>{ul(groups[k])}' for k in order)
         out = self.title(roman, sec, p)
         if p.get("common"):
             out += (f'<div class="ex-common"><span class="cap">{p.get("common_label", "Applies to every option")}</span>'
@@ -488,6 +509,11 @@ def run_checks(data, brand, html_doc, n_pages, heights, pdf_count):
         ok("Exclusions & Limitations section present (required for disability)", has_ex)
     else:
         ok("Exclusions & Limitations section present (or no_exclusions_noted set)", has_ex or data.get("no_exclusions_noted"))
+    ex_pages = [pg for pg in data["pages"] if pg["type"] == "exclusions"]
+    if len(data["lines"]) > 1 and ex_pages:
+        all_items = [it for pg in ex_pages for it in (pg.get("common") or []) + [x for c in pg.get("carriers") or [] for x in c.get("items") or []]]
+        untagged = [it["title"] for it in all_items if not it.get("line")]
+        ok("Exclusions: every item says which policy it belongs to (line)", not untagged, ", ".join(untagged[:4]))
     ok("Brand name never shortened", not re.search(r"(?<!The )Jordan Insurance(?! Agency)", text))
     ok("No placeholders left", not re.search(r"\{\{|\bTODO\b|\bXXX\b|\bREPLACE\b|lorem ipsum", text))
     for c in data.get("checks", []):

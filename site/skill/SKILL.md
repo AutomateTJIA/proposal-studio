@@ -22,8 +22,8 @@ on purpose (bump `VERSION`, add a `CHANGELOG.md` entry) — never with one-off c
 | Agent block: **Billy Jordan Jr.** · (704) 926-7565 · billy@thejordaninsuranceagency.com — never "Billy E." or "Billy Edward" | `branding.json → agent` |
 | Service team: **Chelssy Valles** (Direct (980) 285-1135 · chelssy@agencyhlpc.com) and **Gloria Lechuga** (Direct (704) 469-5290 · gloria@agencyhlpc.com), both Agency Support Specialists — every member on the cover AND in Next Steps "Call or email", on every proposal for every line | `branding.json → service_team` |
 | "Quoted Rates" bar (cover, comparison page, payment page), "How your final rate is set" box (agent-note page), Next Step iii "Bind & final rate" | injected by the script; wording chosen from `lines` (auto / home / both) |
-| **Exclusions & Limitations** page on every proposal: what all options exclude, then one card per carrier with its own exclusions/limits, biggest differences tagged "Key difference" | `exclusions` page in `proposal.json`; the build fails without it (disability always; other lines unless `no_exclusions_noted` is set) |
-| **Client email** (subject, greeting, short version, recommendation, "a few things to know" with the exclusions page number, closing, Chelssy + Gloria line, signature) produced with every proposal as `<Last>_Proposal_Email.txt` + `.html` | `scripts/build_email.py`; the client-specific sentences come from the `email` block in `proposal.json` |
+| **Exclusions & Limitations** page on every proposal: what all options exclude, then one card per carrier with its own exclusions/limits, biggest differences tagged "Key difference". On home + auto proposals every item is filed under **Home** or **Auto** (its `line`) so it sits in the right section | `exclusions` page in `proposal.json`; the build fails without it (disability always; other lines unless `no_exclusions_noted` is set) |
+| **Client email — short on purpose** (subject, greeting, one-line thanks naming the carriers, one price line per carrier with "our recommendation" marked, "Why we recommend X" with **1–3 bullets**, one line pointing to the proposal and its "won't cover" page, at most **one** heads-up line, closing, Chelssy + Gloria line, signature). Under 170 words before the closing; the build fails if it runs longer. The proposal does the heavy lifting, never the email | `scripts/build_email.py`; the client-specific pieces come from the `email` block in `proposal.json` |
 | Proposal number `P-YYYY-MMDD-<last initial>`, file name `<Last>_<Type>_Proposal_The-Jordan-Insurance-Agency.pdf` | script |
 
 Staff changes (add/remove a CSR, new phone) = edit `branding.json → service_team` only, then bump the version. The cover and Next Steps adjust automatically for 1–3 team members.
@@ -42,8 +42,8 @@ Staff changes (add/remove a CSR, new phone) = edit `branding.json → service_te
    Start from the closest example in `examples/` (bundle with 3 carriers, auto with 3 options,
    single-carrier home, disability with 3 carriers) and replace every value. Copy numbers exactly as the carrier printed them.
    Add a `checks` entry for every total, difference, discount and monthly figure you computed.
-   Fill in the `email` block (greeting, intro, recommendation, reasons, heads-up items) — the build
-   writes the client email from it and fails without it.
+   Fill in the `email` block (greeting, 1–3 reasons, at most one heads-up line) — the build writes
+   the short client email from it and fails without it. Everything else belongs in the proposal.
 4. **Build:**
    ```
    python3 <skill-dir>/scripts/build_proposal.py proposal.json --out <output-folder> --preview

@@ -1,6 +1,22 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-16
+- **Changed (proposal skill v3.5.0): the client email is now short.** The proposal does the heavy
+  lifting, so the email is just a cover note:
+  - thanks, naming the carriers compared
+  - one price line per carrier, with the recommended one marked "our recommendation"
+  - "Why we recommend [carrier]:" with 1 to 3 bullets
+  - one line pointing to the proposal and the page that shows what isn't covered
+  - at most one "before you decide" line (for example, a pending re-quote)
+  - closing, Chelssy and Gloria, and the signature
+  The old "short version" header, intro sentence, extra paragraphs and multi-item "things to know"
+  list are gone. The build now fails if the email has more than 3 reasons, more than 1 heads-up line,
+  or more than 170 words before the closing, so it stays short every time.
+- **Changed: "what isn't covered" now sits in the right section.** On home and auto proposals, each
+  exclusion is filed under a **Home** or **Auto** heading, both in the "applies to every option"
+  panel and in each carrier's card. The build fails if one isn't filed.
+- **Added:** an upload-ready copy of the same skill (v3.5.0) for Billy's Claude.ai account, so
+  proposals built in a normal Claude chat match Proposal Studio. The account copy was still v3.0.0.
 - **Added:** Proposal tracker at the top of the Proposals section:
   - **Built this month** (with today and this week underneath)
   - **Sent to clients this month** (with today and this week)

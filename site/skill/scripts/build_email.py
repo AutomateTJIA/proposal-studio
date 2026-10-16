@@ -2,8 +2,9 @@
 """Client email for a proposal — locked template, filled from proposal.json + branding.json.
 
 The structure, greeting, closing, service-team line and signature are fixed here so every email
-sounds the same no matter who builds it. Only the client-specific sentences come from the
-proposal's `email` block (see references/data-format.md → "email").
+sounds the same no matter who builds it. Only the client-specific pieces come from the
+proposal's `email` block (see references/data-format.md → "email"): greeting, 1-3 reasons, and at
+most one heads-up line. The email stays short on purpose; the proposal does the heavy lifting.
 
 Called automatically by build_proposal.py; can also run alone:
     python3 build_email.py proposal.json --out <folder>
@@ -31,60 +32,85 @@ def _join(names, last="and"):
     return ", ".join(names[:-1]) + f" {last} " + names[-1]
 
 
+MAX_REASONS = 3          # "why we recommend" bullets
+MAX_HEADS_UP = 1         # one "before you decide" line, only when something is pending
+MAX_WORDS = 170          # everything above the closing; the proposal does the explaining
+
+
 def compose(data, brand):
-    """Return (subject, blocks). blocks = list of ("p", text) / ("ul", [items]) / ("sig", [lines])."""
+    """Return (subject, blocks). blocks = list of ("p", text) / ("ul", [items]) / ("sig", [lines]).
+
+    Short by design: the carriers and prices, the recommendation with 1-3 reasons, and a pointer to
+    the proposal (side by side, coverages explained, what isn't covered). No page-by-page recap."""
     e = data.get("email") or {}
     opts = data["options"]
     names = [o["name"] for o in opts]
     di = "disability" in data["lines"]
     label = LINE_LABEL.get(data["proposal_type"], data["proposal_type"].lower())
-
+    rec = next((o for o in opts if o.get("recommended")), None) if len(opts) > 1 else None
+    # Two options from the same carrier (e.g. two National General limit levels) are told apart by tag.
+    dup = {n for n in names if names.count(n) > 1}
+    disp = lambda o: f'{o["name"]} ({_plain(o.get("tag", ""))})' if o["name"] in dup and o.get("tag") else o["name"]
+    carriers = list(dict.fromkeys(names))
     if e.get("subject"):
         subject = _plain(e["subject"])
-    elif len(opts) == 1:
-        subject = f"Your {label} proposal from {names[0]}"
-    elif len(opts) == 2:
-        subject = f"Your {label} proposal: {names[0]} and {names[1]}, side by side"
+    elif len(carriers) == 1:
+        subject = f"Your {label} proposal from {carriers[0]}"
+    elif len(carriers) == 2:
+        subject = f"Your {label} proposal: {carriers[0]} and {carriers[1]}, side by side"
     else:
-        subject = f"Your {label} proposal: {_join(names)} compared"
+        subject = f"Your {label} proposal: {_join(carriers)} compared"
 
-    if di:
-        thanks = "Thank you for the chance to quote your disability coverage."
+
+    if len(opts) == 1:
+        opening = f"Thank you for the chance to quote your {'disability coverage' if di else 'insurance'}. Your {label} proposal from {names[0]} is attached."
     else:
-        thanks = f"Thank you for the chance to {'quote' if len(opts) == 1 else 'shop'} your insurance."
-    blocks = [("p", f"Hi {_plain(e['greeting'])},"),
-              ("p", " ".join(x for x in [thanks, "Your proposal is attached.", _plain(e.get("intro"))] if x))]
+        what_cmp = _join(carriers) if len(carriers) > 1 else f"{len(opts)} options from {carriers[0]}"
+        opening = f"Thank you for the chance to shop your {'disability coverage' if di else 'insurance'}. Your {label} proposal is attached, comparing {what_cmp}."
+    blocks = [("p", f"Hi {_plain(e['greeting'])},"), ("p", opening)]
 
     price_lines = [_plain(x) for x in e.get("price_lines") or []] or \
-                  [f'{o["name"]}: {o["price"]} ({_lc(_plain(o.get("price_label", "12 months")))})' for o in opts]
-    blocks += [("p", "The short version:"), ("ul", price_lines)]
+                  [f'{disp(o)}: {o["price"]} ({_lc(_plain(o.get("price_label", "12 months")))})' for o in opts]
+    if rec:
+        i = opts.index(rec)
+        if i < len(price_lines) and "recommend" not in price_lines[i].lower():
+            price_lines[i] += " · our recommendation"
+    blocks.append(("ul", price_lines))
 
-    if e.get("recommendation"):
-        blocks.append(("p", _plain(e["recommendation"])))
-    if e.get("reasons"):
-        blocks.append(("ul", [_plain(x) for x in e["reasons"]]))
-    for para in e.get("other") or []:
-        blocks.append(("p", _plain(para)))
+    reasons = [_plain(x) for x in e.get("reasons") or []][:MAX_REASONS]
+    if reasons:
+        blocks += [("p", f"Why we recommend {disp(rec)}:" if rec else "What stands out:"), ("ul", reasons)]
 
-    heads = []
     ex_idx = next((i for i, p in enumerate(data["pages"]) if p["type"] == "exclusions"), None)
+    what = "plan" if di else "policy"
+    pointer = ("The proposal lays out each option side by side and explains every coverage in plain language."
+               if len(opts) > 1 else "The proposal lays out your coverage and explains it in plain language.")
     if ex_idx is not None:
-        what = ("each plan" if len(opts) > 1 else "this plan") if di else ("each policy" if len(opts) > 1 else "this policy")
-        verb = "won't pay for" if di else "won't cover"
-        heads.append(f"Page {ex_idx + 2} lists what {what} {verb}. Please read it.")
-    heads += [_plain(x) for x in e.get("heads_up") or []]
-    blocks += [("p", "A few things to know before you decide:"), ("ul", heads)]
+        pointer += (f" Page {ex_idx + 2} shows what {'each' if len(opts) > 1 else 'this'} {what} "
+                    f"{'won’t pay for' if di else 'won’t cover'}. Please read it before you decide.").replace("’", "'")
+    blocks.append(("p", pointer))
+
+    heads = [_plain(x) for x in e.get("heads_up") or []][:MAX_HEADS_UP]
+    if heads:
+        blocks.append(("p", heads[0]))
 
     a, team = brand["agent"], brand.get("service_team") or []
     close = "we can start your application right away" if di else "we can bind the same day"
     team_txt = _join([f'{m["name"]} at {m["phone"]}' for m in team], "or")
     last = f"When you're ready, reply to this email or call me at {a['phone']}, and {close}."
     if team_txt:
-        last += f" If I'm not available, {team_txt} on our team can help."
+        last += f" If I'm not available, {team_txt} can help."
     blocks.append(("p", last))
     blocks.append(("sig", ["Thank you,", "", a["name"], brand["agency_display_name"],
                            f'{a["phone"]} · {a["email"]}', brand["website"]]))
     return subject, blocks
+
+
+def body_words(text):
+    """Words between the greeting and the closing line (what the client actually has to read)."""
+    body = text.split("When you're ready", 1)[0]
+    body = body.split("\n", 2)[-1] if body.startswith("Subject:") else body
+    return len(re.findall(r"[A-Za-z0-9$][^\s]*", body))
 
 
 def to_text(subject, blocks):
@@ -138,6 +164,13 @@ def email_checks(data, brand, text):
         ok(f'Email: {m["name"]} listed', m["name"] in text and m["phone"] in text)
     for o in data["options"]:
         ok(f'Email: {o["name"]} price {o["price"]} shown', o["price"] in text)
+    ok(f"Email: at most {MAX_REASONS} reasons", len(e.get("reasons") or []) <= MAX_REASONS,
+       f'{len(e.get("reasons") or [])} given; keep the strongest {MAX_REASONS}')
+    ok(f"Email: at most {MAX_HEADS_UP} heads-up line", len(e.get("heads_up") or []) <= MAX_HEADS_UP,
+       "keep only the one thing the client must act on; everything else belongs in the proposal")
+    n = body_words(text)
+    ok(f"Email: short (under {MAX_WORDS} words before the closing)", n <= MAX_WORDS,
+       f"{n} words; shorten the reasons, the proposal does the explaining")
     rec = next((o for o in data["options"] if o.get("recommended")), None)
     if rec and len(data["options"]) > 1:
         ok(f'Email: names the recommendation ({rec["name"]})', f"recommend {rec['name']}" in text)
