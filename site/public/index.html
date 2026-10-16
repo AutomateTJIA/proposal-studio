@@ -200,7 +200,15 @@ section.band{padding-block:96px}
 @media (max-width:920px){.split{grid-template-columns:1fr}}
 .cap{font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--royal);margin-bottom:10px;display:block}
 iframe.pdf{width:100%;height:720px;border:0;border-radius:14px;background:var(--mist);box-shadow:inset 0 0 0 1px rgba(22,58,112,.12)}
-pre.email{margin:0;white-space:pre-wrap;background:var(--mist);border-radius:14px;padding:20px;font:400 14.5px/1.65 var(--body);color:var(--ink);max-height:720px;overflow:auto}
+.mail{align-self:start;background:var(--white);border:2px solid var(--mist);border-radius:14px;overflow:hidden}
+.mailhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:2px solid var(--mist)}
+.mailhead .cap{margin:0}
+.mailbtns{display:flex;gap:8px;flex-wrap:wrap}
+.mailbtns .btn{padding:9px 16px;font-size:14px}
+.mailsubj{padding:14px 20px 0;font-size:14.5px;color:var(--ink)}
+.mailbody{padding:6px 20px 20px;font:400 14.5px/1.65 var(--body);color:var(--ink);background:var(--white);max-height:640px;overflow:auto}
+.mailbody p{margin:12px 0}
+.mailnote{margin:0;padding:10px 20px;font-size:13.5px;color:var(--navy);border-top:2px solid var(--mist)}
 .crm{margin-top:12px;color:var(--muted);font-size:14px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th{text-align:left;font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--royal);padding:10px 8px;border-bottom:2px solid var(--mist)}
@@ -645,6 +653,22 @@ $('#go').addEventListener('click', async () => {
   }
 });
 
+// ---- client email: split into subject + paragraphs, and copy it clean (no background colour)
+function mailParts(job) {
+  const lines = (job.email?.text || '').replace(/\r/g, '').split('\n');
+  const subject = (job.email?.subject || (lines[0] || '').replace(/^Subject:\s*/i, '')).trim();
+  const body = (/^Subject:/i.test(lines[0] || '') ? lines.slice(1) : lines).join('\n').trim();
+  return { subject, body, paras: body ? body.split(/\n\s*\n/) : [] };
+}
+async function copyClean(paras) {
+  const text = paras.join('\n\n');
+  // Plain paragraphs only: pastes into Gmail as normal text on a white background.
+  const html = paras.map(p => `<p style="margin:0 0 12px">${esc(p).replace(/\n/g, '<br>')}</p>`).join('');
+  try {
+    await navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }), 'text/plain': new Blob([text], { type: 'text/plain' }) })]);
+  } catch { await navigator.clipboard.writeText(text); }
+}
+
 // ---- result
 // Phones and tablets can't show a PDF inside the page (Android shows a blank box), so they get a button.
 const PHONE = matchMedia('(pointer:coarse)').matches || innerWidth < 720;
@@ -702,7 +726,11 @@ async function openJob(id) {
         ${PHONE ? `<a class="pdfcard" href="${esc(job.pdf_url)}" target="_blank" rel="noopener"><b>Open the proposal PDF</b><span>${job.pages || ''} pages · opens full screen</span></a>`
           : `<iframe class="pdf" src="${esc(job.pdf_url)}" title="Proposal PDF"></iframe>`}`
         : `<span class="cap">The proposal</span><div class="pdfcard none"><b>No PDF on this proposal</b><span>${job.status === 'failed' ? 'The build failed (see the message above). Delete it and build it again.' : 'It is still being built. Refresh in a minute.'}</span></div>`}</div>
-      <div><span class="cap">Client email</span><pre class="email">${esc(job.email?.text || '')}</pre></div>
+      <div class="mail"><div class="mailhead"><span class="cap">Client email</span>
+        <div class="mailbtns"><button class="btn ghost" id="copySubj" type="button">Copy subject</button><button class="btn navy" id="copyBody" type="button">Copy email</button></div></div>
+        <div class="mailsubj"><b>Subject:</b> ${esc(mailParts(job).subject)}</div>
+        <div class="mailbody">${mailParts(job).paras.map(p => `<p>${esc(p).replace(/\n/g, '<br>')}</p>`).join('')}</div>
+        ${ready ? '' : '<p class="mailnote"><b>Not approved yet.</b> Don\'t send it to the client until a licensed agent approves it.</p>'}</div>
     </div>
     ${diffBox}
     ${failed ? `<div class="verify"><b>Checks that still fail</b><ul>${failed}</ul></div>` : ''}
@@ -710,7 +738,6 @@ async function openJob(id) {
     <div class="actions">${ready ? `
       <a class="btn navy" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Open PDF</a>
       <a class="btn ghost" href="${esc(job.pdf_url)}&download=1">Download PDF</a>
-      <button class="btn ghost" id="copy" type="button">Copy email</button>
       <button class="btn gold" id="sent" type="button" ${job.sent_at || needAck ? 'disabled' : ''}>${job.sent_at ? 'Marked as sent' : 'Mark as sent'}</button>` : `
       ${job.can_approve ? `<button class="btn gold" id="approve" type="button" ${needAck ? 'disabled' : ''}>Approve for sending</button>` : '<span class="note">A licensed agent must approve this before it goes to the client. Ask Billy to open it here and approve.</span>'}
       <a class="btn ghost" href="${esc(job.pdf_url)}" target="_blank" rel="noopener">Preview PDF</a>`}
@@ -725,8 +752,11 @@ async function openJob(id) {
   const ack = $('#ack');
   const reviewed = () => !needAck || (ack && ack.checked);
   if (ack) ack.onchange = () => { for (const b of [$('#approve'), $('#sent')]) if (b && !(b.id === 'sent' && job.sent_at)) b.disabled = !ack.checked; };
-  const copy = $('#copy');
-  if (copy) copy.onclick = async () => { await navigator.clipboard.writeText((job.email?.text || '').split('\n').slice(2).join('\n')); copy.textContent = 'Copied'; };
+  const { subject, paras } = mailParts(job);
+  const copied = (b, label) => { b.textContent = 'Copied ✓'; setTimeout(() => { b.textContent = label; }, 2500); };
+  const cs = $('#copySubj'), cb = $('#copyBody');
+  if (cs) cs.onclick = async () => { await navigator.clipboard.writeText(subject); copied(cs, 'Copy subject'); };
+  if (cb) cb.onclick = async () => { await copyClean(paras); copied(cb, 'Copy email'); };
   const approve = $('#approve');
   if (approve) approve.onclick = async () => { if (!reviewed()) return; approve.disabled = true; const a = await api('/api/approve', { method: 'POST', body: JSON.stringify({ id, reviewed: true }) }); if (!a.ok) alert((await a.json()).error); openJob(id); refreshRecent(); };
   const sent = $('#sent');

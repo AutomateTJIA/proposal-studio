@@ -1,6 +1,14 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-16
+- **Fixed:** The client email no longer sits in a grey box. Copying from the grey box carried the
+  grey background into Gmail. It now shows on white, with two buttons at the top:
+  **Copy subject** and **Copy email**. Copy email puts clean text on the clipboard (no background
+  colour, no "Subject:" line), so it pastes into Gmail as a normal email. The old "Copy email" button
+  at the bottom was removed so there's only one place to copy from. If the proposal isn't approved
+  yet, a note under the email says not to send it.
+- **Fixed:** The team email no longer shows the client email in a grey box either. It's on white
+  and points the CSR to the Copy email button in Proposal Studio.
 - **Fixed (the real cause of "I can't see the proposal"):** The proposal opened on 10/15 had no PDF.
   Its quotes were read, but the PDF step never ran. Building happens in two steps, and the second
   step only started if the browser stayed open and connected the whole time. Now:

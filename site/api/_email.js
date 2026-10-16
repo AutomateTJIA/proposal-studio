@@ -64,8 +64,8 @@ export async function emailTeam({ job, user, pdf }) {
   ${diffs.length ? `<div style="background:#E9EDF2;border-left:6px solid #E0B43B;padding:12px 14px;margin:0 0 16px"><p style="margin:0 0 6px"><b>Coverage differences between the quotes (${diffs.length})</b> · check each one; fix the quote if it's a mistake</p><ul style="margin:0;padding-left:20px">${diffs.map(v => `<li>${esc(v)}</li>`).join('')}</ul></div>` : ''}
   ${verify.length ? `<p style="margin:0 0 6px"><b>Verify before sending</b></p><ul style="margin:0 0 16px;padding-left:20px">${verify.map(v => `<li>${esc(v)}</li>`).join('')}</ul>` : ''}
   ${job.notes ? `<p style="margin:0 0 16px"><b>Instructions given:</b> ${esc(job.notes)}</p>` : ''}
-  <p style="margin:0 0 6px"><b>Client email, ready to copy</b> (subject: ${esc(clientSubject)})</p>
-  <pre style="white-space:pre-wrap;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;background:#E9EDF2;padding:16px;border-radius:10px;margin:0 0 16px">${esc(clientBody)}</pre>
+  <p style="margin:0 0 6px"><b>Client email</b> (subject: ${esc(clientSubject)}). Easiest: open it in Proposal Studio and click <b>Copy email</b>.</p>
+  <div style="white-space:pre-wrap;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;background:#ffffff;border:2px solid #E9EDF2;padding:16px;border-radius:10px;margin:0 0 16px">${esc(clientBody.trim())}</div>
   <p style="font-size:13px;color:#163A70;margin:0">The proposal PDF is attached. Send it to the client from your own Gmail once it's approved, then click "Mark as sent" in Proposal Studio so the Command Center follow-up stays on track.</p>
 </div>`;
   const text = [`${client}: ${status}`, `Prepared by ${job.prepared_by}`, `Open: ${link}`,
