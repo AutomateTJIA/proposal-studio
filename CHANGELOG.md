@@ -1,6 +1,19 @@
 # Changelog — Proposal Studio
 
-## 2026-10-15
+## 2026-10-16
+- **Fixed:** The proposal PDF now shows on phones and tablets. Phones can't display a PDF inside a
+  web page (Android shows a blank box), so on a phone you now get a big "Open the proposal PDF"
+  button that opens it full screen. Computers still show it right on the page.
+- **Fixed:** If a proposal has no PDF (the build failed or is still running), the page now says so
+  in plain words instead of showing an empty box.
+- **Fixed:** PDF links now stay good for 12 hours (was 1 hour), so "Open PDF" still works if the
+  page has been sitting open.
+- **Changed:** Coverage differences are capped at 7 and focused on likely quoting mistakes only:
+  liability limits that differ, missing coverage, different deductibles, vehicles, drivers, address
+  or dates. No coverage tour, no premiums, fees, discounts or wording differences.
+- **Added:** The health check now confirms every recent proposal still has its PDF in storage (no
+  client names shown).
+
 - **Fixed:** The proposal is back at the top. When you open a proposal, the PDF and the client email
   now show right under the client's name, before the coverage differences. Before this, a long
   differences list pushed the PDF far down the page, so it looked like it was gone. The PDF caption

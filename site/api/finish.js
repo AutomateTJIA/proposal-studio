@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       if (reply.proposal) {
         job.proposal = reply.proposal;
         job.agent_notes = reply.agent_notes || job.agent_notes;
-        if (Array.isArray(reply.coverage_review)) job.coverage_review = reply.coverage_review.slice(0, 60);
+        if (Array.isArray(reply.coverage_review)) job.coverage_review = reply.coverage_review.slice(0, 7);
         job.fixed = result.problems;
         out.say({ step: 'building', message: 'Rebuilding with the fixes…' });
         result = await buildAndCheck(req, job.proposal);

@@ -104,7 +104,7 @@ const secret = () => crypto.createHmac('sha256', 'proposal-studio').update(proce
 export const internalKey = () => crypto.createHmac('sha256', secret()).update('builder').digest('hex');
 
 /** Short-lived signed links so the PDF can open in a new tab or iframe. */
-export function signPath(pathname, minutes = 60) {
+export function signPath(pathname, minutes = 12 * 60) {
   const exp = Date.now() + minutes * 60_000;
   const sig = crypto.createHmac('sha256', secret()).update(`${pathname}|${exp}`).digest('hex');
   return `/api/file?p=${encodeURIComponent(pathname)}&e=${exp}&s=${sig}`;

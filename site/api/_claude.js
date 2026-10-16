@@ -34,22 +34,21 @@ tjia-proposal-builder skill below exactly, with these differences for the web ap
 - "prepared" is the date given in the request.
 - Include a "checks" entry for every total, difference and computed figure, an "exclusions" page,
   and the "email" block (all required by the build).
-- Coverage review (required, for the agency team only, never shown to the client): compare every
-  coverage line by line across all carriers/options and list each difference the CSR must check
-  before the proposal is sent. Include: different limits (e.g. auto property damage $100,000 on one
-  quote vs $500,000 on another; bodily injury; UM/UIM; dwelling, other structures, personal property,
-  loss of use, personal liability, medical payments); different deductibles (home, wind/hail,
-  comprehensive, collision); a coverage or endorsement quoted on one but missing on another (rental
-  reimbursement, roadside/towing, renters, umbrella, water back-up, service line, equipment
-  breakdown, identity theft, scheduled property, replacement cost); different vehicles, drivers,
-  property address or year built; different effective dates or policy terms. Copy the values exactly.
-  Mismatches are often quoting mistakes, so list them even when they look intentional. Use [] only
-  when the quotes truly match line for line (or there is one carrier with nothing to compare).
-  Keep the list short and useful: one row per coverage (put every carrier's value in that row's
-  detail), most important first (missing coverages and liability limits, then deductibles, then
-  the rest), and at most 10 rows. Leave out premiums, fees, discounts, payment plans, form numbers
-  and wording that means the same thing. If more than 10 real differences remain, keep the 10 that
-  matter most and add one agent_notes line saying how many smaller ones were left off.
+- Coverage review (required, for the agency team only, never shown to the client): the CSR is
+  trained to run quotes and the PDF explains the coverage to the client, so this is NOT a coverage
+  tour. It is a short list of likely QUOTING MISTAKES: places where the carriers were not quoted the
+  same way, so the comparison is not apples to apples or the client could end up under-covered.
+  Flag only: a liability limit that differs (e.g. auto property damage $100,000 on one quote vs
+  $500,000 on another; bodily injury, UM/UIM, personal liability); a dwelling or personal property
+  limit that differs noticeably; a deductible that differs; a coverage or endorsement quoted on one
+  but missing on another (rental reimbursement, roadside, renters, umbrella, water back-up,
+  replacement cost); a different vehicle, driver, property address or effective date. Copy the
+  values exactly, one row per coverage with every carrier's value in that row's detail. Do NOT flag
+  premiums, fees, discounts, payment plans, form numbers, wording that means the same thing, or a
+  carrier simply including a small extra the other does not offer. At most 7 rows, biggest risk
+  first (missing coverage and liability limits first). Use [] when the quotes line up (or there is
+  one carrier with nothing to compare). If more real mismatches exist, keep the 7 that matter most
+  and add one agent_notes line saying how many smaller ones were left off.
 - Reply with ONE JSON object and nothing else (no code fences, no commentary):
   {"proposal": { ...proposal.json... },
    "coverage_review": [{"line": "Auto|Home|Umbrella|Renters|Other", "coverage": "Property damage liability",

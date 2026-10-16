@@ -182,6 +182,10 @@ section.band{padding-block:96px}
 .diffs td,.diffs th{padding:9px 10px}
 .linkbtn{margin-top:8px;background:none;border:0;padding:4px 0;font:700 14.5px var(--body);color:var(--royal);text-decoration:underline;cursor:pointer}
 .cap a{color:var(--royal)}
+.pdfcard{display:flex;flex-direction:column;gap:6px;padding:28px 22px;border-radius:14px;background:var(--navy);color:var(--white);text-decoration:none}
+.pdfcard b{font:800 20px var(--display)}
+.pdfcard span{font-size:14.5px;opacity:.85}
+.pdfcard.none{background:var(--mist);color:var(--navy);border-left:6px solid var(--gold)}
 .ack{display:flex;gap:10px;align-items:center;margin-top:12px;font-weight:700;cursor:pointer}
 .ack input{width:20px;height:20px;accent-color:var(--navy)}
 .btn.danger{box-shadow:inset 0 0 0 2px var(--navy);color:var(--navy);margin-left:auto}
@@ -607,6 +611,8 @@ $('#go').addEventListener('click', async () => {
 });
 
 // ---- result
+// Phones and tablets can't show a PDF inside the page (Android shows a blank box), so they get a button.
+const PHONE = matchMedia('(pointer:coarse)').matches || innerWidth < 720;
 const LABEL = { ready: 'Approved · ready to send', needs_review: 'Needs review', pending_approval: 'Waiting for agent approval', failed: 'Failed', reading: 'In progress', drafted: 'In progress' };
 async function openJob(id) {
   const r = await api('/api/job?id=' + encodeURIComponent(id)); const { job } = await r.json();
@@ -625,8 +631,8 @@ async function openJob(id) {
   const diffBox = diffs.length ? `<div class="diffs">
       <b>Coverage differences between the quotes (${diffs.length})</b>
       <p>These may be quoting mistakes. Check each one against the quotes. If one is wrong, fix the quote with the carrier, delete this proposal and build it again.</p>
-      <table><thead><tr><th>Line</th><th>Coverage</th><th>What differs</th></tr></thead><tbody>${diffs.map((d, i) => `<tr${i >= 5 ? ' class="more" hidden' : ''}><td>${esc(d.line || '')}</td><td>${esc(d.coverage || '')}</td><td>${esc(d.detail || '')}</td></tr>`).join('')}</tbody></table>
-      ${diffs.length > 5 ? `<button class="linkbtn" id="allDiffs" type="button">Show all ${diffs.length}</button>` : ''}
+      <table><thead><tr><th>Line</th><th>Coverage</th><th>What differs</th></tr></thead><tbody>${diffs.map((d, i) => `<tr${i >= 7 ? ' class="more" hidden' : ''}><td>${esc(d.line || '')}</td><td>${esc(d.coverage || '')}</td><td>${esc(d.detail || '')}</td></tr>`).join('')}</tbody></table>
+      ${diffs.length > 7 ? `<button class="linkbtn" id="allDiffs" type="button">Show all ${diffs.length}</button>` : ''}
       ${needAck ? '<label class="ack"><input type="checkbox" id="ack"> I checked every difference against the quotes</label>'
         : job.coverage_reviewed ? `<p class="meta">Checked by ${esc(job.coverage_reviewed.by)} on ${new Date(job.coverage_reviewed.at).toLocaleDateString()}.</p>` : ''}
     </div>` : '';
@@ -637,7 +643,10 @@ async function openJob(id) {
       <span class="meta">&nbsp; ${job.checks ? `${job.checks.passed} of ${job.checks.total} checks passed · ${job.pages} pages` : ''}${job.prepared_by ? ' · prepared by ' + esc(job.prepared_by) : ''}${job.approved_by ? ' · approved by ' + esc(job.approved_by) : ''}${job.sent_at ? ' · sent ' + new Date(job.sent_at).toLocaleDateString() : ''}</span>
     </div></div>
     <div class="split">
-      <div><span class="cap">The proposal · <a href="${esc(job.pdf_url)}" target="_blank" rel="noopener">open full size</a></span><iframe class="pdf" src="${esc(job.pdf_url)}" title="Proposal PDF"></iframe></div>
+      <div>${job.pdf_url ? `<span class="cap">The proposal · <a href="${esc(job.pdf_url)}" target="_blank" rel="noopener">open full size</a></span>
+        ${PHONE ? `<a class="pdfcard" href="${esc(job.pdf_url)}" target="_blank" rel="noopener"><b>Open the proposal PDF</b><span>${job.pages || ''} pages · opens full screen</span></a>`
+          : `<iframe class="pdf" src="${esc(job.pdf_url)}" title="Proposal PDF"></iframe>`}`
+        : `<span class="cap">The proposal</span><div class="pdfcard none"><b>No PDF on this proposal</b><span>${job.status === 'failed' ? 'The build failed (see the message above). Delete it and build it again.' : 'It is still being built. Refresh in a minute.'}</span></div>`}</div>
       <div><span class="cap">Client email</span><pre class="email">${esc(job.email?.text || '')}</pre></div>
     </div>
     ${diffBox}

@@ -3,7 +3,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { send, callBuilder, ccApiKey, ccServiceKey, ccUrl, ccUrlSetting, putFile, readBytes } from './_lib.js';
+import { list } from '@vercel/blob';
+import { send, callBuilder, ccApiKey, ccServiceKey, ccUrl, ccUrlSetting, putFile, readBytes, readJob, JOBS } from './_lib.js';
 import { renderPdf } from './_render.js';
 import { checkEmailKey } from './_email.js';
 
@@ -38,6 +39,20 @@ export default async function handler(req, res) {
     out.storage_ready = (await readBytes('health/ping.txt'))?.toString() === stamp;
   } catch (e) {
     out.storage_error = e.message;
+  }
+  try {
+    // Every recent proposal should have its PDF in storage. No client names here: date, status, PDF found or not.
+    const jobs = (await list({ prefix: JOBS, limit: 1000 })).blobs.sort((a, b) => b.pathname.localeCompare(a.pathname)).slice(0, 8);
+    const files = new Set((await list({ prefix: 'proposals/', limit: 1000 })).blobs.map(b => b.pathname));
+    out.recent_proposals = await Promise.all(jobs.map(async b => {
+      const j = await readJob(b.pathname.slice(JOBS.length, -5)).catch(() => null);
+      if (!j) return { id: b.pathname.slice(JOBS.length, -5), status: 'unreadable' };
+      return { id: j.id, status: j.status, pdf: !j.pdf_path ? 'none yet' : files.has(j.pdf_path) ? 'found' : 'MISSING',
+        pages: j.pages || 0, differences: (j.coverage_review || []).length, error: j.status === 'failed' ? String(j.error || '').slice(0, 200) : undefined };
+    }));
+    out.proposals_ok = out.recent_proposals.every(p => p.pdf !== 'MISSING');
+  } catch (e) {
+    out.proposals_error = e.message;
   }
   try {
     const proposal = JSON.parse(fs.readFileSync(path.join(here, '..', 'skill', 'examples', 'example-home-single-carrier.json'), 'utf8'));
