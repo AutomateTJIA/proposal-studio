@@ -166,6 +166,18 @@ section.band{padding-block:96px}
 .sheetband .kicker{color:var(--royal)}
 .sheetband h2.big{color:var(--navy)}
 .card{background:var(--white);border-radius:22px;padding:30px;box-shadow:0 24px 60px -36px rgba(14,38,80,.55)}
+.tracker{margin-bottom:22px}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:820px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tile{border:2px solid var(--mist);border-radius:16px;padding:16px 18px;min-width:0}
+.tile .cap{margin-bottom:8px}
+.tile b{display:block;font:800 40px/1 var(--display);color:var(--navy)}
+.tile.hero{background:var(--navy);border-color:var(--navy)}
+.tile.hero .cap{color:var(--gold)}
+.tile.hero b{color:var(--white)}
+.tile small{display:block;margin-top:8px;font-size:13.5px;color:var(--muted)}
+.tile.hero small{color:var(--mist)}
+.people{margin-top:18px}
 .badge{display:inline-block;font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:7px 11px;border-radius:999px;white-space:nowrap}
 .badge.ready{background:var(--royal);color:var(--white)}
 .badge.pending_approval{background:var(--gold);color:var(--ink)}
@@ -378,6 +390,15 @@ footer .legal{width:100%;font-size:13px;color:rgba(233,237,242,.55);margin:0}
 <section class="sheetband" id="recentBand" hidden>
   <div class="wrap">
     <div class="rhead"><div><div class="kicker">The team's work</div><h2 class="big" style="font-size:clamp(32px,4.4vw,48px);margin-bottom:6px">Proposals</h2></div><span class="meta" id="recentCount"></span></div>
+    <div class="card tracker" id="tracker" hidden>
+      <div class="tiles">
+        <div class="tile hero"><span class="cap">Built this month</span><b id="tBuiltMonth">0</b><small id="tBuiltSub"></small></div>
+        <div class="tile hero"><span class="cap">Sent to clients this month</span><b id="tSentMonth">0</b><small id="tSentSub"></small></div>
+        <div class="tile"><span class="cap">Built all time</span><b id="tBuiltAll">0</b><small id="tSince"></small></div>
+        <div class="tile"><span class="cap">Sent all time</span><b id="tSentAll">0</b><small id="tRate"></small></div>
+      </div>
+      <div class="tablewrap people" id="tPeopleWrap" hidden><table><thead><tr><th>Prepared by</th><th>Built this month</th><th>Sent this month</th><th>Built all time</th><th>Sent all time</th></tr></thead><tbody id="tPeople"></tbody></table></div>
+    </div>
     <div class="card">
       <div class="listtools">
         <input id="q" type="search" placeholder="Search by client or who prepared it" aria-label="Search proposals">
@@ -474,7 +495,7 @@ function flash(el, text) { el.textContent = text; el.hidden = !text; }
 async function enter() {
   const r = await api('/api/jobs');
   if (r.status === 401) { const b = await r.json().catch(() => ({})); throw new Error(b.error || 'This account cannot use Proposal Studio.'); }
-  signedIn(true); setList(await r.json(), false);
+  signedIn(true); setList(await r.json(), false); refreshTracker();
 }
 let signMode = 'email'; // email -> code, or password
 function signStep(mode) {
@@ -806,6 +827,24 @@ function setList(d, append) {
 async function refreshRecent() {
   const r = await api('/api/jobs'); if (r.status === 401) { signedIn(false); return; }
   setList(await r.json(), false);
+  refreshTracker();
+}
+async function refreshTracker() {
+  const r = await api('/api/stats').catch(() => null);
+  if (!r || !r.ok) return;
+  const t = await r.json();
+  const n = v => Number(v || 0).toLocaleString();
+  $('#tBuiltMonth').textContent = n(t.built.month);
+  $('#tBuiltSub').textContent = `${n(t.built.today)} today · ${n(t.built.week)} this week`;
+  $('#tSentMonth').textContent = n(t.sent.month);
+  $('#tSentSub').textContent = `${n(t.sent.today)} today · ${n(t.sent.week)} this week`;
+  $('#tBuiltAll').textContent = n(t.built.all);
+  $('#tSince').textContent = t.since ? `Counting since ${new Date(t.since + 'T12:00:00').toLocaleDateString()}` : 'Counting starts with the next proposal';
+  $('#tSentAll').textContent = n(t.sent.all);
+  $('#tRate').textContent = t.built.all ? `${Math.round(100 * t.sent.all / t.built.all)}% of built proposals were sent` : '';
+  $('#tPeople').innerHTML = (t.people || []).map(p => `<tr><td>${esc(p.name)}</td><td>${n(p.built_month)}</td><td>${n(p.sent_month)}</td><td>${n(p.built_all)}</td><td>${n(p.sent_all)}</td></tr>`).join('');
+  $('#tPeopleWrap').hidden = !(t.people || []).length;
+  $('#tracker').hidden = false;
 }
 $('#more').addEventListener('click', async () => {
   $('#more').disabled = true;

@@ -6,6 +6,7 @@ import { renderPdf } from './_render.js';
 import { askClaude, fixInstruction } from './_claude.js';
 import { emailTeam } from './_email.js';
 import { progress } from './_stream.js';
+import { track } from './_stats.js';
 
 export const config = { maxDuration: 300 };
 
@@ -64,6 +65,10 @@ export default async function handler(req, res) {
       checks: { passed: checks.filter(c => c.passed).length, total: checks.length, failed: problems },
     });
     if (job.status === 'ready') Object.assign(job, { approved_by: user.full_name, approved_at: new Date().toISOString() });
+    // Count each proposal once, the first time its PDF is built (rebuilds don't count again).
+    if (!job.counted) {
+      await track('built', job, job.prepared_by).then(() => { job.counted = new Date().toISOString(); }).catch(() => {});
+    }
     await saveJob(job);
     if (job.internal_email?.status !== 'sent') {
       out.say({ step: 'emailing', message: 'Emailing the proposal to the team…' });

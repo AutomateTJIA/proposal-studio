@@ -1,6 +1,15 @@
 # Changelog — Proposal Studio
 
 ## 2026-10-16
+- **Added:** Proposal tracker at the top of the Proposals section:
+  - **Built this month** (with today and this week underneath)
+  - **Sent to clients this month** (with today and this week)
+  - **Built all time** and **sent all time**, plus what share of built proposals were sent
+  - A per-person table: built and sent, this month and all time, by who prepared it
+  A proposal counts as "built" the first time its PDF is made (rebuilding it doesn't count twice)
+  and as "sent" when someone clicks Mark as sent. The tally is kept separately and permanently, so
+  deleting a proposal never lowers the numbers. Dates are Eastern time. Counting starts today:
+  earlier test proposals were already deleted and can't be recovered.
 - **Fixed:** The client email no longer sits in a grey box. Copying from the grey box carried the
   grey background into Gmail. It now shows on white, with two buttons at the top:
   **Copy subject** and **Copy email**. Copy email puts clean text on the clipboard (no background

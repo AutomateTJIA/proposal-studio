@@ -4,6 +4,7 @@
 import { del, list } from '@vercel/blob';
 import { send, currentUser, readBody, safeId, readJob, JOBS, OUTPUT } from './_lib.js';
 import { deleteOpportunity } from './_crm.js';
+import { track } from './_stats.js';
 
 export default async function handler(req, res) {
   const user = await currentUser(req);
@@ -23,5 +24,6 @@ export default async function handler(req, res) {
   const targets = [...quotes, ...outputs];
   if (targets.length) await del(targets).catch(() => {});
   await del(`${JOBS}${id}.json`);
+  if (j.counted) await track('deleted', j, j.prepared_by).catch(() => {});
   return send(res, 200, { ok: true, deleted: id, crm });
 }

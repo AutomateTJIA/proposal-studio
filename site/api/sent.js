@@ -2,6 +2,7 @@
 // Presented opportunity with a scheduled follow-up for the dedicated CSR. Drafts never get there.
 import { send, currentUser, readBody, safeId, readJob, saveJob } from './_lib.js';
 import { logProposal, markSent } from './_crm.js';
+import { track } from './_stats.js';
 
 export default async function handler(req, res) {
   const user = await currentUser(req);
@@ -25,5 +26,6 @@ export default async function handler(req, res) {
       .catch(e => ({ status: 'error', message: e.message }));
   }
   await saveJob(j);
+  await track('sent', j, j.prepared_by).catch(() => {});
   return send(res, 200, { ok: true, sent_at: j.sent_at, crm: j.crm });
 }
